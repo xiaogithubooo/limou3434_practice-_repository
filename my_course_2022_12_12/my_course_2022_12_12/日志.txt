@@ -1,0 +1,10 @@
+file:D:\Gitwj\limou-c-test-code\my_course_2022_12_12\my_course_2022_12_12\main.c line:38 date:Dec 12 2022 time:13:25:14 i=0
+file:D:\Gitwj\limou-c-test-code\my_course_2022_12_12\my_course_2022_12_12\main.c line:38 date:Dec 12 2022 time:13:25:14 i=1
+file:D:\Gitwj\limou-c-test-code\my_course_2022_12_12\my_course_2022_12_12\main.c line:38 date:Dec 12 2022 time:13:25:14 i=2
+file:D:\Gitwj\limou-c-test-code\my_course_2022_12_12\my_course_2022_12_12\main.c line:38 date:Dec 12 2022 time:13:25:14 i=3
+file:D:\Gitwj\limou-c-test-code\my_course_2022_12_12\my_course_2022_12_12\main.c line:38 date:Dec 12 2022 time:13:25:14 i=4
+file:D:\Gitwj\limou-c-test-code\my_course_2022_12_12\my_course_2022_12_12\main.c line:38 date:Dec 12 2022 time:13:25:14 i=5
+file:D:\Gitwj\limou-c-test-code\my_course_2022_12_12\my_course_2022_12_12\main.c line:38 date:Dec 12 2022 time:13:25:14 i=6
+file:D:\Gitwj\limou-c-test-code\my_course_2022_12_12\my_course_2022_12_12\main.c line:38 date:Dec 12 2022 time:13:25:14 i=7
+file:D:\Gitwj\limou-c-test-code\my_course_2022_12_12\my_course_2022_12_12\main.c line:38 date:Dec 12 2022 time:13:25:14 i=8
+file:D:\Gitwj\limou-c-test-code\my_course_2022_12_12\my_course_2022_12_12\main.c line:38 date:Dec 12 2022 time:13:25:14 i=9
