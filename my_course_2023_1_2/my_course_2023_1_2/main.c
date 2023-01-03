@@ -1,15 +1,15 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include <stdio.h>
 //1、实验%g和%G的用法
-//int main()
-//{
-//	double a,b;
-//	a = 123456789;
-//	printf("%f  %e  %g  %g\n", a, a, a, a);
-//	b = 123;
-//	printf("%f  %e  %g  %g\n", b, b, b, b);
-//	return 0;;
-//}
+int main()
+{
+	double a,b;
+	a = 123456789;
+	printf("%f  %e  %g  %G\n", a, a, a, a);
+	b = 123;
+	printf("%f  %e  %g  %G\n", b, b, b, b);
+	return 0;;
+}
 
 //2、K形图案
 //int main()
