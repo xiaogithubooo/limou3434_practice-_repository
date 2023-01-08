@@ -1,0 +1,10 @@
+.box1{
+    background-color: antiquewhite;
+    color:blueviolet;
+}
+.box2{
+    /* 设置占比 */
+    width: 80%;
+    /* 设置居中 */
+    margin: auto;
+}
