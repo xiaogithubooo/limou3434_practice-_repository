@@ -1,0 +1,22 @@
+/* CSS文件 */
+.text1{
+    text-indent:100px;
+    text-align: right;
+    text-decoration:underline;
+}
+#t1{
+    text-transform:uppercase;
+}
+#t2{
+    text-transform:lowercase;
+}
+#t3{
+    text-transform:capitalize;
+}
+.text2{
+    line-height:100px;
+}
+
+#t4{
+    letter-spacing:5px;
+}
