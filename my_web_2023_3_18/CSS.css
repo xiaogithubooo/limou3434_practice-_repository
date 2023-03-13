@@ -1,0 +1,9 @@
+/* .css文件内 */
+#t1{
+    caption-side: bottom;
+    /* border-collapse: collapse; */
+    border-spacing: 10px;
+}
+table,th,td{
+    border:1px solid silver;
+}
