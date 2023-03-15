@@ -1,0 +1,15 @@
+/* .css文件里 */
+#p1{
+    background-color:hotpink;
+}
+#div1{
+    width:600px;
+    height:600px;
+    background-image:url("D:/limou_picture/WEB/按钮-赞_o.png");
+
+    background-repeat:no-repeat;
+
+    background-position:150px 150px;
+
+    background-attachment:fixed;
+}
