@@ -1,0 +1,31 @@
+/* .css文件 */
+a:link{
+    color:red;
+}
+a:visited{
+    color:purple;
+}
+a:hover{
+    color:yellow;
+}
+a:active{
+    color:blue;
+}
+a{
+    text-decoration:none;
+}
+
+img:hover{
+    border:2px solid red;
+}
+
+#div1{
+    width:100px;
+    height:100px;
+    cursor:wait;
+}
+#div2{
+    width:100px;
+    height:100px;
+    cursor:move;
+}
