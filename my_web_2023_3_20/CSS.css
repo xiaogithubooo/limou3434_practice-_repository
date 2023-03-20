@@ -1,0 +1,44 @@
+/* .css文件里 */
+#div1{
+    /* display: inline-block; */
+
+    width: 100px;
+    height: 50px;
+    
+    border: 1px solid red;
+
+    padding: 20px 40px 60px 80px;
+}
+#span1{
+    width: 100px;
+    height: 50px;
+    
+    border: 1px solid red;
+}
+
+#father{
+    width: 100px;/* 设置内容宽高 */
+    height: 100px;
+
+    padding: 20px 20px 20px 20px;/* 设置内边距 */
+
+    border: 20px solid blue; /* 设置边框样式 */ 
+
+    margin-top:20px;/* 设置外边框 */
+    margin-right:20px;
+    margin-bottom:20px;
+    margin-left:20px;
+}
+#son{
+    width: 50px;/* 设置内容宽高 */
+    height: 50px;
+
+    padding: 10px 10px 10px 10px;/* 设置内边距 */
+
+    border: 6px solid blue; /* 设置边框样式 */ 
+
+    margin-top:5px;/* 设置外边框 */
+    margin-right:5px;
+    margin-bottom:5px;
+    margin-left:5px;
+}
