@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>网页标题</title>
+
+        <script>
+            window.onload = function(){
+                alert("欢迎光临limou!!!!!");
+            }
+            window.onbeforeunload = function(event){
+                var e = event || window.event;
+                e.returnValue = "感谢你的到来,再见!";
+            }
+        </script>
+    </head>
+    <body>
+        <!-- 某些代码 -->
+    </body>
+</html>
