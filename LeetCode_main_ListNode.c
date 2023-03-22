@@ -239,9 +239,44 @@ bool hasCycle(struct ListNode *head)
 }
 
 // 问题1：请证明slow一定能追上
-// 一定能追上，设当slow进入某个开始循环的点时，flast到slow的距离为N，两个指针按照自己的步长前进，得到flast到slow的距离为N-1（N+1-2）、N-2（N+1-2+1-2）、…一直到0时，则两指针相遇。即每次距离缩短1
+// 一定能追上，设当slow进入某个开始循环的点时，fast到slow的距离为N，两个指针按照自己的步长前进，得到flast到slow的距离为N-1（N+1-2）、N-2（N+1-2+1-2）、…一直到0时，则两指针相遇。即每次距离缩短1
 
-// 问题2：slow走1次，flast走3次可以么？4次呢？…
+// 问题2：slow走1次，fast走3次可以么？4次呢？…
 // 都不一定能追上，有可能错过
-// ①假设flast走奇数次，若开始距离为奇数则追不上；若开始距离为偶数则追得上
-// ②假设flast走偶数次，若更加复杂，也是有可能追不上的
+// ①假设fast走奇数次，若开始距离为奇数则追不上；若开始距离为偶数则追得上
+// ②假设fast走偶数次，若更加复杂，也是有可能追不上的
+
+//求环形链表的入口点：https://leetcode.cn/problems/linked-list-cycle-ii/
+//如果使用快慢指针相遇，标记相遇点为meet，如果此时又有一个指针指向头结点，则两个指针一起向前迈进一步，则相遇时就是指向环入口的节点
+//假设环的长度是C，slow走过L，当slow和fast在环内相遇点距离环入口有X
+//则根据fast的长度是slow的两倍，得到式子：L+n*C+X==2*(L+X)
+//得到式子“L==n*C-X” 
+//故若又设一个指向头节点的指针，和meet一起向前走一步
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+struct ListNode *detectCycle(struct ListNode *head) 
+{
+    struct ListNode*slow = head, *fast = head;
+    while(fast && fast->next)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+        if(slow == fast)
+        {
+            //开始求入口点
+            struct ListNode* meet = slow;
+            while(head != meet)
+            {
+                head = head->next;
+                meet = meet->next; 
+            }
+            return meet;
+        }
+    }  
+    return NULL;  
+}
