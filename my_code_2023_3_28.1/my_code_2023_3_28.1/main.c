@@ -74,8 +74,8 @@ void test_1()
     //int size = 0;
     //Tree_Size(A, &size);
     //printf("%d", size);
-    printf("%d\n", Tree_Size(A));
-    printf("%d\n", Tree_Leaf_Size(A));
+    printf("子节点:%d\n", Tree_Size(A));
+    printf("叶子节点为:%d\n", Tree_Leaf_Size(A));
 }
 //测试主函数
 int main()

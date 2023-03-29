@@ -6,10 +6,10 @@ void Prev_Order(BinaryTreeNode* root)
 {
     if (root == NULL)
     {
-        printf("NULL ");
+        printf("-NULL");
         return;
     }
-    printf("%c ", root->data);
+    printf("-%c", root->data);
     Prev_Order(root->left);
     Prev_Order(root->right);
 }
@@ -19,11 +19,11 @@ void In_Order(BinaryTreeNode* root)
 {
     if (root == NULL)
     {
-        printf("NULL ");
+        printf("-NULL");
         return;
     }
     In_Order(root->left);
-    printf("%c ", root->data);
+    printf("-%c", root->data);
     In_Order(root->right);
 }
 
@@ -32,15 +32,15 @@ void Post_Order(BinaryTreeNode* root)
 {
     if (root == NULL)
     {
-        printf("NULL ");
+        printf("-NULL");
         return;
     }
     Post_Order(root->left);
     Post_Order(root->right);
-    printf("%c ", root->data);
+    printf("-%c", root->data);
 }
-int size = 0;
 
+//int size = 0;//使用全局变量和静态的方法不可取，因为多次调用该函数会出问题
 //4.1.计算节点个数
 //void Tree_Size(BinaryTreeNode* root, int* psize)
 //{
@@ -72,5 +72,7 @@ int Tree_Leaf_Size(BinaryTreeNode* root)
     {
         return 1;
     }
-    return Tree_Leaf_Size(root->left) + Tree_Leaf_Size(root->right);
+    return Tree_Leaf_Size(root->left) + Tree_Leaf_Size(root->right); 
 }
+
+//6、非递归层级遍历
