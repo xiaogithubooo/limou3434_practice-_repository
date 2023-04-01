@@ -1,19 +1,12 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include "function.h"
-void menu()
-{
-	printf("**************************************\n");
-	printf("*************** 1.play ***************\n");
-	printf("*************** 2.exit ***************\n");
-	printf("**************************************\n");
-}
 int main()
 {
 	int input = 0;
 	do 
 	{
 		menu();
-		printf("请选择\n");
+		printf("请选择选项\n");
 		scanf("%d", &input);
 		switch(input)
 		{
@@ -24,7 +17,7 @@ int main()
 			printf("退出游戏！");
 			break;
 		default:
-			printf("选择错误，请选择\n");
+			printf("选择错误，请再次选择\n");
 			break;
 		}
 	} while (input);
