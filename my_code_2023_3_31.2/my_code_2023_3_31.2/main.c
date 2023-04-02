@@ -3,12 +3,12 @@
 int main()
 {
 	int input = 0;
-	do 
+	do
 	{
 		menu();
-		printf("请选择选项\n");
-		scanf("%d", &input);
-		switch(input)
+		printf("请选择选项:");
+		int scanf_num = scanf("%d", &input);
+		switch (input)
 		{
 		case 1:
 			game();
