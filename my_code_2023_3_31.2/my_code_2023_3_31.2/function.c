@@ -49,7 +49,7 @@ void PlayerMove(char board[ROW][COL], int row, int col)
 	{
 		printf("玩家下棋——");
 		printf("其输入下棋坐标(\"行\"和\"列\"):");
-		scanf("%d %d", &x, &y);
+		int scanf_num = scanf("%d %d", &x, &y);
 		if (x >= 1 && x <= row && y >= 1 && y <= col)
 		{
 			if (board[x - 1][y - 1] == ' ')
