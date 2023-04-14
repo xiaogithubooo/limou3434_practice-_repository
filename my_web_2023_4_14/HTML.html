@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>网页标题</title>
+        <script>
+            function up(a, b)//升序函数
+            {
+                return a - b;
+            }
+            function down(a, b)//降序函数
+            {
+                return b - a;
+            }
+            var arr = [3, 9, 1, 12, 50];
+            arr.sort(up);
+            document.write(arr.join(",") + "<br/>");
+            arr.sort(down);
+            document.write(arr.join(",") + "<br/>");
+            var oDate = new Date();
+            document.write(oDate.getFullYear() + "年");
+            document.write(oDate.getMonth()+1 + "月");
+            document.write(oDate.getDate() + "日");
+            document.write(" 星期" + oDate.getDay() + " ");
+            document.write(oDate.getHours() + "时");
+            document.write(oDate.getMinutes() + "分");
+            document.write(oDate.getSeconds() + "秒");
+        </script>
+    </head>
+    <body>
+        <p>limou</p>
+    </body>
+</html>
