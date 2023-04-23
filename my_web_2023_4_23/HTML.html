@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>网页标题</title>
+        <script>
+            window.onload = function()
+            {
+                var oBtn = document.getElementById("btn");
+                var oSelect = document.getElementById("select");
+
+                oBtn.onclick = function()
+                {
+                    alert(oSelect.value);
+                };
+            }
+        </script>
+    </head>
+    <body>
+        <select id="select">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        <input id="btn" type="button" value="获取"/>
+    </body>
+</html>
+
+<!-- var oBtn = document.getElementById("btn");
+var oFruit = document.getElementsByName("fruit");
+var str = "";
+
+oBtn.onclick = function()
+{
+    for(var i = 0; i < oFruit.length; i++)
+    {
+        if(oFruit[i].checked)
+        {
+            str += oFruit[i].value + " ";
+        }
+    }
+    alert(str);
+}; -->
+<!-- <div>
+    <label><input type="checkbox" name="fruit" value="1" checked/>1</label>  checked代表这个选项是默认选项
+    <label><input type="checkbox" name="fruit" value="2"/>2</label>
+    <label><input type="checkbox" name="fruit" value="3"/>3</label>
+</div>
+<input id="btn" type="button" value="获取"/> -->
+
+<!-- 
+<input id="txt" type="text"/>
+<input id="btn" type="button" value="获取"/> -->
+
+<!-- var oBtn = document.getElementById("btn");//获取id为btn的元素
+oBtn.onclick = function()
+{
+    var oTex = document.getElementById("txt");//获取id为txt的元素
+    alert(oTex.value);//提示oTex对象的值
+} -->
+
+<!-- window.onload = function()
+{
+    var oInput = document.createElement("input");//创建动态DOM元素
+    oInput.id = "submit";//设置id
+    oInput.type = "button";//设置input的类型
+    oInput.value = "提交按钮";//设置input的值
+    document.body.appendChild(oInput);//将创建、并且设置好的子元素的插入到父元素body元素中
+} -->
+<!-- window.onload = function()
+{
+    var oBtn = document.getElementById("btn");//获取btn元素
+    oBtn.onclick = function()//鼠标事件
+    {
+        alert(oBtn.id);//获取静态HTML的id元素
+    };//注意分号
+} -->
+<!-- <input id="btn" class="myBtn" type="button" value="获取id"> -->
