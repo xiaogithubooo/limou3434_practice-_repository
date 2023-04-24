@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>网页标题</title>
+        <script>
+            window.onload = function()
+            {
+                var oBtn = document.getElementById("btn");
+                oBtn.onclick = function()
+                {
+                    oBtn.setAttribute("type", "text");
+                    alert(oBtn.getAttribute("limou_data"));
+                    oBtn.removeAttribute("limou_data");
+                    alert(oBtn.getAttribute("limou_data"));
+                };
+            }
+        </script>
+    </head>
+    <body>
+        <input id="btn" type="button" value="获取data" limou_data="limou"/><br/>
+    </body>
+</html>
+
+<!-- 
+<img id="pic" src="D:/limou_picture/喵斯/e696fa19840e3512-1653632165434.png" width="350px" height="200px"/> -->
+
+<!-- var oBtn = document.getElementById("btn");
+var oPic = document.getElementById("pic");
+var flag = true; -->
+<!-- oBtn.onclick = function()
+{
+    if(flag)
+    {
+        oPic.src = "D:/limou_picture/喵斯/72363dd7988a4c81-1674206288756.png";
+        flag = false;
+    }
+    else
+    {
+        oPic.src = "D:/limou_picture/喵斯/e696fa19840e3512-1653632165434.png";
+        flag = true;
+    }
+}; -->
