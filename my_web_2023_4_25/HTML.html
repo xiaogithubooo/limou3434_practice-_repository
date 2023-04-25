@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>网页标题</title>
+        <style type="text/css">
+            #box
+            {
+                width: 100px;
+                height: 100px;
+                background-color: blueviolet;
+            }
+        </style>
+        <script>
+            window.onload = function()
+            {
+                var oBtn = document.getElementById("btn");
+                var oBox = document.getElementById("box");
+
+                oBtn.onclick = function()
+                {
+                    var txt = document.getElementById("txt").value;
+                    oBox.style.cssText = txt;
+                };
+            }
+        </script>
+    </head>
+    <body>
+        <input id="txt" type="text"/>
+        <input id="btn" type="button" value="设置"/>
+        <div id="box"></div>
+    </body>
+</html>
