@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>网页标题</title>
+    <script>
+        window.onload = function()
+        {
+            var oP = document.getElementById("content");
+            document.getElementById("txt1").value = oP.innerHTML;
+            document.getElementById("txt2").value = oP.innerText;
+        }
+    </script>
+</head>
+<body>
+    <p id="content"><strong style="color: blueviolet;">limou3434</strong></p>
+    innerHTML:<input id="txt1" type="text"/><br/>
+    innerText:<input id="txt2" type="text"/>
+</body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>网页标题</title>
+    <script>
+        window.onload = function()
+        {
+            var oBtn = document.getElementById("btn");
+            var oUl = document.getElementById("list");
+
+            oBtn.onclick = function()
+            {
+                if(oUl.lastChild.nodeType == 3)
+                {
+                    oUl.removeChild(oUl.lastChild);
+                    oUl.removeChild(oUl.lastChild);   
+                }
+                else
+                {
+                    oUl.removeChild(oUl.lastChild);
+                }            
+            }
+        }
+    </script>
+</head>
+<body>
+    <ul id="list">
+        <li>a</li>
+        <li>b</li>
+        <li>c</li>
+        <li>d</li>
+        <li>e</li>
+    </ul>
+    <input id="btn" type="button" value="删除"/>
+</body>
+</html> -->
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>网页标题</title>
+    <script>
+        window.onload = function()
+        {
+            var oUl = document.getElementById("list");
+            var childNodesLen = oUl.childNodes.length;//获取元素、文本子节点的个数
+            var childrenLen = oUl.children.length;//获取元素子节点的个数
+
+            alert("childNodesLen:"+ childNodesLen + "\n" + "childrenLen:" + childrenLen);
+        }
+    </script>
+</head>
+<body>
+    <ul id="list"><li>li</li><li>lim</li><li>limou</li></ul>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>网页标题</title>
+    <style type="text/css">
+        table {
+            border-collapse: collapse;
+            /*边框合并*/
+        }
+
+        table,
+        tr,
+        td {
+            border: 1px solid gray;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            var oTd = document.getElementsBy("td");
+            for (var i = 0; i < oTd.length; i++) {
+                oTd[i].onclick = function () {
+                    var oParent = this.parentNode;
+
+                    oParent.style.color = "white";
+                    oParent.style.backgroundColor = "red";
+                };
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <table>
+        <caption>表格</caption>
+        <tr>
+            <td>limou</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+        </tr>
+        <tr>
+            <td>Limou</td>
+            <td>a</td>
+            <td>b</td>
+            <td>c</td>
+        </tr>
+        <tr>
+            <td>LIMOU</td>
+            <td>A</td>
+            <td>B</td>
+            <td>C</td>
+        </tr>
+    </table>
+</body>
+
+</html> -->
