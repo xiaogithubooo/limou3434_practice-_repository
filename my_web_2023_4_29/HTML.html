@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>网页标题</title>
+    <script>
+        window.onload = function()
+        {
+            var oList = document.getElementById("list");
+
+            oList.onchange = function()
+            {
+                var link = this.options[this.selectedIndex].value;
+                //可以使用this.options[n]来得到某个选项
+                //可以使用this.selectedIndex来得到这个列表项的下标
+
+                window.open(link);
+                //表示打开一个新窗口
+            };
+        };
+    </script>
+</head>
+<body>
+    <div>
+        <select id="list">
+            <option value="https://www.baidu.com/">百度</option>
+            <option value="https://www.bilibili.com/">bilibili</option>
+        </select>
+    </div>
+    <p id="content"></p>
+</body>
+</html>
+
+
+<!-- 
+var oSelectAll = document.getElementById("selectAll");
+var oFruit = document.getElementsByName("fruit");
+
+oSelectAll.onchange = function()
+{
+    if(this.checked)
+    {
+        for(var i = 0; i < oFruit.length; i++)
+        {
+            oFruit[i].checked = true;
+        }
+    }
+    else
+    {
+        for(var i = 0; i < oFruit.length; i++)
+        {
+            oFruit[i].checked = false;
+        }    
+    }
+}; -->
+
+<!-- var oFruit = document.getElementsByName("fruit");
+var oP = document.getElementById("content");
+
+for(var i = 0; i < oFruit.length; i++)
+{
+    oFruit[i].onchange = function()
+    {
+        if(this.checked)
+        {
+            oP.innerHTML = "你选择的是:" + this.value;
+        }
+    };
+} -->
+
+<!-- var oTxt1 = document.getElementById("txt1");
+var oTxt2 = document.getElementById("txt2");
+oTxt1.onclick = function()
+{
+    this.select();
+    alert("单行文本");
+};
+oTxt2.onclick = function()
+{
+    this.select();
+    alert("多行文本");
+};
+// oTxt1.onselect = function()
+// {
+//     
+// };
+// oTxt2.onselect = function()
+// {
+//     
+// }; -->
+
+<!-- var oSearch = document.getElementById("search");
+            oSearch.focus();
+            //1.获取焦点
+            oSearch.onfocus = function()
+            {
+                if(this.value == "百度")
+                {
+                    this.value = "";
+                }
+            };
+            //2.失去焦点
+            oSearch.onblur = function()
+            {
+                if(this.value == "")
+                {
+                    this.value = "百度";
+                }
+            }; -->
+
+<!-- var oTxt = document.getElementById("txt");
+            var oDiv = document.getElementById("content");
+
+            var myregex = /^[0-9]*$/;
+            oTxt.onkeyup = function()
+            {
+                if(myregex.test(oTxt.value))
+                {
+                    oDiv.innerHTML = "输入正确";
+                    oDiv.style.color = "blue";
+                }
+                else
+                {
+                    oDiv.innerHTML = "必须输入数字";
+                    oDiv.style.color = "red";
+                }
+            }; -->
+
+<!-- window.onload = function()
+{
+    var oTxt = document.getElementById("txt");
+    var oNum = document.getElementById("num");
+    oTxt.onkeyup = function()
+    {
+        var str = oTxt.value;
+        oNum.innerHTML = str.length;
+    };
+}; -->
+
+<!-- var oDiv = document.getElementById("title");
+var oBtn = document.getElementById("btn");
+
+oBtn.onmousedown = function()
+{
+    oDiv.style.color = "red";
+};
+oBtn.onmouseup = function()
+{
+    oDiv.style.color = "blue";
+}; -->
+
+<!-- window.onload = function()
+{
+    var oP = document.getElementById("content");
+    oP.onmousemove = function()
+    {
+        this.style.color = "red";
+    };
+    oP.onmouseout = function()
+    {
+        this.style.color = "blue";
+    };
+}; -->
+
+<!-- <style type="text/css">
+</style> -->
+
+<!-- window.onload = function()
+{
+    var oDiv = document.getElementById("btn");
+    oDiv.onclick = fun; 
+    function fun()//鼠标单击事件
+    {
+        alert("This is a button!");
+    };
+}; -->
