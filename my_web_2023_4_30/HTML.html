@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>网页标题</title>
+    <script>
+        window.onload = function()
+        {
+            alert("你好!");
+        }
+        window.onbeforeunload = function(e)//这里的e是event对象之后再提
+        {
+            e.returnValue = "再见!";
+        }
+    </script>
+</head>
+<body>
+    <h1 id="title">limou</h1>
+</body>
+</html>
