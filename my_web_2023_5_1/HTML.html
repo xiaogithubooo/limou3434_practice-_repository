@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>网页标题</title>
+    <script>
+        window.onload = function()
+        {
+            var oBtn = document.getElementById("btn");
+            oBtn.addEventListener("click", alertMes_1, false);
+
+            function alertMes_1()
+            {
+                alert("hello*1");
+                oBtn.removeEventListener("click", alertMes_1, false);
+            }
+        }
+    </script>
+</head>
+<body>
+    <input id="btn" type="button" value="打印/解除打印"/>
+</body>
+</html>
