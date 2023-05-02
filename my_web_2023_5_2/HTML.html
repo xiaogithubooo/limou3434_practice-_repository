@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>网页标题</title>
+    <script>
+        {
+            window.onload = function()
+            {
+                var oDiv = document.getElementsByTagName("div")[0];
+                oDiv.onclick = function()
+                {
+                    this.style.color = "red";
+                };
+            }
+        }
+    </script>
+</head>
+<body>
+    <div>limou</div>
+</body>
+</html>
+
+
+<!-- window.onload = function()
+{
+    var oSpan = document.getElementsByTagName("span")[0];
+    window.addEventListener("keydown", function(e)
+    {
+        if(e.keyCode == 38 || e.keyCode == 87)
+        {
+            oSpan.innerHTML = "上";
+        }
+        else if(e.keyCode == 37 || e.keyCode == 65)
+        {
+            oSpan.innerHTML = "左";
+        }
+        else if(e.keyCode == 39 || e.keyCode == 68)
+        {
+            oSpan.innerHTML = "右";
+        }
+        else if(e.keyCode == 40 || e.keyCode == 83)
+        {
+            oSpan.innerHTML = "下";
+        }
+    }
+    ,false) -->
