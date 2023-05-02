@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>网页标题</title>
+    <script>
+        var n = 20;//全局变量，用于记录秒数
+        var timer = null;
+        window.onload = function()
+        {
+            timer = setInterval(countDown, 1000);
+
+            var oBtn = document.getElementById("btn");
+            oBtn.onclick = function()
+            {
+                clearInterval(timer);
+            };
+        };
+        function countDown()
+        {
+            if(n > 0)
+            {
+                n--;
+                document.getElementById("num").innerHTML = n;
+            }
+        }
+    </script>
+</head>
+<body>
+    <p>倒计时:<span id="num">20</span></p>
+    <input id="btn" type="button" value="取消倒计时"/>
+</body>
+</html>
+
+<!-- var oBtn = document.getElementById("btn");
+oBtn.onclick = function()
+{
+    var name = prompt("请输入你的名字");
+    document.write("你的名字是" + name);
+}; -->
+
+<!-- window.onload = function()
+{
+    var oBtn = document.getElementById("btn");
+    oBtn.onclick = function()
+    {
+        if(confirm("你好，看到这条信息的话，请点击确认"))
+        {
+            alert("确认成功");
+        }
+        else
+        {
+            alert("取消成功");
+        }
+    }
+} -->
+
+<!-- <input type="button" value="打开窗口"/>
+<input type="button" value="操作窗口"/>
+<input type="button" value="关闭"/> -->
+
+<!-- window.onload = function()
+{
+    var oBtn = document.getElementsByTagName("input");
+    var opener = null;
+    oBtn[0].onclick = function()
+    {
+        opener = window.open();
+        var strHtml = '\
+            <!DOCTYPE html>\
+            <html lang="en">\
+            <head>\
+                <title>网页标题</title>\
+            </head>\
+            <body>\
+                <div>limou3434</div>\
+                <input id="btn" type="button" value="关闭新窗口">\
+            </body>\
+            </html>';
+        opener.document.write(strHtml);
+    };
+    oBtn[1].onclick = function()
+    {
+        var oDiv = opener.document.getElementsByTagName("div")[0];
+        oDiv.style.fontWeight = "bold";
+        oDiv.style.color = "hotpink";
+        var oBtn = opener.document.getElementById("btn");
+        oBtn.onclick = function()
+        {
+            opener.close();
+        }
+    };
+    oBtn[2].onclick = function()
+    {
+        window.close();
+    };
+}; -->
+
+<!-- oBtn.onclick = function()
+{
+    var opener = window.open();
+    opener.document.write("这是一个新窗口");
+    opener.document.body.style.backgroundColor = "red";
+}; -->
+
+<!-- oBtn.onclick = function()
+{
+    window.open("http://www.baidu.com", "_self");
+}; -->
+
+<!-- var oDiv = document.getElementsByTagName("div")[0];
+var oP = document.getElementsByTagName("p")[0];
+
+oDiv.onclick = changeColor;
+oP.onclick = changeColor;
+
+function changeColor()
+{
+    this.style.color = "red";
+} -->
