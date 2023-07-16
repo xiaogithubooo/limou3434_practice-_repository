@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meat charset="utf-8"/>
+        <title>表格语义化完整语法</title>
+        <!--这里使用了CSS为表格加上边框-->
+        <style type="text/css">
+            table,tr,td{border:1px solid silver;}
+        </style>
+    </head>
+
+    <body>
+        <table>
+            <caption>表格标题</caption>
+            <!--表头部分-->
+            <thead>
+                <tr>
+                    <th>表头单元格</th>
+                    <th>表头单元格</th>
+                    <th>表头单元格</th>
+                </tr>
+            </thead>
+            <!--表身部分-->
+            <tbody>
+                <tr>
+                    <td rowspan="2">表行单元格</td>
+                    <td>表行单元格</td>
+                    <td>表行单元格</td>
+                </tr>
+                <tr>
+                    <td>表行单元格</td>
+                    <td>表行单元格</td>
+                </tr>
+                <tr>
+                    <td colspan="2">表行单元格</td>
+                    <td>表行单元格</td>
+                </tr>
+            </tbody>
+            <!--表脚部分-->
+            <tfoot>
+                <tr> 
+                    <td>标准单元格</td>
+                    <td>标准单元格</td>
+                    <td>标准单元格</td>
+                </tr>
+            </tfoot>
+        </table>
+    </body>
+</html>
