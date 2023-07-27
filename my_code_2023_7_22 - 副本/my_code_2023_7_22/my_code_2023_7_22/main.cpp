@@ -28,6 +28,7 @@ public:
 		_month(month), 
 		_day(day) 
 	{
+		//下面是对日期对象的一种检查，避免一错再错
 		if (GetMonthDay(_year, _month) < _day)
 		{
 			cout << "非法日期" << endl;
@@ -35,7 +36,7 @@ public:
 	}
 	//2.拷贝构造函数
 	//d2(d1)
-	Date(const Date& d)
+	Date(const Date& d)//实际上不需要自己写拷贝构造，因为日期类只需要浅拷贝即可
 	{
 		_year = d._year;
 		_month = d._month;
