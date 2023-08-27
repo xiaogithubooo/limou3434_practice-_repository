@@ -2,5 +2,10 @@
 int main()
 {
 	printf("I am a code!\n");
-	return 0;
+  for(int i = 0; i < 10; i++) //开发者1：老兄你这里少了一段代码
+  {
+    printf("%d ", i);
+  }
+  printf("\n");
+  return 0;
 }
