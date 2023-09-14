@@ -1,0 +1,6 @@
+Name    Age    letter
+Eimou    25    a
+Limou    30    b
+Dimou    18    c
+Iimou    18    a
+Timou    30    d
