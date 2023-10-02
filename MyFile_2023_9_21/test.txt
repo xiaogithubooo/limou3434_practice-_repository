@@ -1,0 +1,9 @@
+子进程run：
+total 44
+drwxrwxr-x 2 ljp ljp  4096 Sep 21 21:50 .
+drwxrwxr-x 7 ljp ljp  4096 Sep 21 13:06 ..
+-rwxrwxr-x 1 ljp ljp 13504 Sep 21 21:48 a.out
+-rw-rw-r-- 1 ljp ljp    32 Sep 21 19:41 limou.txt
+-rw-rw-r-- 1 ljp ljp  2004 Sep 21 19:41 main.c
+-rw-rw-r-- 1 ljp ljp  4126 Sep 21 21:47 mysheel.c
+-rw-rw-r-- 1 ljp ljp    16 Sep 21 21:50 test.txt
