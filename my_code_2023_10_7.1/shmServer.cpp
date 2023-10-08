@@ -1,3 +1,4 @@
+//shmServer.cpp
 #include "comm.hpp"
 string TransToHex(key_t k)
 {
@@ -22,8 +23,13 @@ int main()
     char* shmaddr = (char*)shmat(shmid, nullptr, 0);
     assert(shmaddr != nullptr);
     //4.撰写通信逻辑
+    for(;;)   
+    {
+        printf("%s\n", shmaddr);
+        sleep(1);
+    }
 
-    //5.断接共享内存（从自己的地址空间中）
+    //5.断接共享内存（从自己的地址空间中，默认清为全0）
     int n = shmdt(shmaddr);
     assert(n != -1);(void)n;
 
