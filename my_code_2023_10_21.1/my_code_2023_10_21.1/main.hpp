@@ -129,18 +129,22 @@ namespace limou
 					{
 						RotateL(parent);
 					}
-					else if (parent->_bf == -2 || cur->_bf == -1)//右单旋
+					else if (parent->_bf == -2 && cur->_bf == -1)//右单旋
 					{
 						RotateR(parent);
 					}
-					//else if ()//右左双旋
-					//{
-					//	
-					//}
-					//else if ()//左右双旋
-					//{
-					//
-					//}
+					else if (parent->_bf == -2 && cur->_bf == 1)//右左双旋
+					{
+						RotateLAndR(parent);
+					}
+					else if (parent->_bf == 2 && cur->_bf == -1)//左右双旋
+					{
+						RotateRAndL(parent);
+					}
+					else
+					{
+						assert();
+					}
 					break;
 				}
 				else
@@ -233,7 +237,74 @@ namespace limou
 			//更新平衡因子
 			parent->_bf = subL->_bf = 0;
 		}
+		//双旋：左单旋，右单旋
+		void RotateLAndR(Node* parent)
+		{
+			Node* subL = parent->_left;
+			Node* subLR = subL->_right;
+			int bf = subLR->_bf;
 
+			//这里的复用代码很简单，但是双旋最困难的问题是更新平衡因子
+			RotateL(parent->_left);
+			RotateR(parent);
+
+			if (bf == -1)//在较高左子树的右树的右插入
+			{
+				parent->_bf = 1;
+				subLR->_bf = 0;
+				subL->_bf = 0;
+			}
+			else if (bf == 1)//在较高左子树的右树的左插入
+			{
+				parent->_bf = 0;
+				subLR->_bf = 0;
+				subL->_bf = -1;
+			}
+			else if (bf == 0)//建议写上，逻辑更清晰
+			{
+				parent->_bf = 0;
+				subLR->_bf = 0;
+				subL->_bf = 0;
+			}
+			else
+			{
+				assert(false);//供自己调试使用
+			}
+		}
+		//双旋：右单旋，左单旋
+		void RotateRAndL(Node* parent)
+		{
+			Node* subR = parent->_left;
+			Node* subRL = subL->_right;
+			int bf = subRL->_bf;
+
+			//这里的复用代码很简单，但是双旋最困难的问题是更新平衡因子
+			RotateR(parent->_right);
+			RotateL(parent);
+
+			if (bf == -1)//在较高右子树的左树的左插入
+			{
+				parent->_bf = 0;
+				subRL->_bf = 0;
+				subR->_bf = 1;
+			}
+			else if (bf == 1)//在较高右子树的左树的右插入
+			{
+				parent->_bf = -1;
+				subRL->_bf = 0;
+				subR->_bf = 0;
+			}
+			else if (bf == 0)//建议写上，逻辑更清晰
+			{
+				parent->_bf = 0;
+				subLR->_bf = 0;
+				subL->_bf = 0;
+			}
+			else
+			{
+				assert(false);//供自己调试使用
+			}
+		}
 	private:
 		Node* _root = nullptr;
 	};
