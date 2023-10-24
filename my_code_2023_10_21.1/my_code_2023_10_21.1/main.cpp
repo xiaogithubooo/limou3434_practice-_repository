@@ -1,22 +1,36 @@
-#include "main.hpp"
-#include <iostream>
-#include <string>
-using std::string;
+#include "AVLTree.hpp"
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+#define SIZE 1000000
 
 int main()
 {
-	limou::AVLTree<int, string> a;
-	a.Inster(make_pair(10, "a"));
-	a.Inster(make_pair(8, "b"));
-	a.Inster(make_pair(20, "c"));
-	a.Inster(make_pair(5, "d"));
-	a.Inster(make_pair(9, "e"));
-	a.Inster(make_pair(15, "f"));
-	a.Inster(make_pair(25, "g"));
-	a.Inster(make_pair(19, "h"));
-	a.Inster(make_pair(22, "i"));
-	a.Inster(make_pair(30, "j"));
-	a.Inster(make_pair(32, "k"));//这个插入需要调整结点
+	limou::AVLTree<int, char> a;
+	//vector<int> arr = { 16,3,7,11,9,26,18,14,15 };
+	//vector<int> arr = { 4,2,6,1,3,5,15,7,16,14 };
+	//vector<int> arr = {};
+	//vector<int> arr = { 1 };
+	//vector<int> arr = { 1, 2, 3 };
+
+	srand((unsigned)time(0));
+	vector<int> arr;
+	for (int i = 0; i < SIZE; i++)
+	{
+		arr.push_back(rand() % SIZE);
+	}
+
+	for (auto it : arr)
+	{
+		a.Inster(make_pair(it, 'a' + (it % 26)));
+	}
+	a.InOrder();
+
+	if (a.IsBalance())
+	{
+		cout << "OK" << endl;
+	}
 
 	return 0;
 }

@@ -1,3 +1,4 @@
+#include <iostream>
 #include <utility>
 #include <cassert>
 using namespace std;
@@ -52,7 +53,7 @@ namespace limou
 					parent = cur;
 					cur = cur->_left;
 				}
-				else
+				else//不可以等于
 				{
 					return false;
 				}
@@ -143,7 +144,7 @@ namespace limou
 					}
 					else
 					{
-						assert();
+						assert(false);
 					}
 					break;
 				}
@@ -155,6 +156,20 @@ namespace limou
 
 			return true;
 		}
+
+		//2.中序遍历
+		void InOrder()
+		{
+			_InOrder(_root);
+			std::cout << std::endl;
+		}
+
+		//3.检查是否平衡
+		bool IsBalance()
+		{
+			return _IsBalance(_root);
+		}
+
 
 	private:
 		//左单旋
@@ -274,8 +289,8 @@ namespace limou
 		//双旋：右单旋，左单旋
 		void RotateRAndL(Node* parent)
 		{
-			Node* subR = parent->_left;
-			Node* subRL = subL->_right;
+			Node* subR = parent->_right;
+			Node* subRL = subR->_left;
 			int bf = subRL->_bf;
 
 			//这里的复用代码很简单，但是双旋最困难的问题是更新平衡因子
@@ -297,13 +312,55 @@ namespace limou
 			else if (bf == 0)//建议写上，逻辑更清晰
 			{
 				parent->_bf = 0;
-				subLR->_bf = 0;
-				subL->_bf = 0;
+				subRL->_bf = 0;
+				subR->_bf = 0;
 			}
 			else
 			{
 				assert(false);//供自己调试使用
 			}
+		}
+		//中序子函数
+		void _InOrder(Node* root)
+		{
+			if (root == nullptr)
+			{
+				return;
+			}
+
+			_InOrder(root->_left);
+			std::cout << root->_kv.first << "-" << root->_kv.second << " ";
+			_InOrder(root->_right);
+		}
+		//判断平衡的子函数
+		int _Height(Node* root)
+		{
+			if (root == nullptr)
+			{
+				return 0;
+			}
+			int leftHeight = _Height(root->_left);
+			int rightHeight = _Height(root->_right);
+			return  leftHeight > rightHeight ? leftHeight + 1 : rightHeight + 1;
+		}
+		bool _IsBalance(Node* root)
+		{
+			if (root == nullptr)
+			{
+				return true;
+			}
+			int leftH = _Height(root->_left);
+			int rightH = _Height(root->_right);
+
+			if (rightH - leftH != root->_bf)//检查平衡因子
+			{
+				std::cout << "平衡因子异常:" << root->_kv.first << "-" << root->_kv.second << std::endl;
+				return false;
+			}
+
+			return abs(leftH - rightH) < 2
+				&& _IsBalance(root->_left)
+				&& _IsBalance(root->_right);
 		}
 	private:
 		Node* _root = nullptr;
