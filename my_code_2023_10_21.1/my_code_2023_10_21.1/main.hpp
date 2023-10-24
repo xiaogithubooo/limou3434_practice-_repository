@@ -164,7 +164,7 @@ namespace limou
 			Node* subRL = subR->_left;
 			Node* pparent = parent->_parent;
 
-			//记录了四个指针parent、sybR、subRL、pparent
+			//记录了四个指针parent、subR、subRL、pparent
 
 			//步骤1
 			parent->_right = subRL;
@@ -204,7 +204,7 @@ namespace limou
 			Node* subLR = subL->_right;
 			Node* pparent = parent->_parent;
 
-			//记录了四个指针parent、sybR、subRL、pparent
+			//记录了四个指针parent、subR、subRL、pparent
 
 			//步骤1
 			parent->_left = subLR;
