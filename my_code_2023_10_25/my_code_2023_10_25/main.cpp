@@ -1,46 +1,104 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <algorithm>
 using namespace std;
-void _function(string& str, int x, int y)//abcd, x->a, y->'\0'
+class Solution
 {
-    y--;
-    while (x < y)
+public:
+    vector<int> relativeSortArray(vector<int> arr1, vector<int> arr2)
     {
-        swap(str[x++], str[y--]);
+        //cout存储数据的重复次数
+        vector<int> count;
+        count.resize(1001, -1);//可以存储1001个数据，下标从0到1000，初始化为-1
+
+        //映射数据，并且搜集未在arr2中的数据
+        vector<int> v;
+        for (auto it : arr2)
+        {
+            count[it]++;
+        }
+        for (auto it : arr1)
+        {
+            if (count[it] == -1)
+            {
+                v.push_back(it);
+            }
+            else
+            {
+                count[it]++;
+            }
+        }
+        sort(v.begin(), v.end());
+
+        //处理返回数组
+        vector<int> ret;
+        for (auto it : arr2)
+        {
+            int n = count[it];
+            while (n--)
+            {
+                ret.push_back(it);
+            }
+        }
+
+        for (auto it : v)
+        {
+            ret.push_back(it);
+        }
+
+        return ret;
     }
-}
+};
 int main()
 {
-    //1.获取句子
-    string str;
-    getline(cin, str);//有可能有输入" "、""、"."、"apple."
-
-    //2.整个句子都逆置
-    int begin = 0;
-    int end = str.size() - 1;//例如"abcd ef ghi jklmn."的size=8，因此这里end为7
-    while (begin < end)
-    {
-        swap(str[begin++], str[end--]);
-    }
-
-    //3.寻找空格，定位好每个单词，将每个单词都逆转
-    int index = 0;
-    int begin_i = 0;
-    while (index < str.size())//0 < 8，不会越界
-    {
-        if (str[index] == ' ')
-        {
-            _function(str, begin_i, index);//传过去(0, 4)，注意这里是“框起一个单词”
-            begin_i = index + 1;//5->e
-        }
-        index++;
-    }
-    _function(str, begin_i, index);
-    cout << str;
-
+    Solution s;
+    s.relativeSortArray({ 2,3,1,3,2,4,6,7,9,2,19 }, { 2,1,4,3,9,6 });
     return 0;
 }
 
+//#include <iostream>
+//#include <string>
+//using namespace std;
+//void _function(string& str, int x, int y)//abcd, x->a, y->'\0'
+//{
+//    y--;
+//    while (x < y)
+//    {
+//        swap(str[x++], str[y--]);
+//    }
+//}
+//int main()
+//{
+//    //1.获取句子
+//    string str;
+//    getline(cin, str);//有可能有输入" "、""、"."、"apple."
+//
+//    //2.整个句子都逆置
+//    int begin = 0;
+//    int end = str.size() - 1;//例如"abcd ef ghi jklmn."的size=8，因此这里end为7
+//    while (begin < end)
+//    {
+//        swap(str[begin++], str[end--]);
+//    }
+//
+//    //3.寻找空格，定位好每个单词，将每个单词都逆转
+//    int index = 0;
+//    int begin_i = 0;
+//    while (index < str.size())//0 < 8，不会越界
+//    {
+//        if (str[index] == ' ')
+//        {
+//            _function(str, begin_i, index);//传过去(0, 4)，注意这里是“框起一个单词”
+//            begin_i = index + 1;//5->e
+//        }
+//        index++;
+//    }
+//    _function(str, begin_i, index);
+//    cout << str;
+//
+//    return 0;
+//}
 
 //#include <iostream>
 //#include <vector>
