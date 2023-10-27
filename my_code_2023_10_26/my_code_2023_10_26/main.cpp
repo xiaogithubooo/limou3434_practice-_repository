@@ -1,5 +1,48 @@
+<<<<<<< HEAD
 #define _CRT_SECURE_NO_WARNINGS 1
 #include <stdio.h>
+=======
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+class Solution
+{
+public:
+    int findLHS(vector<int> nums)
+    {
+        //由于每次取的区间都是取内部的 max 和 min
+        //因此“和谐”与内部数据的顺序无关
+        //并且允许删除不需要的数字
+
+        //因此我们先将数组排序
+        sort(nums.begin(), nums.end());
+        //1,3,2,2,5,2,3,7
+        //1,2,2,2,3,3,5,7
+        
+        int ret = 0;//记录最大值
+
+        int begin = 0;
+        for (int end = 1; end < nums.size(); end++)
+        {
+            if (nums[end] - nums[begin] > 1)
+            {
+                begin++;
+            }
+            if (nums[end] - nums[begin] == 1)
+            {
+                int size = end - begin + 1;
+                if (ret < size)
+                {
+                    ret = size;
+                }
+            }
+        }
+        return ret;
+    }
+};
+>>>>>>> a16e77a401248127969f633f485d60b0feec9f5a
 int main()
 {
 	int num1 = 0;
