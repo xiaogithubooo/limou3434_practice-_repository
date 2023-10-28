@@ -67,13 +67,15 @@ int main()
 	VFUNC* table2 = (VFUNC*)(*((int*)ptr));//第二张虚表（利用内置切片让指针偏移）
 	PrintVFT(table1);
 	PrintVFT(table2);
-	printf("Son::Function_1: %x\n", &Son::Function_1);
+	printf("Son::Function_1: %p\n", &Son::Function_1);
 
 	//调用函数
 	Father* p1 = &s;
 	Mother* p2 = &s;
+	
 	p1->Function_1();
 	p2->Function_1();
+
 
 	return 0;
 }
