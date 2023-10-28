@@ -61,7 +61,7 @@ namespace limou
 				}
 			}
 
-			cur = new Node(kv);//默认新增加的是红色结点（这么设置会好一些）
+			cur = new Node(kv);//默认新增加的是红色结点（这么设置会好一些，这个默认设置行为在RBTreeNode的构造函数里）
 
 			if (parent->_kv.first > kv.first)
 			{
@@ -74,6 +74,30 @@ namespace limou
 
 			cur->_parent = parent;
 
+			//2.RBTree的部分开始
+			while (parent && parent->_col == RED)//只要父节点为空（避免是根节点）或者父节点是黑（黑就随便插入，不影响RB定义）
+			{
+				Node* grandFather = parent->_parent;//parent是红的，就一定存在grandFather（只有parent为根节点才不会有grandFather）
+				if (grandFather->_left == parent)
+				{
+					Node* uncle = grandFather->_right;
+					if (uncle && uncle->_col == RED)//uncle存在并且颜色为红
+					{
+						parent->_co	3l = BLACK;
+						uncle->_col = BLACK;
+						grandFather->_col = RED;
+						
+						cur = grandFather;//继续往上调整
+						parent = cur->_parent;
+					}
+					else
+					{
+
+					}
+				}
+			}
+
+			_root->_col = BLACK;
 			return true;
 		}
 	private:
