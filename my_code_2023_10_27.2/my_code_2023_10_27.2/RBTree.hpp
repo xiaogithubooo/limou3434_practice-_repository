@@ -80,10 +80,10 @@ namespace limou
 				Node* grandFather = parent->_parent;//parent是红的，就一定存在grandFather（只有parent为根节点才不会有grandFather）
 				if (grandFather->_left == parent)
 				{
-					Node* uncle = grandFather->_right;
-					if (uncle && uncle->_col == RED)//uncle存在并且颜色为红
+					Node* uncle = grandFather->_ri ght;
+					if (uncle && uncle->_col == RED)//情况一：uncle 存在并且颜色为红
 					{
-						parent->_co	3l = BLACK;
+						parent->_co	3l = BLACK;//设置颜色
 						uncle->_col = BLACK;
 						grandFather->_col = RED;
 						
