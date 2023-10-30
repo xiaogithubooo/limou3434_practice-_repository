@@ -9,8 +9,12 @@
 */
 
 //我使用了双向循环带头链表来实现线性表
+
+#define _CRT_SECURE_NO_WARNINGS 1
 #include <iostream>
+#include <string>
 #include <cassert>
+#include <cstdio>
 namespace limou
 {
 	//本次写的是双向链表（有哨兵位节点）
@@ -34,6 +38,14 @@ namespace limou
 	public:
 		//1.成员
 		LinkList() : _node(new Node<T>), _size(0) {}//构造
+		LinkList(LinkList<T>& list)
+		{
+			_size = list._size;
+			while ()
+			{
+
+			}
+		}
 		~LinkList()//析构
 		{
 			Node<T>* cur = _node->_nodeNext;
@@ -149,6 +161,11 @@ namespace limou
 			}
 			std::cout << std::endl;
 		}
+		//3.3.链表相加
+		void addTwoNumbers(LinkList<T> list)//这里调用了默认的拷贝
+		{
+
+		}
 	private:
 		Node<T>* _node;//指向哨兵节点
 		int _size;//记录大小（不包括头节点）
@@ -169,8 +186,6 @@ namespace limou
 		std::cout << "|--------------------------------------------------|\n";
 		std::cout << "请输入对应的指令：";
 	}
-
-	//4.运行逻辑
 	template <typename T>
 	void Drive()
 	{
@@ -275,14 +290,73 @@ namespace limou
 			}
 			std::cout << "++++++++++++++++++++++++++++++++++++++++++++++++++++\n\n";
 			Menu();
-			std::cout << "请输入对应的指令：";
 			std::cin >> select;
 		}
 		//4.保存退出
 	BREAK:
+		//4.1.打开文件
+		FILE* fp = fopen("limou.txt", "w+");//创建文件并且写入，如有内容就覆盖
+		assert(fp);
 
+		//4.2.创建写入的字符串
+		std::string ret;
+		for (int i = 0; i < obj.Size(); i++)
+		{
+			ret += std::to_string(obj.Search(i)->_nodeData);
+			ret += " ";
+			if (i % 5 == 0) std::cout << std::endl;
+		}
+
+		fprintf(fp, ret.c_str());
 		std::cout << "您已成功退出程序，数据已经保存在当前工作目录下的limou.txt内\n";
 	}
 
+	//4.多项式
+
+	template <typename T>
+	void Polynomial()
+	{
+		//4.1.创建对象
+		LinkList<int> obj_1;
+		LinkList<int> obj_2;
+		int size = 0;
+		int number = 0;
+		//obj_1 = (6 * x^3) + (0 * x^2) + (1 * x^1) + (5 * x^0)
+		//obj_2 = (7 * x^1) + (10 * x^0)
+
+		//4.2.输入系数数据
+		std::cout << "请输入 多项式1 的项数个数：";
+		std::cin >> size;
+		assert(size);
+		std::cout << "请输入 多项式1 的系数（从次数最低的开始输入，可以输入0）：";
+		while (size--)
+		{
+			std::cin >> number;
+			obj_1.Push_back(number);
+		}//5 --> 1 --> 0 --> 6
+		obj_1.Print();
+
+		std::cout << "请输入 多项式2 的项数个数：";
+		std::cin >> size;
+		assert(size);
+		std::cout << "请输入 多项式2 的系数（从次数最低的开始输入，可以输入0）：";
+		while (size--)
+		{
+			std::cin >> number;
+			obj_2.Push_back(number);
+		}//10 --> 7
+		obj_2.Print();
+
+		//4.3.相加链表
+		LinkList<T>* obj_3 = addTwoNumbers<T>(&obj_1, &obj_2);
+		obj_3->Print();
+	}
+
+	//5.通讯录
+	template <typename T>
+	void AddressBook()
+	{
+
+	}
 }
 
