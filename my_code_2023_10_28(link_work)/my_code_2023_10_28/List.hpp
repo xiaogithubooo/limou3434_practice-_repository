@@ -38,14 +38,6 @@ namespace limou
 	public:
 		//1.成员
 		LinkList() : _node(new Node<T>), _size(0) {}//构造
-		LinkList(LinkList<T>& list)
-		{
-			_size = list._size;
-			while ()
-			{
-
-			}
-		}
 		~LinkList()//析构
 		{
 			Node<T>* cur = _node->_nodeNext;
@@ -162,8 +154,22 @@ namespace limou
 			std::cout << std::endl;
 		}
 		//3.3.链表相加
-		void addTwoNumbers(LinkList<T> list)//这里调用了默认的拷贝
+		void addTwoNumbers(const LinkList<T>& list)//这里调用了默认的拷贝
 		{
+			Node<T>* cur1 = this->_node->_nodeNext;
+			Node<T>* cur2 = list._node->_nodeNext;
+			while (cur1 != _node && cur2 != list._node)
+			{
+				cur1->_nodeData = cur1->_nodeData + cur2->_nodeData;
+
+				cur1 = cur1->_nodeNext;
+				cur2 = cur2->_nodeNext;
+			}
+			while (cur2 != list._node)
+			{
+				Push_back(cur2->_nodeData);
+				cur2 = cur2->_nodeNext;
+			}
 
 		}
 	private:
@@ -292,6 +298,7 @@ namespace limou
 			Menu();
 			std::cin >> select;
 		}
+
 		//4.保存退出
 	BREAK:
 		//4.1.打开文件
@@ -312,7 +319,6 @@ namespace limou
 	}
 
 	//4.多项式
-
 	template <typename T>
 	void Polynomial()
 	{
@@ -327,36 +333,30 @@ namespace limou
 		//4.2.输入系数数据
 		std::cout << "请输入 多项式1 的项数个数：";
 		std::cin >> size;
-		assert(size);
 		std::cout << "请输入 多项式1 的系数（从次数最低的开始输入，可以输入0）：";
 		while (size--)
 		{
 			std::cin >> number;
 			obj_1.Push_back(number);
-		}//5 --> 1 --> 0 --> 6
+		}
+		std::cout << "链表存储为：";
 		obj_1.Print();
 
 		std::cout << "请输入 多项式2 的项数个数：";
 		std::cin >> size;
-		assert(size);
 		std::cout << "请输入 多项式2 的系数（从次数最低的开始输入，可以输入0）：";
 		while (size--)
 		{
 			std::cin >> number;
 			obj_2.Push_back(number);
-		}//10 --> 7
+		}
+		std::cout << "链表存储为：";
 		obj_2.Print();
 
 		//4.3.相加链表
-		LinkList<T>* obj_3 = addTwoNumbers<T>(&obj_1, &obj_2);
-		obj_3->Print();
-	}
-
-	//5.通讯录
-	template <typename T>
-	void AddressBook()
-	{
-
+		obj_1.addTwoNumbers(obj_2);
+		std::cout << "链表存储为：";
+		obj_1.Print();
 	}
 }
 
