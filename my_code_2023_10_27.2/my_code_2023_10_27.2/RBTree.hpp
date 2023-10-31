@@ -2,6 +2,9 @@
 #include <iostream>
 #include <utility>
 #include <cassert>
+#include <cstdio>
+#include <cstdlib>
+#include <ctime>
 namespace limou
 {
 	//1.颜色结构体
@@ -35,7 +38,8 @@ namespace limou
 	class RBTree
 	{
 		typedef RBTreeNode<K, V> Node;
-	public:
+
+	public://3.1.成员函数
 		bool Insert(const std::pair<K, V>& kv)
 		{
 			//1.搜索二叉树插入的部分
@@ -171,7 +175,7 @@ namespace limou
 			return true;
 		}
 
-	private:
+	private://3.2.辅助函数
 		//左单旋
 		void RotateL(Node* parent)
 		{
@@ -253,7 +257,7 @@ namespace limou
 			//parent->_bf = subL->_bf = 0;
 		}
 		
-	public:
+	public://3.3.测试函数
 		//检查性质（辅助测试）
 		void _InOrder(Node* root)
 		{
@@ -269,6 +273,7 @@ namespace limou
 		void InOrder()
 		{
 			_InOrder(_root);
+			std::cout << std::endl;
 		}
 		//检查颜色（辅助测试）
 		bool _Check(Node* root, int blackNum, int benchmark)
@@ -341,12 +346,12 @@ namespace limou
 			return _Height(_root);
 		}
 
-	private:
+	private://3.4.成员变量
 		Node* _root = nullptr;
 	};
 
-	//5.测试函数（证明符合RB二叉搜索树）
-	//5.1.证明一（有限证明）
+	//4.测试函数（证明符合RB二叉搜索树）
+	//4.1.证明一（有限证明）
 	void Test_1_RBTree()
 	{
 		int arr[] = { 4, 2, 6, 1, 3, 5, 15, 7, 16, 14 };
@@ -357,10 +362,26 @@ namespace limou
 		}
 		r.InOrder();
 		r.IsBalance();
+		std::cout << "高度：" << r.Height() << std::endl;
 	}
-	//5.2.证明二（随机证明）
+	//4.2.证明二（随机证明）
 	void Test_2_RBTree()
 	{
-		//...
+		//设置要插入的数量
+		int size = 100000;
+
+		//设置随机数
+		srand(time(0));
+
+		//开始插入验证
+		RBTree<int, int> r;
+		while (size--)
+		{
+			int x = rand();
+			r.Insert(std::make_pair(x, x));
+		}
+		r.InOrder();
+		r.IsBalance();
+		std::cout << "高度：" << r.Height() << std::endl;
 	}
 }
