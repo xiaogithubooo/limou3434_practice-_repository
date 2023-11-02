@@ -1,32 +1,65 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <set>
 using namespace std;
-//字符串中找出连续最长的数字串
+class Solution
+{
+public:
+    int countPoints(string rings)
+    {
+        vector<set<char>> arr;
+        arr.resize(10);
+        for (int i = 0; i < rings.size(); i += 2)
+        {
+            //i
+            //i + 1
+            arr[rings[i + 1] - '0'].insert(rings[i]);
+        }
+        int count = 0;
+        for (auto it : arr)
+        {
+            if (it.size() == 3)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+};
 int main()
 {
-	string str = "abcd12345ed125ss123456789";
-	//getline(cin, str);
-	int max = 0;
-	int count = 0;
-	vector<int> begin;
-
-	for (int i = 0; i < str.size(); i++)
-	{
-		if (isdigit(str[i]))//如果是数字就记录
-		{
-			if (count == 0) begin.push_back(i);
-			count++;
-		}
-		else
-		{
-			max = count;
-			count = 0;
-		}
-	}
-
-	return 0;
+    Solution s;
+    cout << s.countPoints("B0R0G0R9R0B0G0");
+    return 0;
 }
+
+
+////字符串中找出连续最长的数字串
+//int main()
+//{
+//	string str = "abcd12345ed125ss123456789";
+//	//getline(cin, str);
+//	int max = 0;
+//	int count = 0;
+//	vector<int> begin;
+//
+//	for (int i = 0; i < str.size(); i++)
+//	{
+//		if (isdigit(str[i]))//如果是数字就记录
+//		{
+//			if (count == 0) begin.push_back(i);
+//			count++;
+//		}
+//		else
+//		{
+//			max = count;
+//			count = 0;
+//		}
+//	}
+//
+//	return 0;
+//}
 
 //class Solution
 //{
