@@ -28,7 +28,15 @@ int main()
 		}
 		else
 		{
-			std::cout << "输入错误，请重新输入\n";
+			while (std::cin.fail())//检测 cin 的状态，错误返回 true
+			{
+				std::string error_string;
+				std::cin.clear();//清除 cin 的错误状态
+				std::cin >> error_string;
+				std::cout << "输入的 " << error_string << " 不是数字，重新输入" << std::endl;
+				break;
+			}
+			std::cout << "没有该选项对应的程序" << std::endl;
 		}
 	} while (select != -1);
 	return 0;

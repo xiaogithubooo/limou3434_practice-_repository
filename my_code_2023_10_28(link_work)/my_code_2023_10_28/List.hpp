@@ -153,8 +153,8 @@ namespace limou
 			}
 			std::cout << std::endl;
 		}
-		//3.3.链表相加
-		void addTwoNumbers(const LinkList<T>& list)//这里调用了默认的拷贝
+		//3.3.链表相加（尾部开始相加）
+		void AddTwoNumbers(const LinkList<T>& list)//这里调用了默认的拷贝
 		{
 			Node<T>* cur1 = this->_node->_nodeNext;
 			Node<T>* cur2 = list._node->_nodeNext;
@@ -323,39 +323,69 @@ namespace limou
 	void Polynomial()
 	{
 		//4.1.创建对象
-		LinkList<int> obj_1;
-		LinkList<int> obj_2;
+		LinkList<T> obj_1;
+		LinkList<T> obj_2;
 		int size = 0;
-		int number = 0;
+		int* numbers = nullptr;
 		//obj_1 = (6 * x^3) + (0 * x^2) + (1 * x^1) + (5 * x^0)
 		//obj_2 = (7 * x^1) + (10 * x^0)
 
 		//4.2.输入系数数据
 		std::cout << "请输入 多项式1 的项数个数：";
 		std::cin >> size;
-		std::cout << "请输入 多项式1 的系数（从次数最低的开始输入，可以输入0）：";
-		while (size--)
+		numbers = new int[size];
+		std::cout << "请输入 多项式1 的系数（可以输入0）：";
+		for (int i = size - 1; i >= 0; i--)
 		{
-			std::cin >> number;
-			obj_1.Push_back(number);
+			std::cin >> numbers[i];
+			obj_1.Push_front(numbers[i]);
 		}
+		//4.2.1.输出多项式1
+		std::cout << "f(x) = ";
+		for (int i = size - 1; i >= 0; i--)
+		{
+			if (numbers[i] != 0)
+			{
+				if (i != 0)
+					std::cout << numbers[i] << "*x^" << i << " + ";
+				if (i == 0)
+					std::cout << numbers[i] << " ";
+			}
+		}
+		//4.2.2.输出多项式1的链表存储内容
 		std::cout << "链表存储为：";
 		obj_1.Print();
+		delete[] numbers;
 
+		//4.3.输入系数数据
 		std::cout << "请输入 多项式2 的项数个数：";
 		std::cin >> size;
-		std::cout << "请输入 多项式2 的系数（从次数最低的开始输入，可以输入0）：";
-		while (size--)
+		numbers = new int[size];
+		std::cout << "请输入 多项式2 的系数（可以输入0）：";
+		for (int i = size - 1; i >= 0; i--)
 		{
-			std::cin >> number;
-			obj_2.Push_back(number);
+			std::cin >> numbers[i];
+			obj_2.Push_front(numbers[i]);
 		}
+		//4.3.1.输出多项式2
+		std::cout << "f(x) = ";
+		for (int i = size - 1; i >= 0; i--)
+		{
+			if (numbers[i] != 0)
+			{
+				if (i != 0)
+					std::cout << numbers[i] << "*x^" << i << " + ";
+				if (i == 0)
+					std::cout << numbers[i] << " ";
+			}
+		}
+		//4.3.2.输出多项式2的链表存储内容
 		std::cout << "链表存储为：";
 		obj_2.Print();
+		delete[] numbers;
 
-		//4.3.相加链表
-		obj_1.addTwoNumbers(obj_2);
-		std::cout << "链表存储为：";
+		//4.4.相加链表
+		obj_1.AddTwoNumbers(obj_2);
 		obj_1.Print();
 	}
 }
