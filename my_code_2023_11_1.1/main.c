@@ -6,38 +6,30 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-void Worker()
-{
-    int cnt = 5;
-    while(cnt)
-    {
-        printf("I am child process, pid: %d, ppid: %d, cnt: %d\n", getpid(), getppid(), cnt--);
-        sleep(1);
-    }
-}
 int main()
 {
-    int n = 10;
-    int i = 0;
-
-    for(i = 0; i < n; i++)
+    pid_t id = fork();
+    if(id == 0)
     {
-        pid_t id = fork();
-        if(id == 0)
-        {
-            Worker();
-            exit(i);
-        }
+        printf("I am child process\n");
+        sleep(5);
+        int n = 10;
+        n /= 0;
+        exit(10);
     }
 
     //等待多个子进程
-    for(i = 0; i < n; i++)
+    int status = 0;
+    pid_t rid = waitpid(-1, &status, 0);
+    if(rid == id)
     {
-        int status = 0;
-        pid_t rid = waitpid(-1, &status, 0);
-        if(rid > 0)
+        if(WIFEXITED(status))//如果进程正常终止，返回真
         {
-            printf("wait child %d success, exit code: %d\n", rid, WEXITSTATUS(status));
+            printf("child process normal quit, exit code: %d\n", WEXITSTATUS(status));
+        }
+        else
+        {
+            printf("child process quit except: %d\n", status & 0x7F);
         }
     }
 
