@@ -36,7 +36,7 @@ namespace limou
 	class LinkList
 	{
 	public:
-		//1.成员
+		//1.默认成员
 		LinkList() : _node(new Node<T>), _size(0) {}//构造
 		~LinkList()//析构
 		{
@@ -52,7 +52,7 @@ namespace limou
 			_size = 0;
 		}
 
-		//2.插删
+		//2.插删操作
 		//2.1.任意插入（在pos指向节点前插入）
 		void Insert(Node<T>* pos, const T& val)
 		{
@@ -105,7 +105,7 @@ namespace limou
 			}
 			return nullptr;
 		}
-		Node<T>* Search(int index)//重载版本
+		Node<T>* Search(int index)
 		{
 			if (index >= Size()) return nullptr;
 
@@ -136,7 +136,7 @@ namespace limou
 			Erase(_node->_nodeNext);
 		}
 
-		//3.其他
+		//3.其他操作
 		//3.1.返回当前链表大小
 		int Size()
 		{
@@ -172,7 +172,9 @@ namespace limou
 			}
 
 		}
+
 	private:
+		//4.成员变量
 		Node<T>* _node;//指向哨兵节点
 		int _size;//记录大小（不包括头节点）
 	};
@@ -192,6 +194,7 @@ namespace limou
 		std::cout << "|--------------------------------------------------|\n";
 		std::cout << "请输入对应的指令：";
 	}
+
 	template <typename T>
 	void Drive()
 	{
@@ -240,6 +243,11 @@ namespace limou
 				std::cout << "[05.任意前插]，输入被前结点的 index 和插入的 value：\n";
 				std::cin >> index;
 				std::cin >> value;
+				if (index >= obj.Size())
+				{
+					std::cout << "输入非法，下标越界\n";
+					break;
+				}
 				cache = obj.Search(index);
 				obj.Insert(cache, value);
 				break;
@@ -247,6 +255,11 @@ namespace limou
 			case 6:
 				std::cout << "[06.任意删除]，输入被删除结点的 index：\n";
 				std::cin >> index;
+				if (index >= obj.Size())
+				{
+					std::cout << "输入非法，下标越界\n";
+					break;
+				}
 				cache = obj.Search(index);
 				obj.Erase(cache);
 				break;
@@ -340,24 +353,7 @@ namespace limou
 			std::cin >> numbers[i];
 			obj_1.Push_front(numbers[i]);
 		}
-		//4.2.1.输出多项式1
-		std::cout << "f(x) = ";
-		for (int i = size - 1; i >= 0; i--)
-		{
-			if (numbers[i] != 0)
-			{
-				if (i != 0)
-					std::cout << numbers[i] << "*x^" << i << " + ";
-				if (i == 0)
-					std::cout << numbers[i] << " ";
-			}
-		}
-		//4.2.2.输出多项式1的链表存储内容
-		std::cout << "链表存储为：";
-		obj_1.Print();
-		delete[] numbers;
 
-		//4.3.输入系数数据
 		std::cout << "请输入 多项式2 的项数个数：";
 		std::cin >> size;
 		numbers = new int[size];
@@ -367,24 +363,12 @@ namespace limou
 			std::cin >> numbers[i];
 			obj_2.Push_front(numbers[i]);
 		}
-		//4.3.1.输出多项式2
-		std::cout << "f(x) = ";
-		for (int i = size - 1; i >= 0; i--)
-		{
-			if (numbers[i] != 0)
-			{
-				if (i != 0)
-					std::cout << numbers[i] << "*x^" << i << " + ";
-				if (i == 0)
-					std::cout << numbers[i] << " ";
-			}
-		}
-		//4.3.2.输出多项式2的链表存储内容
-		std::cout << "链表存储为：";
-		obj_2.Print();
-		delete[] numbers;
 
-		//4.4.相加链表
+		std::cout << "多项式1和多项式2为：\n";
+		obj_1.Print();
+		obj_2.Print();
+
+		//4.3.相加链表
 		obj_1.AddTwoNumbers(obj_2);
 		obj_1.Print();
 	}
