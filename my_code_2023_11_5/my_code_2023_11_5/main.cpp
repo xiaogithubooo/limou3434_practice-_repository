@@ -1,11 +1,26 @@
 #include <iostream>
-#include <string>
-#include <algorithm>
-#include <cmath>
 using namespace std;
 
 int main()
 {
+	//1.输入数据
+	int AsB = 0, BsC = 0, AaB = 0, BaC = 0;
+	cin >> AsB >> BsC >> AaB >> BaC;
+
+	//2.根据数据得出结果
+	int A = (AsB + AaB) / 2;
+	int B = (BsC + BaC) / 2;
+	int C = (BaC - BsC) / 2;
+
+	//3.判断正确性
+	if (A - B == AsB && B - C == BsC && A + B == AaB && B + C == BaC)
+	{
+		cout << A << " " << B << " " << C;
+	}
+	else
+	{
+		cout << "No";
+	}
 
 	return 0;
 }
