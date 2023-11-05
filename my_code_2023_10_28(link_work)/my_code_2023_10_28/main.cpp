@@ -12,10 +12,10 @@ int main()
 		std::cin >> select;
 
 		//2.选择运行的程序
-		if (select == 1)//2.1.带菜单的通讯录
+		if (select == 1)//2.1.菜单
 		{
-			std::cout << "带菜单通讯录程序\n";
-			limou::Drive<double>();
+			std::cout << "链表菜单\n";
+			limou::Drive<int>();
 		}
 		else if (select == 2)//2.2.多项式相加
 		{

@@ -9,17 +9,17 @@
 */
 
 //我使用了双向循环带头链表来实现线性表
-
 #define _CRT_SECURE_NO_WARNINGS 1
 #include <iostream>
 #include <string>
 #include <cassert>
 #include <cstdio>
+#include <cerrno>
 namespace limou
 {
 	//本次写的是双向链表（有哨兵位节点）
 
-	//1.一个节点的结构体
+	//1.节点结构体
 	template<typename T>
 	struct Node
 	{
@@ -76,7 +76,11 @@ namespace limou
 		void Erase(Node<T>* pos)
 		{
 			assert(pos != nullptr);//保证指针的有效性
-			assert(pos != _node);//避免尾删或者头删把哨兵节点也释放了
+			if (!Size())//避免尾删或者头删把哨兵节点也释放了
+			{
+				std::cout << "非法操作，请重输入" << std::endl;
+				return;
+			}
 			//三个指针
 			Node<T>* temp1 = pos->_nodePrev;
 			Node<T>* temp2 = pos->_nodeNext;
@@ -172,7 +176,21 @@ namespace limou
 			}
 
 		}
+		//3.4.链表To多项式
+		void LinkToPoly()
+		{
+			Node<T>* cur = _node->_nodePrev;
+			int size = Size() - 1;
 
+			while (cur != _node)
+			{
+				std::cout << cur->_nodeData << "*x^" << size;
+				if (size != 0) std::cout << " + ";
+				cur = cur->_nodePrev;
+				size--;
+			}
+			std::cout << std::endl;
+		}
 	private:
 		//4.成员变量
 		Node<T>* _node;//指向哨兵节点
@@ -194,7 +212,6 @@ namespace limou
 		std::cout << "|--------------------------------------------------|\n";
 		std::cout << "请输入对应的指令：";
 	}
-
 	template <typename T>
 	void Drive()
 	{
@@ -211,7 +228,7 @@ namespace limou
 		//3.处理指令
 		while (select != -1)
 		{
-			T value = 0;
+			T value;
 			int index = 0;
 			Node<T>* cache = nullptr;
 
@@ -316,18 +333,24 @@ namespace limou
 	BREAK:
 		//4.1.打开文件
 		FILE* fp = fopen("limou.txt", "w+");//创建文件并且写入，如有内容就覆盖
-		assert(fp);
+		if (!fp)
+		{
+			std::cout << errno << std::endl;
+			exit(-1);
+		}
 
 		//4.2.创建写入的字符串
 		std::string ret;
 		for (int i = 0; i < obj.Size(); i++)
 		{
-			ret += std::to_string(obj.Search(i)->_nodeData);
+			ret += obj.Search(i)->_nodeData;
 			ret += " ";
 			if (i % 5 == 0) std::cout << std::endl;
 		}
 
 		fprintf(fp, ret.c_str());
+		fclose(fp);
+		fp = nullptr;
 		std::cout << "您已成功退出程序，数据已经保存在当前工作目录下的limou.txt内\n";
 	}
 
@@ -347,7 +370,8 @@ namespace limou
 		std::cout << "请输入 多项式1 的项数个数：";
 		std::cin >> size;
 		numbers = new int[size];
-		std::cout << "请输入 多项式1 的系数（可以输入0）：";
+		if(size != 0)
+			std::cout << "请输入 多项式1 的系数（可以输入0）：";
 		for (int i = size - 1; i >= 0; i--)
 		{
 			std::cin >> numbers[i];
@@ -357,20 +381,31 @@ namespace limou
 		std::cout << "请输入 多项式2 的项数个数：";
 		std::cin >> size;
 		numbers = new int[size];
-		std::cout << "请输入 多项式2 的系数（可以输入0）：";
+		if (size != 0)
+			std::cout << "请输入 多项式2 的系数（可以输入0）：";
 		for (int i = size - 1; i >= 0; i--)
 		{
 			std::cin >> numbers[i];
 			obj_2.Push_front(numbers[i]);
 		}
 
-		std::cout << "多项式1和多项式2为：\n";
-		obj_1.Print();
-		obj_2.Print();
+		if (obj_1.Size() && obj_2.Size())
+		{
+			std::cout << "多项式1和多项式2为：\n";
+			obj_1.LinkToPoly();
+			obj_2.LinkToPoly();
 
-		//4.3.相加链表
-		obj_1.AddTwoNumbers(obj_2);
-		obj_1.Print();
+			//4.3.相加链表
+			obj_1.AddTwoNumbers(obj_2);
+			std::cout << "多项式相加结果为：\n";
+			obj_1.LinkToPoly();
+		}
+		else
+		{
+			if (obj_1.Size())
+				obj_1.LinkToPoly();
+			if (obj_2.Size())
+				obj_2.LinkToPoly();
+		}
 	}
 }
-
