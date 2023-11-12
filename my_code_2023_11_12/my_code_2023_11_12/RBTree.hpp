@@ -19,6 +19,8 @@ class rb_tree
 */
 
 #include <iostream>
+#include <string>
+#include <vector>
 #include <utility>
 #include <cassert>
 #include <cstdio>
@@ -53,13 +55,113 @@ namespace limou
 		{}
 	};
 
-	//3.RBTree类结构
+	//3.迭代器类结构（用结点去构造一个迭代器然后返回）
+	template<class T, class Ref, class Ptr>
+	struct __RBTreeIterator
+	{
+		typedef RBTreeNode<T> Node;
+		typedef __RBTreeIterator<T, Ref, Ptr> Self;
+
+		Node* _node;
+
+		__RBTreeIterator(Node* node) : _node(node) {}
+
+		Ref operator*()
+		{
+			return _node->_data;
+		}
+
+		Ptr operator->()
+		{
+			return &_node->_data;
+		}
+
+		bool operator != (const Self& s)
+		{
+			return _node != s._node;
+		}
+
+		Self& operator++()
+		{
+			if (_node->_right != nullptr)
+			{
+				//右不空，就找右子树的最左结点
+				Node* subLeft = _node->_right;
+				while (subLeft->_left)
+				{
+					subLeft = subLeft->_left;
+				}
+				_node = subLeft;
+			}
+			else
+			{
+				//右为空，说明要重新走一次中序遍历（前面左子树和根一点遍历过了），
+				//沿着根结点路径，选择祖先（从祖先路径中选择将自己视为左子树的第一个祖先结点），
+				//如果没有可以选择的祖先，直接设置为空，代表遍历结束
+				//由于我们有三叉链，实现起来比较简单（如果没有设计这种结构，也可以使用栈结构辅助）
+				Node* cur = _node;
+				Node* parent = cur->_parent;
+				while (parent && cur == parent->_right)
+				{
+					cur = parent;
+					parent = parent->_parent;
+				}
+				_node = parent;
+			}
+			return *this;
+		}
+
+		Self& operator--()
+		{
+			//走右根左，和 ++ 相反即可
+			if (_node->_left != nullptr)
+			{
+				//左不空，就找左子树的最右结点
+				Node* subRight = _node->_left;
+				while (subRight->_right)
+				{
+					subRight = subRight->_right;
+				}
+				_node = subRight;
+			}
+			else
+			{
+				Node* cur = _node;
+				Node* parent = cur->_parent;
+				while (parent && cur == parent->_left)
+				{
+					cur = parent;
+					parent = parent->_parent;
+				}
+				_node = parent;
+			}
+			return *this;
+		}
+	};
+
+	//4.RBTree类结构
 	template <typename K, class T, class KeyOfT>
 	class RBTree
 	{
+	public://迭代器
 		typedef RBTreeNode<T> Node;
+		typedef __RBTreeIterator<T, T&, T*> iterator;
+		typedef __RBTreeIterator<T, const T&, const T*> const_iterator;
+		iterator begin()
+		{
+			Node* cur = _root;
+			while (cur && cur->_left)
+			{
+				cur = cur->_left;
+			}
+			return iterator(cur);
+		}
+		iterator end()
+		{
+			return iterator(nullptr);
+		}
 
-	public://3.1.成员函数
+	public://成员函数
 		~RBTree()
 		{
 			Destroy(_root);
@@ -73,14 +175,14 @@ namespace limou
 		而我们只期望比较 key 的值，为了解决这个问题，
 		我们采用仿函数来对这种泛型进行比较
 		*/
-		bool Insert(const T& data)
+		std::pair<iterator, bool> Insert(const T& data)
 		{
 			//1.搜索二叉树插入的部分
 			if (_root == nullptr)
 			{
 				_root = new Node(data);
 				_root->_col = BLACK;
-				return true;
+				return std::make_pair(iterator(_root), true);
 			}
 
 			KeyOfT kot;
@@ -100,11 +202,12 @@ namespace limou
 				}
 				else//不可以等于
 				{
-					return false;
+					return std::make_pair(iterator(cur), false);
 				}
 			}
 
 			cur = new Node(data);//默认新增加的是红色结点（这么设置会好一些，这个默认设置行为在RBTreeNode的构造函数里）
+			Node* copy = cur;
 
 			if (kot(parent->_data) > kot(data))
 			{
@@ -206,7 +309,7 @@ namespace limou
 			}
 
 			_root->_col = BLACK;
-			return true;
+			return std::make_pair(copy, true);
 		}
 		Node* Find(const K& key)
 		{
@@ -230,7 +333,7 @@ namespace limou
 			return nullptr;
 		}
 
-	private://3.2.辅助函数
+	private://辅助函数
 		//左单旋
 		void RotateL(Node* parent)
 		{
@@ -323,7 +426,7 @@ namespace limou
 			delete root;
 		}
 
-	private://3.4.成员变量
+	private://成员变量
 		Node* _root = nullptr;
 	};
 }

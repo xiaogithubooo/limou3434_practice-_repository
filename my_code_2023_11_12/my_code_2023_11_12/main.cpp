@@ -2,7 +2,7 @@
 #include "map.hpp"
 int main()
 {
-	limou::test_set1();
-	limou::test_map1();
+	limou::test_set();
+	limou::test_map();
 	return 0;
 }
