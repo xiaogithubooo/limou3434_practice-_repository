@@ -65,6 +65,7 @@ namespace limou
 		Node* _node;
 
 		__RBTreeIterator(Node* node) : _node(node) {}
+		__RBTreeIterator(const __RBTreeIterator<T, T&, T*>& it) : _node(it._node) {}
 
 		Ref operator*()
 		{
@@ -76,7 +77,7 @@ namespace limou
 			return &_node->_data;
 		}
 
-		bool operator != (const Self& s)
+		bool operator!=(const Self& s)
 		{
 			return _node != s._node;
 		}
@@ -159,6 +160,19 @@ namespace limou
 		iterator end()
 		{
 			return iterator(nullptr);
+		}
+		const_iterator begin() const
+		{
+			Node* cur = _root;
+			while (cur && cur->_left)
+			{
+				cur = cur->_left;
+			}
+			return const_iterator(cur);
+		}
+		const_iterator end() const
+		{
+			return const_iterator(nullptr);
 		}
 
 	public://³ÉÔ±º¯Êý
