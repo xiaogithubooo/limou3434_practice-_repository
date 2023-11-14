@@ -5,134 +5,139 @@
 
 namespace limou
 {
-	//1.状态
-	enum State
-	{
-		EMPTY,	//空的
-		EXIST,	//存在
-		DELETE	//删除
-	};
-
-	//2.哈希数据
+	//1.哈希数据
 	template <typename K, typename V>
-	struct HashData
+	struct HashNode
 	{
+		HashNode(const std::pair<K, V>& kv)
+			: _next(nullptr),
+			_kv(kv)
+		{}
+
+		HashNode<K, V>* _next;
 		std::pair<K, V> _kv;
-		State _state = EMPTY;
 	};
 
-	//3.哈希表
+	//2.哈希表
 	template <typename K, typename V>
 	class HashTable
 	{
+		typedef HashNode<K, V> Node;
+
 	public://成员函数
+		~HashTable()
+		{
+			for (auto& cur : _tables)
+			{
+				while (cur)
+				{
+					Node* next = cur->_next;
+					delete cur;
+					cur = next;
+				}
+			}
+		}
 		bool Insert(const std::pair<K, V>& kv)
 		{
-			//排除重复数据
-			if (Find(kv.first))	
-				return false;
-
-			//检查负载因子
-			if (_table.size() == 0 || _n * 10 / _table.size() >= 7)//“本身就没有容量”或者“达到 70% ”就扩容
+			//防止冗余
+			if (Find(kv.first))
 			{
-				//创建出一个新的哈希表，并且其可映射范围为原哈希表的两倍
-				size_t newSize = _table.size() == 0 ? 10 : _table.size() * 2;
-				HashTable<K, V> newht;
-				newht._table.resize(newSize);
+				return false;
+			}
 
-				//将原 vector 重新映射到新 vector 上，防止数据映射错乱
-				for (auto& data : _table)
+			//扩容机制
+			
+			//由于扩容会让哈希表重新映射进而减低冲突概率，
+			//因此我们设定负载因子为 1 时发生扩容，
+			//这样就不会让链桶太长，导致查找效率降低
+			if (_n == _tables.size())
+			{
+				size_t newSize = _tables.size() == 0 ? 10 : _tables.size() * 2;//决定新空间大小，生成新哈希表
+				std::vector<Node*> newTables;
+				newTables.resize(newSize);
+
+				for (auto&cur : _tables)//遍历旧哈希表
 				{
-					if (data._state == EXIST)//将原哈希表放入数据映射到新哈希表上
+					while (cur)//遍历旧哈希表内的桶
 					{
-						newht.Insert(data._kv);
+						Node* next = cur->_next;//保存 next 链表
+
+						size_t hashi = cur->_kv.first % newTables.size();//生成旧桶内数据在新哈希表内的哈希地址
+
+						cur->_next = newTables[hashi];//头插到新哈希表内
+						newTables[hashi] = cur;
+
+						cur = next;
 					}
 				}
 
-				_table.swap(newht._table);
+				_tables.swap(newTables);//交换新旧哈希表
 			}
 
-			//给出哈希地址
-			size_t hashi = kv.first % _table.size();//不可以使用 capacity()，否则使用 [] 会越界
+			//映射链桶
+			size_t hashi = kv.first % _tables.size();//根据关键字得到哈希地址
+
+			Node* newNode = new Node(kv);//生成链表结点，存储数据
+
+			newNode->_next = _tables[hashi];//将结点头插到桶的头部
+			_tables[hashi] = newNode;
 			
-			//解决哈希冲突
-			size_t i = 1;
-			size_t index = hashi;
-			while (_table[index]._state == EXIST)//如果哈希地址上已经有对应值，则向后探测
-			{
-				index = hashi + i;		//向后探测
-				index %= _table.size();	//防止越界，并且达成循环探测
-				i++;
-			}
-			
-			_table[index]._kv = kv;
-			_table[index]._state = EXIST;
-			_n++;
+			++_n;//更新负载因子
 
 			return true;
 		}
-
-		HashData<K, V>* Find(const K& key)
+		Node* Find(const K& key)
 		{
-			//避免除零错误
-			if (_table.size() == 0)
+			if (_tables.size() == 0)
 			{
-				return nullptr;//避免后续计算哈希地址时，出现除零错误
+				return nullptr;
 			}
 
-			//改变数据状态
-			size_t hashi = key % _table.size();
-			size_t i = 1;
-			size_t index = hashi;
-			while (_table[index]._state != EMPTY)//只要不是空就持续走下去
+			size_t hashi = key % _tables.size();
+			Node* cur = _tables[hashi];
+			while (cur)
 			{
-				if (_table[index]._state == EXIST 
-					&& _table[index]._kv.first == key)//只要是对应值，并且状态处于“存在”状态（因为后续的删除是“假删除”，原数据还在，只不过是状态改为删除状态），就返回对应指针
+				if (cur->_kv.first == key)
 				{
-					return &_table[index];
+					return cur;
 				}
-
-				index = hashi + i;		//向后探测
-				index %= _table.size();	//防止越界，并且达成循环探测
-				i++;
-
-				if (index == hashi)//说明已经查找了一圈，依旧没有找到对应值
-				{
-					break;
-				}
+				cur = cur->_next;
 			}
 
 			return nullptr;
 		}
-
 		bool Erase(const K& key)
 		{
-			//注意这是一种假删除，仅仅只是改变状态，因此前面的代码要综合考量
-			HashData<K, V>* ret = Find(key);
-			if (ret)
+			size_t hashi = key % _tables.size();
+			Node* prev = nullptr;
+			Node* cur = _tables[hashi];
+			while (cur)
 			{
-				ret->_state = DELETE;
-				_n--;
-				return true;
+				if (cur->_kv.first == key)
+				{
+					if (prev != nullptr)
+					{
+						prev->_next = cur->_next;
+					}
+					else//prev == nullptr（删除头节点的情况）
+					{
+						_tables[hashi] = cur->_next;
+					}
+					delete cur;
+					return true;
+				}
+				else
+				{
+					prev = cur;
+					cur = cur->_next;
+				}
 			}
 
 			return false;
 		}
 
 	private://成员变量
-		std::vector<HashData<K, V>> _table;	//直接使用 vector 更加方便，之前我们已经模拟实现顺序表了，就不要反复实现了
-		size_t _n = 0;							//存储的数据个数
+		std::vector<Node*> _tables;		//链桶头指针存储表（由于 void resize (size_type n, value_type val = value_type()); 所以后续使用 resize()会承担初始化赋值的工作，即：置为空）
+		size_t _n = 0;					//存储有效数据个数
 	};
-
-	void Test_1()
-	{
-		int arr[] = { 3, 33, 2, 13, 5, 12, 1002 };
-		HashTable<int, int> ht;
-		for (auto e : arr)
-		{
-			ht.Insert(std::make_pair(e, 1));
-		}
-
-		ht.Insert(std::make_pair(15, 1));//扩容了
-	}
 }
