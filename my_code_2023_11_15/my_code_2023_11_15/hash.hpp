@@ -165,7 +165,9 @@ namespace limou
 		}
 
 	private://成员变量
-		std::vector<Node*> _tables;		//链桶头指针存储表（由于 void resize (size_type n, value_type val = value_type()); 所以后续使用 resize()会承担初始化赋值的工作，即：置为空）
 		size_t _n = 0;					//存储有效数据个数
+		std::vector<Node*> _tables;		//链桶头指针存储表，由于 void resize (size_type n, value_type val = value_type()); 
+										//所以后续使用 resize()会承担初始化赋值的工作，即：置为空。
+										//另外如果出现极端情况（虽然概率很低），可以改为挂接红黑树，提高查找效率（Java 的某个新版本就是这么干的）
 	};
 }
