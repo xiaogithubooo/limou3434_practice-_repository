@@ -3,7 +3,7 @@
 #include <utility>
 #include <vector>
 
-//仿函
+//仿函数
 //任意类型要做 unordered_set 和 unordered_map 的 key，需要支持：“转化为可取模整型仿函数”和“== 比较”
 //任意类型要做 map 和 set 的 key，需要支持：“仿函数 < 的比较”
 template<typename K>
@@ -51,30 +51,33 @@ namespace HashBucket
 	template <typename K, typename T, typename KeyOfT, typename Hash>
 	class HashTable;
 
-	template <typename K, typename T, typename KeyOfT, typename Hash>
+	template <typename K, typename T, typename Ref, typename Ptr, typename KeyOfT, typename Hash>
 	struct __HashIterator
 	{
 		typedef HashNode<T> Node;
 		typedef HashTable<K, T, KeyOfT, Hash> HT;
-		typedef __HashIterator<K, T, KeyOfT, Hash> Self;
+		typedef __HashIterator<K, T, Ref, Ptr, KeyOfT, Hash> Self;
+		typedef __HashIterator<K, T, T&, T*, KeyOfT, Hash> Iterator;//辅助：让普通迭代器可以转化为常量迭代器
 
-		__HashIterator(Node* node, HT* ht) : _node(node), _ht(ht) {}
+		__HashIterator(Node* node, const HT* ht) 
+			: _node(node), _ht(ht)
+		{}
+		__HashIterator(const Iterator& it)
+			: _node(it._node), _ht(it._ht)
+		{}
 
-		T& operator*()
+		Ref operator*()
 		{
 			return _node->_data;
 		}
-
-		T* operator->()
+		Ptr operator->()
 		{
 			return &_node->_data;
 		}
-
 		bool operator!=(const Self& s)
 		{
 			return _node != s._node;//比较指针即可
 		}
-
 		Self& operator++()
 		{
 			if (_node->_next != nullptr)
@@ -111,16 +114,16 @@ namespace HashBucket
 		}
 
 		Node* _node;
-		HT* _ht;
+		const HT* _ht;
 	};
 
 	//3.哈希表
 	template <typename K, typename T, typename KeyOfT, typename Hash>
-	//第一个标记 key 的类型，第二个是 key 或 data<key, value> 的类型，第三个是提供给仿函数的
+	//第一个标记 key 的类型，第二个是 key 或 data<key, value> 的类型，最后两个是提供给仿函数的
 	class HashTable
 	{
 		//友元类
-		template <typename K, typename T, typename KeyOfT, typename Hash>
+		template <typename K, typename T, typename Ref, typename Ptr, typename KeyOfT, typename Hash>
 		friend struct __HashIterator;
 
 		//类型重定义
@@ -129,7 +132,9 @@ namespace HashBucket
 	
 		//迭代器
 	public:
-		typedef __HashIterator<K, T, KeyOfT, Hash> iterator;
+		typedef __HashIterator<K, T, T&, T*, KeyOfT, Hash> iterator;
+		typedef __HashIterator<K, T, const T&, const T*, KeyOfT, Hash> const_iterator;
+
 		iterator begin()
 		{
 			Node* cur = nullptr;//一开始的节点位置必须要重新计算出来，因为不保证第一个桶的第一个元素就是开始结点
@@ -146,6 +151,23 @@ namespace HashBucket
 		iterator end()
 		{
 			return iterator(nullptr, this);
+		}
+		const_iterator begin() const
+		{
+			Node* cur = nullptr;//一开始的节点位置必须要重新计算出来，因为不保证第一个桶的第一个元素就是开始结点
+			for (size_t i = 0; i < _tables.size(); i++)
+			{
+				cur = _tables[i];
+				if (cur != nullptr)
+				{
+					break;
+				}
+			}
+			return const_iterator(cur, this);
+		}
+		const_iterator end() const
+		{
+			return const_iterator(nullptr, this);
 		}
 
 		//成员函数

@@ -17,12 +17,21 @@ namespace Limou
 		};
 
 		//µü´úÆ÷
-		typedef typename HashBucket::HashTable<K, K, SetKeyOfT, Hash>::iterator iterator;
+		typedef typename HashBucket::HashTable<K, K, SetKeyOfT, Hash>::const_iterator iterator;
+		typedef typename HashBucket::HashTable<K, K, SetKeyOfT, Hash>::const_iterator const_iterator;
 		iterator begin()
 		{
 			return _ht.begin();
 		}
 		iterator end()
+		{
+			return _ht.end();
+		}
+		const_iterator begin() const
+		{
+			return _ht.begin();
+		}
+		const_iterator end() const
 		{
 			return _ht.end();
 		}
