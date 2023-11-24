@@ -1,14 +1,50 @@
-#include <stdio.h>
-int main()
+#include <iostream>  
+using namespace std;
+int main(void)
 {
-	int i;
-	for (i = 0; i < 10; i++)
-	{
-		printf("ÄãºÃ\n");
-	}
-	scanf("%d", &i);
-	return 0;
+    const int a = 10;
+    int* p = (int*)(&a);
+    *p = 20;
+    cout << "a = " << a << ", *p = " << *p << endl;
+    return 0;
 }
+
+//int getMaxComSubStr(const string& str1, const string& str2)
+//{
+//	int len1 = str1.size();
+//	int len2 = str2.size();
+//	vector<vector<int>> msc(len1, vector<int>(len2, 0));
+//	int max_len = 0;
+//	for (int i = 0; i < len1; i++)
+//	{
+//		for (int j = 0; j < len2; j++)
+//		{
+//			if (str1[i] == str2[j])
+//			{
+//				if (i >= 1 && j >= 1)
+//				{
+//					msc[i][j] = msc[i - 1][j - 1] + 1;
+//				}
+//				else
+//				{
+//					msc[i][j] = 1;
+//				}
+//				max_len = max(max_len, msc[i][j]);
+//			}
+//		}
+//	}
+//	return max_len;
+//}
+//int main()
+//{
+//	string str1, str2;
+//	while (cin >> str1 >> str2)
+//	{
+//		int max_len = getMaxComSubStr(str1, str2);
+//		cout << max_len;
+//	}
+//	return 0;
+//}
 
 //int main()
 //{
