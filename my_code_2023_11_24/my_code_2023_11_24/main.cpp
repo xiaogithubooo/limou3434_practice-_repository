@@ -1,30 +1,54 @@
-#include <stdio.h>
+//右值引用优点
+#include <iostream>
+using namespace std;
+
+void Func(const int& x)
+{
+    cout << "void Func(const int& x):" << x << '\n';
+}
+void Func(int&& x)
+{
+    cout << "void Func(int&& x):" << x << '\n';
+}
+
 int main()
 {
-	int i = 0;
-	int upperNum = 0;
-	int lowerNum = 0;
-	int digitNum = 0;
-	char sr[30];
-	printf("请输入一串字符，按回车结束:");
-	scanf("%s", &sr);
+    int a = 1;
+    int b = 2;
 
-	while (ch != '\n')
-	{
-		sr[i] = '\0'; 
-		if ((ch >= 'A') && (ch <= 'Z'))
-			++upperNum; 
-		else if ((ch >= 'a') && (ch <= 'z'))
-			++lowerNum;
-		else if ((ch >= '1') && (ch <= '9'))
-			++digitNum;
-		else
-			printf("不合法\n");
+    Func(a);//调用了 Func(int& x)
+    Func(a + b);//调用了 void Func(int&& x)，优先走右值引用的接口
 
-		i++;
-	}
-	return 0;
+    return 0;
 }
+
+//#include <stdio.h>
+//int main()
+//{
+//	int i = 0;
+//	int upperNum = 0;
+//	int lowerNum = 0;
+//	int digitNum = 0;
+//	char sr[30];
+//	printf("请输入一串字符，按回车结束:");
+//	scanf("%s", &sr);
+//
+//	while (ch != '\n')
+//	{
+//		sr[i] = '\0'; 
+//		if ((ch >= 'A') && (ch <= 'Z'))
+//			++upperNum; 
+//		else if ((ch >= 'a') && (ch <= 'z'))
+//			++lowerNum;
+//		else if ((ch >= '1') && (ch <= '9'))
+//			++digitNum;
+//		else
+//			printf("不合法\n");
+//
+//		i++;
+//	}
+//	return 0;
+//}
 
 
 ////资源转移
