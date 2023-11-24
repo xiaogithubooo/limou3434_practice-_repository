@@ -1,26 +1,55 @@
-//右值引用优点
 #include <iostream>
+#include <string>
 using namespace std;
 
-void Func(const int& x)
+//终止条件的重载函数
+template<class T>
+void PrintArg(T t)
 {
-    cout << "void Func(const int& x):" << x << '\n';
+    cout << t << " ";
 }
-void Func(int&& x)
+
+template<class ...Args>
+void Func(Args... args)
 {
-    cout << "void Func(int&& x):" << x << '\n';
+    int arr[] = { (PrintArg(args), 0)... };
+    cout << '\n';
 }
 
 int main()
 {
-    int a = 1;
-    int b = 2;
-
-    Func(a);//调用了 Func(int& x)
-    Func(a + b);//调用了 void Func(int&& x)，优先走右值引用的接口
-
+    Func();
+    Func<int>(1);
+    Func<int, char>(100, 'c');
+    Func<double, char, int>(3.14, 'c', 230);
+    Func<string, double, char, int>("limou", 0.984, 'x', 860);
     return 0;
 }
+
+
+////右值引用优点
+//#include <iostream>
+//using namespace std;
+//
+//void Func(const int& x)
+//{
+//    cout << "void Func(const int& x):" << x << '\n';
+//}
+//void Func(int&& x)
+//{
+//    cout << "void Func(int&& x):" << x << '\n';
+//}
+//
+//int main()
+//{
+//    int a = 1;
+//    int b = 2;
+//
+//    Func(a);//调用了 Func(int& x)
+//    Func(a + b);//调用了 void Func(int&& x)，优先走右值引用的接口
+//
+//    return 0;
+//}
 
 //#include <stdio.h>
 //int main()
