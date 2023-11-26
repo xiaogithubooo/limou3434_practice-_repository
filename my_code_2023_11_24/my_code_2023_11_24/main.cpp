@@ -2,29 +2,54 @@
 #include <string>
 using namespace std;
 
-//终止条件的重载函数
-template<class T>
+template <class T>
 void PrintArg(T t)
 {
-    cout << t << " ";
+	cout << t << " ";
 }
 
-template<class ...Args>
+//展开函数
+template <class ...Args>
 void Func(Args... args)
 {
-    int arr[] = { (PrintArg(args), 0)... };
-    cout << '\n';
+	int arr[] = { (PrintArg(args), 0)... };
+	cout << endl;
 }
 
 int main()
 {
-    Func();
-    Func<int>(1);
-    Func<int, char>(100, 'c');
-    Func<double, char, int>(3.14, 'c', 230);
-    Func<string, double, char, int>("limou", 0.984, 'x', 860);
-    return 0;
+	Func(1);
+	Func(1, 'A');
+	Func(1, 'A', string("sort"));
+	return 0;
 }
+
+//#include <iostream>
+//#include <string>
+//using namespace std;
+//
+//template<class T>
+//void PrintArg(T t)
+//{
+//    cout << t << " ";
+//}
+//
+//template<class ...Args>
+//void Func(Args... args)
+//{
+//    int arr[] = { (PrintArg(args), 0)... };
+//    cout << '\n';
+//}
+//
+//int main()
+//{
+//    Func();
+//    Func<int>(1);
+//    Func<int, char>(100, 'c');
+//    Func<double, char, int>(3.14, 'c', 230);
+//    Func<string, double, char, int>("limou", 0.984, 'x', 860);
+//    return 0;
+//}
 
 
 ////右值引用优点
