@@ -1,21 +1,100 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include <stdio.h>
+
+int isLeapYear(int year)
+{
+    if (year % 400 == 0)
+    {
+        return 1;
+    }
+    else if (year % 4 == 0 && year % 100 != 0)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 int main()
 {
-	int i = 1;
-	int flag = 1;
-	double add = 0;
-	for (i = 1; i <= 100; i++)
-	{
-		if (i % 2 == 0)
-			flag = -1;
-		else
-			flag = 1;
-		add += (flag * (1 / (double)i));
-	}
-	printf("%f\n", add);
-	return 0;
+    printf("1000年到2000年之间的闰年有:\n");
+    for (int year = 1000; year <= 2000; year++)
+    {
+        if (isLeapYear(year))
+        {
+            printf("%d\n", year);
+        }
+    }
+    return 0;
 }
+
+
+//int countDigit9(int n)
+//{
+//    int count = 0;
+//    while (n > 0)
+//    {
+//        if (n % 10 == 9)
+//        {
+//            count++;
+//        }
+//        n /= 10;
+//    }
+//    return count;
+//}
+//
+//int main()
+//{
+//    int count = 0;
+//    for (int i = 1; i <= 100; i++)
+//    {
+//        count += countDigit9(i);
+//    }
+//    printf("1到100的所有整数中数字9出现的次数为: %d\n", count);
+//    return 0;
+//}
+
+
+//#include <stdio.h>
+//#include <limits.h>
+//int main()
+//{
+//	int max = INT_MIN;
+//	for (int i = 0; i < 10; i++)
+//	{
+//		int number = 0;
+//		scanf("%d", &number);
+//		if (number > max)
+//		{
+//			max = number;
+//		}
+//	}
+//	printf("%d\n", max);
+//	return 0;
+//}
+
+//#define _CRT_SECURE_NO_WARNINGS 1
+//#include <stdio.h>
+//#include <algorithm>
+//
+//int main()
+//{
+//	int i = 1;
+//	int flag = 1;
+//	double add = 0;
+//	for (i = 1; i <= 100; i++)
+//	{
+//		if (i % 2 == 0)
+//			flag = -1;
+//		else
+//			flag = 1;
+//		add += (flag * (1 / (double)i));
+//	}
+//	printf("%f\n", add);
+//	return 0;
+//}
 
 //void SortThree(int* a, int* b, int* c)
 //{
