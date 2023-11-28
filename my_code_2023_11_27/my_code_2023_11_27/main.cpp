@@ -1,34 +1,65 @@
 #define _CRT_SECURE_NO_WARNINGS 1
-#include <stdio.h>
+#include<stdio.h>
+#include<stdlib.h>
 
-int isLeapYear(int year)
-{
-    if (year % 400 == 0)
-    {
-        return 1;
-    }
-    else if (year % 4 == 0 && year % 100 != 0)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-}
+float getRectArea(float length, float width);
+float getCuboidVolume(float length, float width, float height);
 
 int main()
 {
-    printf("1000年到2000年之间的闰年有:\n");
-    for (int year = 1000; year <= 2000; year++)
-    {
-        if (isLeapYear(year))
-        {
-            printf("%d\n", year);
-        }
-    }
-    return 0;
+	float length = 0, width = 0, height = 0, area = 0, volume = 0;
+
+	printf("请依次输入长度，宽度和高度（如1.0，2.0，3.0）\n");
+	scanf("%0.f,%f,%f", &length, &width, &height);
+
+	area = getRectArea(length, width);
+	volume = getCuboidVolume(length, width, height);
+
+	printf("矩形的面积=%f,体积=%f", area, volume);
+	return 0;
 }
+
+float getRectArea(float length, float width)
+{
+	return (length * width);
+}
+float getCuboidVolume(float length, float width, float height)
+{
+	return (length * width * height);
+}
+
+
+//#define _CRT_SECURE_NO_WARNINGS 1
+//#include <stdio.h>
+//
+//int isLeapYear(int year)
+//{
+//    if (year % 400 == 0)
+//    {
+//        return 1;
+//    }
+//    else if (year % 4 == 0 && year % 100 != 0)
+//    {
+//        return 1;
+//    }
+//    else
+//    {
+//        return 0;
+//    }
+//}
+//
+//int main()
+//{
+//    printf("1000年到2000年之间的闰年有:\n");
+//    for (int year = 1000; year <= 2000; year++)
+//    {
+//        if (isLeapYear(year))
+//        {
+//            printf("%d\n", year);
+//        }
+//    }
+//    return 0;
+//}
 
 
 //int countDigit9(int n)
