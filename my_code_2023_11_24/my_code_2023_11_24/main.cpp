@@ -8,7 +8,7 @@ void PrintArg(T t)
 	cout << t << " ";
 }
 
-//Õ¹¿ªº¯Êı
+//å±•å¼€å‡½æ•°
 template <class ...Args>
 void Func(Args... args)
 {
@@ -52,7 +52,7 @@ int main()
 //}
 
 
-////ÓÒÖµÒıÓÃÓÅµã
+////å³å€¼å¼•ç”¨ä¼˜ç‚¹
 //#include <iostream>
 //using namespace std;
 //
@@ -70,8 +70,8 @@ int main()
 //    int a = 1;
 //    int b = 2;
 //
-//    Func(a);//µ÷ÓÃÁË Func(int& x)
-//    Func(a + b);//µ÷ÓÃÁË void Func(int&& x)£¬ÓÅÏÈ×ßÓÒÖµÒıÓÃµÄ½Ó¿Ú
+//    Func(a);//è°ƒç”¨äº† Func(int& x)
+//    Func(a + b);//è°ƒç”¨äº† void Func(int&& x)ï¼Œä¼˜å…ˆèµ°å³å€¼å¼•ç”¨çš„æ¥å£
 //
 //    return 0;
 //}
@@ -84,7 +84,7 @@ int main()
 //	int lowerNum = 0;
 //	int digitNum = 0;
 //	char sr[30];
-//	printf("ÇëÊäÈëÒ»´®×Ö·û£¬°´»Ø³µ½áÊø:");
+//	printf("è¯·è¾“å…¥ä¸€ä¸²å­—ç¬¦ï¼ŒæŒ‰å›è½¦ç»“æŸ:");
 //	scanf("%s", &sr);
 //
 //	while (ch != '\n')
@@ -97,7 +97,7 @@ int main()
 //		else if ((ch >= '1') && (ch <= '9'))
 //			++digitNum;
 //		else
-//			printf("²»ºÏ·¨\n");
+//			printf("ä¸åˆæ³•\n");
 //
 //		i++;
 //	}
@@ -105,7 +105,7 @@ int main()
 //}
 
 
-////×ÊÔ´×ªÒÆ
+////èµ„æºè½¬ç§»
 //#define _CRT_SECURE_NO_WARNINGS 1
 //#include <iostream>
 //#include <cstring>
@@ -115,9 +115,9 @@ int main()
 //{
 //    class string
 //    {
-//        //1.³ÉÔ±º¯Êı
+//        //1.æˆå‘˜å‡½æ•°
 //    public:
-//        //¹¹Ôìº¯Êı
+//        //æ„é€ å‡½æ•°
 //        string(const char* str = "")
 //            :_size(strlen(str))
 //            , _capacity(_size)
@@ -128,7 +128,7 @@ int main()
 //            cout << "end: string(const char* str = \"\")" << '\n';
 //        }
 //
-//        //¿½±´¹¹Ôì
+//        //æ‹·è´æ„é€ 
 //        void swap(string& s)
 //        {
 //            ::swap(_str, s._str);
@@ -138,33 +138,33 @@ int main()
 //        string(const string& s)
 //            :_str(nullptr)
 //        {
-//            cout << "begin: string(const string& s) -- Éî¿½±´" << endl;
+//            cout << "begin: string(const string& s) -- æ·±æ‹·è´" << endl;
 //            string tmp(s._str);
 //            swap(tmp);
-//            cout << "end: string(const string& s) -- Éî¿½±´" << endl;
+//            cout << "end: string(const string& s) -- æ·±æ‹·è´" << endl;
 //        }
 //
-//        //ÒÆ¶¯¹¹Ôì
+//        //ç§»åŠ¨æ„é€ 
 //        string(string&& s) noexcept
 //            :_str(nullptr)
 //        {
-//            cout << "begin: string(string&& s) -- ÒÆ¶¯¿½±´" << endl;
+//            cout << "begin: string(string&& s) -- ç§»åŠ¨æ‹·è´" << endl;
 //            
 //            swap(s);
-//            cout << "end: string(string&& s) -- ÒÆ¶¯¿½±´" << endl;
+//            cout << "end: string(string&& s) -- ç§»åŠ¨æ‹·è´" << endl;
 //        }
 //
-//        //¸³ÖµÖØÔØ
+//        //èµ‹å€¼é‡è½½
 //        string& operator=(const string& s)
 //        {
-//            cout << "begin: string& operator=(string s) -- Éî¿½±´" << endl;
+//            cout << "begin: string& operator=(string s) -- æ·±æ‹·è´" << endl;
 //            string tmp(s);
 //            swap(tmp);
-//            cout << "end: string& operator=(string s) -- Éî¿½±´" << endl;
+//            cout << "end: string& operator=(string s) -- æ·±æ‹·è´" << endl;
 //            return *this;
 //        }
 //
-//        //Îö¹¹º¯Êı
+//        //ææ„å‡½æ•°
 //        ~string()
 //        {
 //            cout << "begin: ~string()" << endl;
@@ -173,7 +173,7 @@ int main()
 //            cout << "end: ~string()" << endl;
 //        }
 //
-//        //ÆäËûº¯Êı
+//        //å…¶ä»–å‡½æ•°
 //        void reserve(size_t n)
 //        {
 //            if (n > _capacity)
@@ -208,34 +208,34 @@ int main()
 //            return cache;
 //        }
 //
-//        //2.³ÉÔ±±äÁ¿
+//        //2.æˆå‘˜å˜é‡
 //    private:
 //        char* _str;
 //        size_t _size;
-//        size_t _capacity; //²»°üº¬×îºó×ö±êÊ¶µÄ\0
+//        size_t _capacity; //ä¸åŒ…å«æœ€ååšæ ‡è¯†çš„\0
 //    };
 //}
 //
 //int main()
 //{
-//    limou::string s1("hello word");//µ÷ÓÃ¹¹Ôìº¯Êı
+//    limou::string s1("hello word");//è°ƒç”¨æ„é€ å‡½æ•°
 //    limou::string ret1 = s1;
 //
-//    limou::string ret2 = move(s1 + '!');//½«ÓÒÖµ×ÊÔ´×ªÒÆ
-//    //ÉÏÊö´úÂëÖĞ (str1 + '!') ÕûÌåÊÇÒ»¸öÓÒÖµ£¬
-//    //Õû¸ö¿½±´¹ı³ÌÖĞ»á³öÏÖÒ»¸öÁÙÊ±±äÁ¿½ÓÊÜÓÒÖµ£¬
-//    //Èç¹ûÒÀ¾ÉÊ¹ÓÃÉî¿½±´£¬ĞÂ¶ÔÏóÊ¹ÓÃĞÂµØÖ·
-//    //²¢ÇÒ¸´ÖÆÕâ¸öÁÙÊ±±äÁ¿µÄ×ÊÔ´¡£
+//    limou::string ret2 = move(s1 + '!');//å°†å³å€¼èµ„æºè½¬ç§»
+//    //ä¸Šè¿°ä»£ç ä¸­ (str1 + '!') æ•´ä½“æ˜¯ä¸€ä¸ªå³å€¼ï¼Œ
+//    //æ•´ä¸ªæ‹·è´è¿‡ç¨‹ä¸­ä¼šå‡ºç°ä¸€ä¸ªä¸´æ—¶å˜é‡æ¥å—å³å€¼ï¼Œ
+//    //å¦‚æœä¾æ—§ä½¿ç”¨æ·±æ‹·è´ï¼Œæ–°å¯¹è±¡ä½¿ç”¨æ–°åœ°å€
+//    //å¹¶ä¸”å¤åˆ¶è¿™ä¸ªä¸´æ—¶å˜é‡çš„èµ„æºã€‚
 //
-//    //Õâ¾ÍÓĞÒ»Ğ©ÀË·Ñ£¬ÒòÎªÁÙÊ±±äÁ¿×îºó»áËÀÍö¡£
-//    //ÎªºÎ²»Ö±½Ó¶ÔÕâ¸öÁÙÊ±±äÁ¿×ö×ÊÔ´×ªÒÆ½»¸ø ret2 ÄØ£¿
-//    //ÓÒÖµÒıÓÃ¾Í¿ÉÒÔ×öµ½ÕâÒ»ÊÂÇé¡£
+//    //è¿™å°±æœ‰ä¸€äº›æµªè´¹ï¼Œå› ä¸ºä¸´æ—¶å˜é‡æœ€åä¼šæ­»äº¡ã€‚
+//    //ä¸ºä½•ä¸ç›´æ¥å¯¹è¿™ä¸ªä¸´æ—¶å˜é‡åšèµ„æºè½¬ç§»äº¤ç»™ ret2 å‘¢ï¼Ÿ
+//    //å³å€¼å¼•ç”¨å°±å¯ä»¥åšåˆ°è¿™ä¸€äº‹æƒ…ã€‚
 //
-//    //Èç¹ûÖ»ÓÃ const µÄ×óÖµÒıÓÃ£¬
-//    //ÔòÖ»ÄÜ×óÓÒÖµ¶¼Ê¹ÓÃÍ¬Ò»¸öÉî¿½±´º¯Êı£¬
-//    //ÎŞ·¨Çø·Ö¿ª×ö¸÷×ÔµÄ´¦Àí
+//    //å¦‚æœåªç”¨ const çš„å·¦å€¼å¼•ç”¨ï¼Œ
+//    //åˆ™åªèƒ½å·¦å³å€¼éƒ½ä½¿ç”¨åŒä¸€ä¸ªæ·±æ‹·è´å‡½æ•°ï¼Œ
+//    //æ— æ³•åŒºåˆ†å¼€åšå„è‡ªçš„å¤„ç†
 //
-//    limou::string ret3 = move(s1);//½«×óÖµ×ÊÔ´×ªÒÆ£¬ÄÇÃ´×óÖµÔ­ÓĞ×ÊÔ´¾Í»á±»ÇÔÈ¡£¬×ªÒÆµ½ ret3 ÉÏ£¬move(s1) µÄ·µ»ØÖµÊÇÓÒÖµ
+//    limou::string ret3 = move(s1);//å°†å·¦å€¼èµ„æºè½¬ç§»ï¼Œé‚£ä¹ˆå·¦å€¼åŸæœ‰èµ„æºå°±ä¼šè¢«çªƒå–ï¼Œè½¬ç§»åˆ° ret3 ä¸Šï¼Œmove(s1) çš„è¿”å›å€¼æ˜¯å³å€¼
 //
 //    return 0;
 //}
