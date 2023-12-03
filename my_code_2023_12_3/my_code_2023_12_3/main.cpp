@@ -1,58 +1,80 @@
 #include <iostream>
 using namespace std;
 
-double Division(int a, int b)
+class SmartPtr
 {
-	if (b == 0)
+public:
+	SmartPtr(int* ptr)
+		: _ptr(ptr)
+	{}
+	~SmartPtr()
 	{
-		throw "Division by zero condition";
+		delete _ptr;
+		cout << "delete[] " << _ptr << '\n';
 	}
-	return (double)a / (double)b;
-}
-
-void Function()
-{
-	int* array_1 = new int[10];//(6)new 本身也会抛出异常
-	int* array_2 = new int[10];//(7)new 本身也会抛出异常
-
-	try 
-	{
-		int len, time;
-		cin >> len >> time;
-		cout << Division(len, time) << '\n';//(1)假设抛出“除零异常”
-	}
-	catch (...)//(2)“除零异常”被代码拦截下来
-	{
-		//(3)先释放 array，防止内存泄露
-		cout << "delete_1[] " << array_1 << '\n';
-		delete[] array_1;
-		cout << "delete_2[] " << array_2 << '\n';
-		delete[] array_2;
-
-		throw;//(4)重新将异常抛出去
-	}
-	cout << "delete_1[] " << array_1 << '\n';
-	delete[] array_1;
-	cout << "delete_2[] " << array_2 << '\n';
-	delete[] array_2;
-}
+private:
+	int* _ptr;
+};
 
 int main()
 {
-	try
-	{
-		Function();
-	}
-	catch (const char* error)//(5)“除零错误”会在这里被接收
-	{
-		cout << error << endl;
-	}
-	catch (const exception& e)//(8)new 的异常可以在这里被接收
-	{
-		cout << e.what() << '\n';
-	}
+	int* p = new int[10];
+	SmartPtr sp(p);//交给智能指针管理
 	return 0;
 }
+
+//double Division(int a, int b)
+//{
+//	if (b == 0)
+//	{
+//		throw "Division by zero condition";
+//	}
+//	return (double)a / (double)b;
+//}
+//
+//void Function()
+//{
+//	int* array_1 = new int[10];//(6)new 本身也会抛出异常
+//	int* array_2 = new int[10];//(7)new 本身也会抛出异常
+//
+//	try 
+//	{
+//		int len, time;
+//		cin >> len >> time;
+//		cout << Division(len, time) << '\n';//(1)假设抛出“除零异常”
+//	}
+//	catch (...)//(2)“除零异常”被代码拦截下来
+//	{
+//		//(3)先释放 array，防止内存泄露
+//		cout << "delete_1[] " << array_1 << '\n';
+//		delete[] array_1;
+//		cout << "delete_2[] " << array_2 << '\n';
+//		delete[] array_2;
+//
+//		throw;//(4)重新将异常抛出去
+//	}
+//	cout << "delete_1[] " << array_1 << '\n';
+//	delete[] array_1;
+//	cout << "delete_2[] " << array_2 << '\n';
+//	delete[] array_2;
+//}
+//
+//int main()
+//{
+//	try
+//	{
+//		Function();
+//	}
+//	catch (const char* error)//(5)“除零错误”会在这里被接收
+//	{
+//		cout << error << endl;
+//	}
+//	catch (const exception& e)//(8)new 的异常可以在这里被接收
+//	{
+//		cout << e.what() << '\n';
+//	}
+//	return 0;
+//}
 
 ////服务器开发中通常使用的异常继承体系
 //class Exception
