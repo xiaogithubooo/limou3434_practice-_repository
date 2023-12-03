@@ -12,7 +12,8 @@ double Division(int a, int b)
 
 void Function()
 {
-	int* array = new int[10];//(5)new 本身也会抛出异常
+	int* array_1 = new int[10];//(6)new 本身也会抛出异常
+	int* array_2 = new int[10];//(7)new 本身也会抛出异常
 
 	try 
 	{
@@ -22,12 +23,18 @@ void Function()
 	}
 	catch (...)//(2)“除零异常”被代码拦截下来
 	{
-		cout << "delete[] " << array << '\n';//(3)先释放 array，防止内存泄露
-		delete[] array;
+		//(3)先释放 array，防止内存泄露
+		cout << "delete_1[] " << array_1 << '\n';
+		delete[] array_1;
+		cout << "delete_2[] " << array_2 << '\n';
+		delete[] array_2;
+
 		throw;//(4)重新将异常抛出去
 	}
-	cout << "delete[] " << array << '\n';
-	delete[] array;
+	cout << "delete_1[] " << array_1 << '\n';
+	delete[] array_1;
+	cout << "delete_2[] " << array_2 << '\n';
+	delete[] array_2;
 }
 
 int main()
@@ -36,11 +43,11 @@ int main()
 	{
 		Function();
 	}
-	catch (const char* error)
+	catch (const char* error)//(5)“除零错误”会在这里被接收
 	{
 		cout << error << endl;
 	}
-	catch (const exception& e)//(6)new 的异常可以在这里被接收
+	catch (const exception& e)//(8)new 的异常可以在这里被接收
 	{
 		cout << e.what() << '\n';
 	}
