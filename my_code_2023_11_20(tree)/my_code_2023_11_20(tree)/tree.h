@@ -1,7 +1,6 @@
 #pragma once
 //1.三种遍历
 //2.查找结点
-//3.哈夫曼树（选做）
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -25,6 +24,3 @@ void Post_Order(TreeNode* root);
 
 //3.查找
 bool Find(TreeNode* root, type val);
-
-//4.哈夫曼树
-//选做
