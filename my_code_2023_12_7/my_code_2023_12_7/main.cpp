@@ -1,22 +1,64 @@
-#define _CRT_SECURE_NO_WARNINGS 1
-#include <stdio.h>
+#include <iostream>
+#include <stack>
+using namespace std;
 
-struct Student
+struct TreeNode
 {
-	char name[20];	//名字
-	int age;		//年龄
-	char id[15];	//学号
-	float score;	//成绩
+	int val;
+	TreeNode* left = nullptr;
+	TreeNode* right = nullptr;
 };
 
+void function(TreeNode* root)
+{
+	stack<TreeNode*> s;
+	TreeNode* cur = root;
+
+	while (!s.empty() || cur != nullptr)
+	{
+		while (cur != nullptr)
+		{
+			cout << cur->val << " ";
+			s.push(cur);
+			cur = cur->left;
+		}
+		TreeNode* top = s.top();
+		s.pop();
+		cur = top->right;
+	}
+}
 int main()
 {
-	struct Student s1 = { "张三", 20, "2022010823", 88.5f };
-	struct Student s2 = { "翠花", 18, "2022030405", 98.0f};
-	printf("%s %d %s %f\n", s1.name, s1.age, s1.id, s1.score);
+	TreeNode A;
+	A.val = 8;
 
-	struct Student* ps2 = &s2;
-	printf("%s %d %s %f\n", (*ps2).name, (*ps2).age, (*ps2).id, (*ps2).score);
-	printf("%s %d %s %f\n", ps2->name, ps2->age, ps2->id, ps2->score);
+	TreeNode B;
+	B.val = 3;
+
+	TreeNode C;
+	C.val = 10;
+
+	TreeNode D;
+	D.val = 1;
+
+	TreeNode E;
+	E.val = 6;
+
+	TreeNode F;
+	F.val = 4;
+
+	TreeNode G;
+	G.val = 7;
+
+	A.left = &B;
+	A.right = &C;
+	
+	B.left = &D;
+	B.right = &E;
+
+	E.left = &F;
+	E.right = &G;
+
+	function(&A);
 	return 0;
 }
