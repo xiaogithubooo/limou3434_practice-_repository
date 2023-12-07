@@ -16,12 +16,15 @@ void function(TreeNode* root)
 
 	while (!s.empty() || cur != nullptr)
 	{
+		//1.一直走一棵树的左子路
 		while (cur != nullptr)
 		{
 			cout << cur->val << " ";
 			s.push(cur);
 			cur = cur->left;
 		}
+
+		//2.开始让左子路的右树也执行相同的逻辑
 		TreeNode* top = s.top();
 		s.pop();
 		cur = top->right;
