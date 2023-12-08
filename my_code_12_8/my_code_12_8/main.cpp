@@ -4,45 +4,45 @@
 #include <set>
 using namespace std;
 
-class Solution
-{
-public:
-    vector<int> findAnagrams(const string& str, const string& sub)
-    {
-        vector<int> ret;
-
-        multiset<char> s1(sub.begin(), sub.end());
-        multiset<char> s2;
-
-        int len = sub.size();
-        for (int i = 0; i + len -1 < str.size(); i++)
-        {
-            int size = sub.size();
-            int j = i;
-            while (size--)
-            {
-                s2.insert(str[j++]);
-            }
-
-            if (s1 == s2)
-                ret.push_back(i);
-
-            s2.clear();
-        }
-        return ret;
-    }
-};
-int main()
-{
-    Solution s;
-    string str = "ababababab";
-    string sub = "aab";
-    for (auto it : s.findAnagrams(str, sub))
-    {
-        cout << it << " ";
-    }
-    return 0;
-}
+//class Solution
+//{
+//public:
+//    vector<int> findAnagrams(const string& str, const string& sub)
+//    {
+//        vector<int> ret;
+//
+//        multiset<char> s1(sub.begin(), sub.end());
+//        multiset<char> s2;
+//
+//        int len = sub.size();
+//        for (int i = 0; i + len -1 < str.size(); i++)
+//        {
+//            int size = sub.size();
+//            int j = i;
+//            while (size--)
+//            {
+//                s2.insert(str[j++]);
+//            }
+//
+//            if (s1 == s2)
+//                ret.push_back(i);
+//
+//            s2.clear();
+//        }
+//        return ret;
+//    }
+//};
+//int main()
+//{
+//    Solution s;
+//    string str = "ababababab";
+//    string sub = "aab";
+//    for (auto it : s.findAnagrams(str, sub))
+//    {
+//        cout << it << " ";
+//    }
+//    return 0;
+//}
 
 //class Solution
 //{
