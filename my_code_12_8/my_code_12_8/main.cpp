@@ -11,8 +11,8 @@ public:
     {
         vector<int> ret;
 
-        set<char> s1(sub.begin(), sub.end());
-        set<char> s2;
+        multiset<char> s1(sub.begin(), sub.end());
+        multiset<char> s2;
 
         int len = sub.size();
         for (int i = 0; i + len -1 < str.size(); i++)
@@ -35,8 +35,8 @@ public:
 int main()
 {
     Solution s;
-    string str = "abab";
-    string sub = "ab";
+    string str = "ababababab";
+    string sub = "aab";
     for (auto it : s.findAnagrams(str, sub))
     {
         cout << it << " ";
