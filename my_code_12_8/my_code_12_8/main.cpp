@@ -13,12 +13,15 @@ public:
 
         set<char> s1(sub.begin(), sub.end());
         set<char> s2;
-        for (int i = 0; i + 2 < str.size(); i++)
+
+        int len = sub.size();
+        for (int i = 0; i + len -1 < str.size(); i++)
         {
             int size = sub.size();
+            int j = i;
             while (size--)
             {
-                s2.insert(str[size]);
+                s2.insert(str[j++]);
             }
 
             if (s1 == s2)
