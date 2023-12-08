@@ -1,53 +1,91 @@
 #include <iostream>
+#include <string>
 #include <vector>
-#include <unordered_map>
+#include <set>
 using namespace std;
 
 class Solution
 {
 public:
-    int totalFruit(vector<int>&& fruits)
+    vector<int> findAnagrams(const string& str, const string& sub)
     {
+        vector<int> ret;
 
-
-        int left = 0, right = 0;
-        unordered_map<int, int> um;
-        int count = 1;
-
-        while (right < fruits.size())
+        set<char> s1(sub.begin(), sub.end());
+        set<char> s2;
+        for (int i = 0; i + 2 < str.size(); i++)
         {
-            //1.进窗口
-            um[fruits[right++]]++;
-
-            //2.出窗口
-            while (um.size() > 2)
+            int size = sub.size();
+            while (size--)
             {
-                um[fruits[left]]--;
-                if (um[fruits[left]] == 0)
-                {
-                    um.erase(fruits[left]);
-                }
-                left++;
+                s2.insert(str[size]);
             }
 
-            //3.更新
-            if (um.size() == 2)
-            {
-                count = max(count, right - left);
-            }
-        }
+            if (s1 == s2)
+                ret.push_back(i);
 
-        if (left == 0)
-        {
-            count = fruits.size();
+            s2.clear();
         }
-
-        return count;
+        return ret;
     }
 };
 int main()
 {
     Solution s;
-    cout << s.totalFruit({ 3,3,3,1,2,1,1,2,3,3,4 }) << endl;
-	return 0;
+    string str = "abab";
+    string sub = "ab";
+    for (auto it : s.findAnagrams(str, sub))
+    {
+        cout << it << " ";
+    }
+    return 0;
 }
+
+//class Solution
+//{
+//public:
+//    int totalFruit(vector<int>&& fruits)
+//    {
+//
+//
+//        int left = 0, right = 0;
+//        unordered_map<int, int> um;
+//        int count = 1;
+//
+//        while (right < fruits.size())
+//        {
+//            //1.进窗口
+//            um[fruits[right++]]++;
+//
+//            //2.出窗口
+//            while (um.size() > 2)
+//            {
+//                um[fruits[left]]--;
+//                if (um[fruits[left]] == 0)
+//                {
+//                    um.erase(fruits[left]);
+//                }
+//                left++;
+//            }
+//
+//            //3.更新
+//            if (um.size() == 2)
+//            {
+//                count = max(count, right - left);
+//            }
+//        }
+//
+//        if (left == 0)
+//        {
+//            count = fruits.size();
+//        }
+//
+//        return count;
+//    }
+//};
+//int main()
+//{
+//    Solution s;
+//    cout << s.totalFruit({ 3,3,3,1,2,1,1,2,3,3,4 }) << endl;
+//	return 0;
+//}
