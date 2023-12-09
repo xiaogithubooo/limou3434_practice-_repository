@@ -1,48 +1,57 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <set>
+#include <unordered_map>
+
 using namespace std;
 
-//class Solution
-//{
-//public:
-//    vector<int> findAnagrams(const string& str, const string& sub)
-//    {
-//        vector<int> ret;
-//
-//        multiset<char> s1(sub.begin(), sub.end());
-//        multiset<char> s2;
-//
-//        int len = sub.size();
-//        for (int i = 0; i + len -1 < str.size(); i++)
-//        {
-//            int size = sub.size();
-//            int j = i;
-//            while (size--)
-//            {
-//                s2.insert(str[j++]);
-//            }
-//
-//            if (s1 == s2)
-//                ret.push_back(i);
-//
-//            s2.clear();
-//        }
-//        return ret;
-//    }
-//};
-//int main()
-//{
-//    Solution s;
-//    string str = "ababababab";
-//    string sub = "aab";
-//    for (auto it : s.findAnagrams(str, sub))
-//    {
-//        cout << it << " ";
-//    }
-//    return 0;
-//}
+class Solution
+{
+public:
+    vector<int> findAnagrams(const string& str, const string& sub)
+    {
+        vector<int> ret;
+
+        unordered_map<char, int> sub_hash;
+        for (auto it : sub)
+        {
+            sub_hash[it]++;
+        }
+        int size = sub.size();
+        unordered_map<char, int> str_hash;
+        for (int i = 0; i < size; i++)
+        {
+            str_hash[str[i]]++;
+        }
+
+        for (int i = 0; i <= str.size() - size; i++)
+        {
+            int be = i;
+            if (sub_hash == str_hash)
+            {
+                ret.push_back(i);
+            }
+            str_hash[str[i]]--;
+            if (str_hash[str[i]] == 0)
+            {
+                str_hash.erase(str[i]);
+            }
+            str_hash[str[i + size]]++;
+        }
+        return ret;
+    }
+};
+int main()
+{
+    Solution s;
+    string str = "aa";
+    string sub = "bb";
+    for (auto it : s.findAnagrams(str, sub))
+    {
+        cout << it << " ";
+    }
+    return 0;
+}
 
 //class Solution
 //{
