@@ -230,13 +230,14 @@ void Reset(node* snake, int* pLength, enum direction* dir)
 	*dir = eRight;
 }
 
+
 //进度条
 void Process()
 {
 	const char* progressBar = "\\|/-";
 	int rate = 0;
 	char bar[SIZE] = { 0 };
-	int num = strlen(progressBar);
+	int num = (int)strlen(progressBar);
 	while (rate <= MAX_RATE)
 	{
 		printf("[%-50s][%d%%][%c]\r", bar, rate * 2, progressBar[rate % num]);
@@ -245,4 +246,36 @@ void Process()
 		bar[rate++] = STYLE;
 	}
 	printf("\n");
+}
+
+//绘制游戏名称
+void PrintScore(int eatingTimes, int failTimes)
+{
+	settextcolor(TEXT_COLOUR);									//设置文字颜色
+	settextstyle(32, 14, _T("Consolas"));		//设置文字样式
+	RECT r = { 0, 0, WINDOW_LENGTH, WINDOW_WIDTH };
+	drawtext(_T("Snake game"), &r,
+		DT_CENTER | DT_SINGLELINE
+	);
+
+	TCHAR eatingTimesText[100];
+	TCHAR failTimesText[100];
+
+	_stprintf(eatingTimesText, _T("本次得分:%d"), eatingTimes);
+	_stprintf(failTimesText, _T("死亡次数:%d"), failTimes);
+
+
+	drawtext(eatingTimesText, &r, DT_LEFT);
+	drawtext(failTimesText, &r, DT_RIGHT);
+
+
+	time_t t = time(NULL);					// 获取当前系统时间（秒数）
+	struct tm* localTime = localtime(&t);   // 将秒数转换为本地时间
+
+	printf("%04d-%02d-%02d %02d:%02d\n",
+		localTime->tm_year + 1900,
+		localTime->tm_mon + 1,
+		localTime->tm_mday,
+		localTime->tm_hour, localTime->tm_min);  // 格式化输出当前时间
+		Sleep(3);
 }

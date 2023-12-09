@@ -1,7 +1,5 @@
 #include "snake.hpp"
 
-
-
 int main()
 {
 	//1.初始游戏背景
@@ -15,7 +13,7 @@ int main()
 
 	//3.统计游戏信息
 	int eatingTimes = 0;	//统计吃掉的食物
-	int num = 0;			//统计失败次数
+	int failTimes = 0;			//统计失败次数
 
 	//4.运行游戏逻辑
 	printf("贪吃蛇游戏资源初始化中\n");
@@ -28,6 +26,8 @@ int main()
 		PrintGrid();						//绘制网格函数
 		PrintSnake(snake, snakeLength);		//绘制蛇
 		PaintFood(food);					//绘制食物
+		PrintScore(eatingTimes, failTimes);		//绘制游戏标题、得分、失败次数
+
 
 		//检测方向，修改蛇结点坐标
 		Sleep(SNAKE_SPEED);
@@ -50,11 +50,11 @@ int main()
 		//判断游戏是否结束
 		if (IsGameOver(snake, snakeLength) == true)				//蛇头撞到墙壁 or 蛇头吃到蛇身
 		{
-			printf("游戏失败 %d 次...\n\n", ++num);				//打印游戏失败次数
-			Sleep(1000);										//让玩家缓一会，调整状态
+			printf("游戏失败 %d 次...\n\n", ++failTimes);	//打印游戏失败次数
+			Sleep(1000);							//让玩家缓一会，调整状态
 
 			eatingTimes = 0;									//复位所吃食物数量
-			Reset(snake, &snakeLength, &dir);					//复位蛇的数据和方向
+			Reset(snake, &snakeLength, &dir);			//复位蛇的数据和方向
 			food = CreateFood(snake, snakeLength);				//再次生成食物
 		}
 	}

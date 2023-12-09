@@ -1,4 +1,7 @@
 //1.头文件导入和宏
+#pragma once
+#pragma warning(disable:4996)
+
 #include <easyx.h>
 #include <stdio.h>
 #include <windows.h>
@@ -19,6 +22,7 @@
 #define SNAKE_BODY_EDGE_COLOUR RGB(252, 157, 154)	//蛇身外边颜色
 #define FOOD_COLOUR RGB(200, 200, 169)				//食物颜色
 #define WINDOW_COLOUR RGB(249, 205, 173)			//背景颜色
+#define TEXT_COLOUR RGB(0, 0, 0)			//背景颜色
 
 #define SIZE 51
 #define MAX_RATE 50
@@ -71,5 +75,9 @@ bool IsGameOver(node* snake, int snakeLength);
 //复位蛇数据
 void Reset(node* snake, int* pLength, enum direction* dir);
 
+
 //进度条
 void Process();
+
+//绘制游戏名称
+void PrintScore(int eatingTimes, int failTimes);
