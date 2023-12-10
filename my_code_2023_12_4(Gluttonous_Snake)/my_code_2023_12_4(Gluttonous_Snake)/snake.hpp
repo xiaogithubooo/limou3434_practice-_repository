@@ -1,4 +1,4 @@
-//1.头文件导入和宏
+//1.头文件导入和宏设置
 #pragma once
 #pragma warning(disable:4996)
 
@@ -28,11 +28,6 @@
 
 #define TEXT_COLOUR RGB(0, 0, 0)					//文字颜色
 #define TEXE_STYLE "Consolas"						//文字风格
-
-#define SIZE 51
-#define MAX_RATE 50
-#define STYLE '#'
-#define PROGRESS_BAR_SPEED 30				//进度条速度
 
 
 //2.结构体组织
