@@ -15,8 +15,8 @@ int main()
 
 	//1.游戏初始化
 	InterfaceInit();						//游戏界面初始化
-	SnakeInit(&snakeLength, &dir);			//蛇初始化
-	FoodInit(snake, &snakeLength, &food);	//食物初始化
+	SnakeInit(snakeLength, dir);			//蛇初始化
+	FoodInit(snake, snakeLength, food);	//食物初始化
 
 	//2.运行游戏逻辑
 	printf("贪吃蛇游戏进行中，请输入 w、a、s、d 来移动蛇\n");
@@ -43,8 +43,11 @@ int main()
 			Sleep(SNAKE_SPEED / speedUp / speedUp);
 		}
 
-		//检测方向，修改蛇结点坐标
-		DetectionEvent(&dir);								//检查事件，是否有键盘输入，有的话修改蛇头的方向
+		//检测事件，修改蛇结点坐标
+		if (!DetectionEvent(dir))						//检查事件，是否有键盘输入，有的话修改蛇头的方向或者退出游戏
+		{
+			goto BREAK;
+		}
 		node lastTail = SnakeMove(snake, snakeLength, dir);	//改变蛇头方向后的新坐标数组，并且返回储存了最尾部节点的坐标（注意：这里的snake是数组，可以直接传数组名字）
 
 		//吃掉食物，增长蛇长度
@@ -63,16 +66,17 @@ int main()
 		//判断游戏是否结束
 		if (IsGameOver(snake, snakeLength) == true)			//蛇头撞到墙壁 or 蛇头吃到蛇身
 		{
-			printf("游戏失败 %d 次...\n\n", ++failTimes);	//打印游戏失败次数
+			printf("游戏失败 %d 次...\n", ++failTimes);	//打印游戏失败次数
 			Sleep(1000);									//让玩家缓一会，调整状态
 
 			eatingTimes = 0;								//复位所吃食物数量
-			Reset(snake, &snakeLength, &dir);				//复位蛇的数据和方向
+			Reset(snake, snakeLength, dir);					//复位蛇的数据和方向
 			food = CreateFood(snake, snakeLength);			//再次生成食物
 		}
 	}
 
 	//3.清理游戏资源
+BREAK:
 	Destruction();
 	return 0;
 }

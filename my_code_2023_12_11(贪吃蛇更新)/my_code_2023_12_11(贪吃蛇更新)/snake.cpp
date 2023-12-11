@@ -1,6 +1,6 @@
 #include "snake.hpp"
 
-//游戏初始化
+//界面初始化
 void InterfaceInit()
 {
 	//默认逻辑坐标原点和物理坐标原点重叠
@@ -15,16 +15,16 @@ void InterfaceInit()
 }
 
 //蛇初始化
-void SnakeInit(int* snakeLength, enum direction* dir)
+void SnakeInit(int& snakeLength, direction& dir)
 {
-	*snakeLength = SNAKE_LENGTH;//初始蛇的长度
-	*dir = eRight;//初始蛇头方向为右
+	snakeLength = SNAKE_LENGTH;//初始蛇的长度
+	dir = eRight;//初始蛇头方向为右
 }
 
 //食物初始化
-void FoodInit(node* snake, int* snakeLength, node* food)
+void FoodInit(node* snake, int& snakeLength, node& food)
 {
-	*food = CreateFood(snake, *snakeLength);
+	food = CreateFood(snake, snakeLength);
 }
 
 //绘制网格
@@ -105,7 +105,7 @@ void PrintSnake(node* snake, int snakeLength)
 }
 
 //检查事件
-void DetectionEvent(enum direction* pD)
+bool DetectionEvent(direction& d)
 {
 	if (_kbhit() != 0)//检查控制台窗口的按键是否被按下，按下返回非零值
 	{
@@ -113,24 +113,21 @@ void DetectionEvent(enum direction* pD)
 		switch (signal)
 		{
 		case 'w':
-			if (*pD != eDown)	//如果原蛇头方向不是向下才可以向上
-				*pD = eUp;
+			if (d != eDown)	//如果原蛇头方向不是向下才可以向上
+				d = eUp;
 			break;
 		case 's':
-			if (*pD != eUp)		//如果原蛇头方向不是向上才可以向下
-				*pD = eDown;
+			if (d != eUp)	//如果原蛇头方向不是向上才可以向下
+				d = eDown;
 			break;
 		case 'a':
-			if (*pD != eRight)	//如果原蛇头方向不是向右才可以向左
-				*pD = eLeft;
+			if (d != eRight)//如果原蛇头方向不是向右才可以向左
+				d = eLeft;
 			break;
 		case 'd':
-			if (*pD != eLeft)	//如果原蛇头方向不是向左才可以向右
-				*pD = eRight;
+			if (d != eLeft)	//如果原蛇头方向不是向左才可以向右
+				d = eRight;
 			break;
-		case VK_ESCAPE:			//处理其他的输入情况（暂停和退出）
-			printf("游戏已退出，感谢您的游玩！ +\n");
-			exit(0);
 		case VK_SPACE:
 			printf("游戏暂停...输入空格键位恢复...\n");
 			while (1)
@@ -141,18 +138,28 @@ void DetectionEvent(enum direction* pD)
 					printf("游戏继续进行\n");
 					break;
 				}
-				else if (signal == VK_ESCAPE)
+				if (signal == VK_ESCAPE)
 				{
-					printf("游戏暂停...输入空格键位恢复...\n");
-					exit(0);
+					printf("游戏已退出，感谢您的游玩！\n");
+					return false;
 				}
 			}
+			break;
+		case VK_ESCAPE:			//处理其他的输入情况（暂停和退出）
+			printf("游戏已退出，感谢您的游玩！\n");
+			return false;
+
+			break;
+		default:
+			printf("非法输入\n");
+			break;
 		}
 	}
+	return true;
 }
 
 //生成食物的坐标
-node CreateFood(node* snake, int snakeLength)
+node CreateFood(node* snake, const int& snakeLength)
 {
 	node food;
 	while (1)
@@ -188,7 +195,7 @@ node CreateFood(node* snake, int snakeLength)
 }
 
 //绘制食物
-void PaintFood(node food)
+void PaintFood(const node& food)
 {
 	//食物的左上、右下坐标
 	int left, top;
@@ -209,14 +216,14 @@ void PaintFood(node food)
 }
 
 //检测游戏结束条件
-bool IsGameOver(node* snake, int snakeLength)
+bool IsGameOver(node* snake, const int& snakeLength)
 {
 	//超出窗口的情况，注意 EasyX 库的设备坐标系
-	if (snake[0].x < 0 || snake[0].x * NODE_WIDTH > WINDOW_LENGTH)//蛇头超出左右窗体
+	if (snake[0].x < 0 || snake[0].x * NODE_WIDTH >= WINDOW_LENGTH)//蛇头超出左右窗体
 	{
 		return true;
 	}
-	if (snake[0].y < 0 || snake[0].y * NODE_WIDTH > WINDOW_WIDTH)//蛇头超出上下窗体
+	if (snake[0].y < 0 || snake[0].y * NODE_WIDTH >= WINDOW_WIDTH)//蛇头超出上下窗体
 	{
 		return true;
 	}
@@ -236,19 +243,19 @@ bool IsGameOver(node* snake, int snakeLength)
 }
 
 //复位蛇数据
-void Reset(node* snake, int* pLength, enum direction* dir)
+void Reset(node* snake, int& pLength, direction& dir)
 {
 	snake[0] = node{ 5, 7 };
 	snake[1] = node{ 4, 7 };
 	snake[2] = node{ 3, 7 };
 	snake[3] = node{ 2, 7 };
 	snake[4] = node{ 1, 7 };
-	*pLength = 5;
-	*dir = eRight;
+	pLength = 5;
+	dir = eRight;
 }
 
 //绘制游戏信息
-void PrintMessages(int eatingTimes, int failTimes)
+void PrintMessages(const int& eatingTimes, const int& failTimes)
 {
 	//控制文字输出的窗口范围
 	RECT r = { 0, 0, WINDOW_LENGTH, WINDOW_WIDTH };
@@ -265,6 +272,5 @@ void PrintMessages(int eatingTimes, int failTimes)
 //资源销毁
 void Destruction()
 {
-	int ch = getchar();	//阻塞控制台窗口，让用户可以得知结果
 	closegraph();		//关闭绘画窗口
 }
