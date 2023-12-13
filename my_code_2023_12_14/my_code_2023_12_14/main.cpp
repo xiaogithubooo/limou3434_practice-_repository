@@ -1,7 +1,7 @@
 #include "union_find_set.hpp"
-	
+
 int main()
 {
-	limou::TestUnionFindSet();
+	limou::TestGraph();
 	return 0;
 }

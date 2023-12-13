@@ -106,7 +106,7 @@ namespace limou
 	{
 		string str = "0123";
 		vector<char> vec(str.begin(), str.end());
-		AMGraph<char, int, INT_MAX, true> amg(vec , 4);
+		AMGraph<char, int, INT_MAX, true> amg(vec, 4);
 		amg.AddEdge('0', '1', 1);
 		amg.AddEdge('0', '3', 4);
 		amg.AddEdge('1', '3', 2);

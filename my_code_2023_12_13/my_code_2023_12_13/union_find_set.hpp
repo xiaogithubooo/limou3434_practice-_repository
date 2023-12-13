@@ -1,6 +1,7 @@
 #pragma once
+#include <iostream>
 #include <vector>
-
+#include <cmath>
 namespace limou
 {
 	template <typename Type = int>
@@ -8,7 +9,7 @@ namespace limou
 	{
 		/*
 		* 这里的并查集只使用了索引来作为集合内的元素的编号
-		* 对应存储的是“根节点包含元素的个数”和“双亲结点索引”的信息
+		* 对应存储的是“根结点包含元素的个数”和“双亲结点索引”的信息
 		*/
 
 	public:
@@ -24,7 +25,10 @@ namespace limou
 
 			if (root1 != root2)
 			{
-				_ufs[root1] += _ufs[root2];//谁合并谁都可以，没有特别强制的规定
+				if (abs(_ufs[root1]) < abs(_ufs[root2]))//谁合并谁都可以，但是最好还是小数据量的集合合并到大数据量的集合，让大数据集合的层数不知增大
+					std::swap(root1, root2);
+
+				_ufs[root1] += _ufs[root2];
 				_ufs[root2] = root1;
 				return true;
 			}
@@ -35,14 +39,22 @@ namespace limou
 		int FindRoot(int x)
 		{
 			/* 根据编号找编号对应元素的根：通过编号存储的父结点，不断跳转到根即可 */
-			int parent = x;
+			int root = x;
+			while (_ufs[root] >= 0)
+			{
+				root = _ufs[root];
+			}
+
+			//路径压缩，更改父结点从结果上来看没有区别
 			while (_ufs[x] >= 0)
 			{
-				parent = _ufs[x];
+				int parent = _ufs[x];
+				_ufs[x] = root;
+
 				x = parent;
 			}
 
-			return parent;
+			return root;
 		}
 
 		bool InSet(int x, int y)
@@ -67,4 +79,27 @@ namespace limou
 	private:
 		std::vector<Type> _ufs;
 	};
+
+	void TestUnionFindSet()
+	{
+		using std::cout;
+
+		//{0}, {1}, {2}, {3}
+		UnionFindSet<> ufs(4);
+		cout << ufs.Count() << '\n';
+		if (ufs.InSet(1, 2))
+			cout << "OK" << '\n';
+
+		//{0, 1, 2}, {3}
+		ufs.Union(0, 1);
+		ufs.Union(1, 2);
+		cout << ufs.Count() << '\n';
+		if (ufs.InSet(1, 2))
+			cout << "OK" << '\n';
+
+		//{0, 1, 2} root->0
+		//{3} root->3
+		cout << ufs.FindRoot(2) << '\n';
+		cout << ufs.FindRoot(3) << '\n';
+	}
 }
