@@ -8,6 +8,8 @@
 #include <stdexcept>
 #include <climits>
 #include <cstdio>
+#include "union_find_set.hpp"
+
 namespace limou
 {
 	using std::vector;
@@ -16,6 +18,8 @@ namespace limou
 	using std::map;
 	using std::invalid_argument;
 	using std::queue;
+	using std::priority_queue;
+	using std::greater;
 
 	template <
 		typename VertexType = char, //顶点数据类型
@@ -29,6 +33,8 @@ namespace limou
 		* 无向图或有向图（考虑带权值）邻接矩阵模板类，
 		* 测试有三种方法：IO 输入、文件读取样例、手动在代码中添加
 		*/
+		typedef AMGraph<VertexType, WeightType, MAX_W, Direction> Self;
+
 	public:
 		AMGraph(const vector<VertexType>& arr, size_t arrSize)
 		{
@@ -59,17 +65,23 @@ namespace limou
 			return -1;//防止编译器警告
 		}
 
-		void AddEdge(const VertexType& src, const VertexType& dst, const WeightType& w)
+		void _AddEdge(const size_t& srci, const size_t& dsti, const WeightType& w)
 		{
-			/* 添加边以及对应的权值 */
-			size_t srci = GetVertexIndex(src);
-			size_t dsti = GetVertexIndex(dst);
+			/* 添加边以及对应的权值（实际上可以理解为 AddEdge() 的重载版本，主要是方便某些传递坐标的情况，但是有可能发生语义不明确，所有就没有写成重载版本） */
 
 			_weights[srci][dsti] = w;//链接
 			if (Direction == false)//如果是无向图还需要镜像处理
 			{
 				_weights[dsti][srci] = w;
 			}
+		}
+		void AddEdge(const VertexType& src, const VertexType& dst, const WeightType& w)
+		{
+			/* 添加边以及对应的权值 */
+			size_t srci = GetVertexIndex(src);
+			size_t dsti = GetVertexIndex(dst);
+
+			_AddEdge(srci, dsti, w);
 		}
 
 		void Print()
@@ -102,36 +114,34 @@ namespace limou
 
 		void BFS(const VertexType& src)
 		{
-			if (Direction != true) //保证为连通图
+			/* 广度优先遍历算法 */
+			size_t srci = GetVertexIndex(src);
+
+			queue<int> q; //队列
+			q.push((int)srci);
+			vector<bool> visited(_vertexs.size(), false); //标记位数组
+			visited[srci] = true;
+
+			size_t size = _vertexs.size();
+
+			while (!q.empty())
 			{
-				size_t srci = GetVertexIndex(src);
+				//出队访问
+				int front = q.front();
+				q.pop();
+				cout << _vertexs[front] << " ";
 
-				queue<int> q; //队列
-				q.push((int)srci);
-				vector<bool> visited(_vertexs.size(), false); //标记位数组
-				visited[srci] = true;
-
-				size_t size = _vertexs.size();
-
-				while (!q.empty())
+				//把 front 的邻接顶点入队
+				for (size_t i = 0; i < size; i++)
 				{
-					//出队访问
-					int front = q.front();
-					q.pop();
-					cout << _vertexs[front] << " ";
-
-					//把 front 的邻接顶点入队
-					for (size_t i = 0; i < size; i++)
+					if (_weights[front][i] != MAX_W && visited[i] == false)
 					{
-						if (_weights[front][i] != MAX_W && visited[i] == false)
-						{
-							q.push((int)i);
-							visited[i] = true;
-						}
+						q.push((int)i);
+						visited[i] = true;
 					}
 				}
-				cout << '\n';
 			}
+			cout << '\n';
 		}
 
 		void _DFS(const size_t srci, vector<bool>& visited)
@@ -148,12 +158,65 @@ namespace limou
 				}
 			}
 		}
-
 		void DFS(const VertexType& src)
 		{
+			/* 深度优先遍历算法 */
 			size_t srci = GetVertexIndex(src);
 			vector<bool> visited(_vertexs.size(), false);
 			_DFS(srci, visited);
+			cout << '\n';
+		}
+
+		struct Edge
+		{
+			/* 专门服务于 Kruskal 的结构体 */
+			size_t _srci;
+			size_t _dsti;
+			const WeightType _weig;
+
+			Edge(size_t srci, size_t dsti, WeightType weig)
+				: _srci(srci), _dsti(dsti), _weig(weig)
+			{}
+
+			bool operator >(const Edge& e1, const Edge& e2) const
+			{
+				return e1._weig > e2._weig;
+			}
+		};
+		WeightType Kruskal(Self& minTree)
+		{
+			/* 使用 Kruskal 算法给无向图生成最小生成树 */
+			if (Direction != true)
+			{
+				priority_queue<Edge, vector<Edge>, greater<Edge>> minque;//存储较小的路径
+				size_t n = _vertexs.size();//统计顶点个数
+
+				//遍历邻接矩阵，如果有权值就插入优先级队列中
+				for (size_t i = 0; i < n; i++)
+				{
+					for (size_t j = 0; j < n; j++)
+					{
+						if (i < j && _weights[i][j] != MAX_W)
+						{
+							minque.push(Edge(i, j, _weights[i][j]));
+						}
+					}
+				}
+
+				//选出 n-1 条边
+				int count = n - 1;
+				UnionFindSet<> ufs(n);
+				while (count--)
+				{
+					Edge min = minque.top();
+					minque.pop();
+
+					if (ufs.InSet(min._srci, min._dsti))
+					{
+						minTree.AddEdge();
+					}
+				}
+			}
 		}
 
 	private:
