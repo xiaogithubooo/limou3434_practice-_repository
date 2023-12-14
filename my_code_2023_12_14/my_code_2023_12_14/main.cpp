@@ -5,5 +5,7 @@ int main()
 {
 	limou::TestAMGraph();
 	limou::TestALGraph();
+
+	limou::TestAMGraphBFS();
 	return 0;
 }

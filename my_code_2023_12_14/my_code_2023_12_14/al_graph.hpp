@@ -5,14 +5,15 @@
 #include <string>
 #include <map>
 #include <stdexcept>
-using std::vector;
-using std::string;
-using std::cout;
-using std::map;
-using std::invalid_argument;
 
 namespace limou
 {
+	using std::vector;
+	using std::string;
+	using std::cout;
+	using std::map;
+	using std::invalid_argument;
+
 	template <typename WeightType = int>
 	struct Edge
 	{

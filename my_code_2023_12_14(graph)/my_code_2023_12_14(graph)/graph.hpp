@@ -59,7 +59,7 @@ namespace limou
 			return -1;//防止编译器警告
 		}
 
-		void AddEdge(const VertexType& src, const VertexType& dst, const WeightType& w)
+		void AddEdge(const VertexType& src, const VertexType& dst, const WeightType& w = 1)
 		{
 			/* 添加边以及对应的权值 */
 			size_t srci = GetVertexIndex(src);
@@ -88,11 +88,11 @@ namespace limou
 				{
 					if (_weights[i][j] != INT_MAX)
 					{
-						printf("[%zd, %zd]:%-10d  ", i, j, _weights[i][j]);
+						printf("[%zd, %zd]:%-5d  ", i, j, _weights[i][j]);
 					}
 					else
 					{
-						printf("[%zd, %zd]:%-10d  ", i, j, 0);
+						printf("[%zd, %zd]:%-5c  ", i, j, '0');
 					}
 				}
 				cout << '\n';
@@ -102,36 +102,33 @@ namespace limou
 
 		void BFS(const VertexType& src)
 		{
-			if (Direction != true) //保证为连通图
+			size_t srci = GetVertexIndex(src);
+
+			queue<int> q; //队列
+			q.push((int)srci);
+			vector<bool> visited(_vertexs.size(), false); //标记位数组
+			visited[srci] = true;
+
+			size_t size = _vertexs.size();
+
+			while (!q.empty())
 			{
-				size_t srci = GetVertexIndex(src);
+				//出队访问
+				int front = q.front();
+				q.pop();
+				cout << _vertexs[front] << " ";
 
-				queue<int> q; //队列
-				q.push((int)srci);
-				vector<bool> visited(_vertexs.size(), false); //标记位数组
-				visited[srci] = true;
-
-				size_t size = _vertexs.size();
-
-				while (!q.empty())
+				//把 front 的邻接顶点入队
+				for (size_t i = 0; i < size; i++)
 				{
-					//出队访问
-					int front = q.front();
-					q.pop();
-					cout << _vertexs[front] << " ";
-
-					//把 front 的邻接顶点入队
-					for (size_t i = 0; i < size; i++)
+					if (_weights[front][i] != MAX_W && visited[i] == false)
 					{
-						if (_weights[front][i] != MAX_W && visited[i] == false)
-						{
-							q.push((int)i);
-							visited[i] = true;
-						}
+						q.push((int)i);
+						visited[i] = true;
 					}
 				}
-				cout << '\n';
 			}
+			cout << '\n';
 		}
 
 		void _DFS(const size_t srci, vector<bool>& visited)
@@ -154,6 +151,7 @@ namespace limou
 			size_t srci = GetVertexIndex(src);
 			vector<bool> visited(_vertexs.size(), false);
 			_DFS(srci, visited);
+			cout << '\n';
 		}
 
 	private:
@@ -161,33 +159,4 @@ namespace limou
 		vector<vector<WeightType>> _weights; //邻接矩阵（无向图的时候表示链接关系，有向图的时候不仅可以查看是否有链接，还可以查看权值）
 		map<VertexType, int> _indexMap; //顶点映射下标（主要是用来提高效率的）
 	};
-
-	void TestAMGraph()
-	{
-		string str = "ABCD";
-		vector<char> vec(str.begin(), str.end());
-		AMGraph<char, int, INT_MAX, true> amg(vec, 4);
-		amg.AddEdge('A', 'B', 1);
-		amg.AddEdge('A', 'D', 4);
-		amg.AddEdge('B', 'D', 2);
-		amg.AddEdge('B', 'C', 9);
-		amg.AddEdge('C', 'D', 8);
-		amg.AddEdge('C', 'B', 5);
-		amg.AddEdge('C', 'A', 3);
-		amg.AddEdge('D', 'C', 6);
-		amg.Print();
-	}
-
-	void TestAMGraphBFS()
-	{
-		vector<string> vec = { "张三", "李四", "王五", "赵六", "周七" };
-		AMGraph<string, int, INT_MAX> amg(vec, 5);
-		amg.AddEdge("张三", "李四", 100);
-		amg.AddEdge("张三", "王五", 200);
-		amg.AddEdge("王五", "赵六", 30);
-		amg.AddEdge("王五", "周七", 30);
-		amg.BFS("张三");
-		amg.BFS("李四");
-		amg.DFS("赵六");
-	}
 }
