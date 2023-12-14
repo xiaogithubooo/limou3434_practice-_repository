@@ -1,3 +1,4 @@
+//am_graph.hpp 邻接矩阵实现
 #pragma once
 #include <vector>
 #include <iostream>
@@ -23,7 +24,7 @@ namespace limou
 	class AMGraph
 	{
 		/*
-		* 无向图或有向图（考虑带权值）模板类，
+		* 无向图或有向图（考虑带权值）邻接矩阵模板类，
 		* 测试有三种方法：IO 输入、文件读取样例、手动在代码中添加
 		*/
 	public:
@@ -75,7 +76,7 @@ namespace limou
 			int i = 0;
 			for (auto ver : _vertexs)
 			{
-				cout << "[" << i++ << "]" << "->" << ver << '\n';
+				cout << ver << " ";
 			}
 			cout << '\n';
 
@@ -94,6 +95,8 @@ namespace limou
 				}
 				cout << '\n';
 			}
+
+			cout << '\n';
 		}
 
 	private:
@@ -102,19 +105,19 @@ namespace limou
 		map<VertexType, int> _indexMap; //顶点映射下标（主要是用来提高效率的）
 	};
 
-	void TestGraph()
+	void TestAMGraph()
 	{
-		string str = "0123";
+		string str = "ABCD";
 		vector<char> vec(str.begin(), str.end());
 		AMGraph<char, int, INT_MAX, true> amg(vec, 4);
-		amg.AddEdge('0', '1', 1);
-		amg.AddEdge('0', '3', 4);
-		amg.AddEdge('1', '3', 2);
-		amg.AddEdge('1', '2', 9);
-		amg.AddEdge('2', '3', 8);
-		amg.AddEdge('2', '1', 5);
-		amg.AddEdge('2', '0', 3);
-		amg.AddEdge('3', '2', 6);
+		amg.AddEdge('A', 'B', 1);
+		amg.AddEdge('A', 'D', 4);
+		amg.AddEdge('B', 'D', 2);
+		amg.AddEdge('B', 'C', 9);
+		amg.AddEdge('C', 'D', 8);
+		amg.AddEdge('C', 'B', 5);
+		amg.AddEdge('C', 'A', 3);
+		amg.AddEdge('D', 'C', 6);
 		amg.Print();
 	}
 }

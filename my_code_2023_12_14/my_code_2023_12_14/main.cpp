@@ -1,7 +1,9 @@
-#include "union_find_set.hpp"
+#include "am_graph.hpp"
+#include "al_graph.hpp"
 
 int main()
 {
-	limou::TestGraph();
+	limou::TestAMGraph();
+	limou::TestALGraph();
 	return 0;
 }
