@@ -6,6 +6,7 @@
 #include <map>
 #include <queue>
 #include <stdexcept>
+#include <functional>
 #include <climits>
 #include <cstdio>
 #include "union_find_set.hpp"
@@ -36,6 +37,7 @@ namespace limou
 		typedef AMGraph<VertexType, WeightType, MAX_W, Direction> Self;
 
 	public:
+		AMGraph() = default;
 		AMGraph(const vector<VertexType>& arr, size_t arrSize)
 		{
 			/* 根据顶点序列，初始化邻接矩阵和其他相关信息 */
@@ -43,7 +45,7 @@ namespace limou
 			for (size_t i = 0; i < arrSize; ++i)
 			{
 				_vertexs.push_back(arr[i]);
-				_indexMap[arr[i]] = (int)i;
+				_indexMap[arr[i]] = i;
 			}
 
 			_weights.resize(arrSize);
@@ -61,8 +63,8 @@ namespace limou
 			{
 				return it->second;
 			}
-			throw invalid_argument("顶点不存在");//运行时报错
-			return -1;//防止编译器警告
+			throw invalid_argument("顶点不存在"); //运行时报错
+			return -1; //防止编译器警告
 		}
 
 		void _AddEdge(const size_t& srci, const size_t& dsti, const WeightType& w)
@@ -100,11 +102,11 @@ namespace limou
 				{
 					if (_weights[i][j] != INT_MAX)
 					{
-						printf("[%zd, %zd]:%-10d  ", i, j, _weights[i][j]);
+						printf("[%zd, %zd]:%-5d  ", i, j, _weights[i][j]);
 					}
 					else
 					{
-						printf("[%zd, %zd]:%-10d  ", i, j, 0);
+						printf("[%zd, %zd]:%-5d  ", i, j, 0);
 					}
 				}
 				cout << '\n';
@@ -118,7 +120,7 @@ namespace limou
 			size_t srci = GetVertexIndex(src);
 
 			queue<int> q; //队列
-			q.push((int)srci);
+			q.push(srci);
 			vector<bool> visited(_vertexs.size(), false); //标记位数组
 			visited[srci] = true;
 
@@ -136,7 +138,7 @@ namespace limou
 				{
 					if (_weights[front][i] != MAX_W && visited[i] == false)
 					{
-						q.push((int)i);
+						q.push(i);
 						visited[i] = true;
 					}
 				}
@@ -172,15 +174,15 @@ namespace limou
 			/* 专门服务于 Kruskal 的结构体 */
 			size_t _srci;
 			size_t _dsti;
-			const WeightType _weig;
+			WeightType _weig;
 
 			Edge(size_t srci, size_t dsti, WeightType weig)
 				: _srci(srci), _dsti(dsti), _weig(weig)
 			{}
 
-			bool operator >(const Edge& e1, const Edge& e2) const
+			bool operator >(const Edge& e) const
 			{
-				return e1._weig > e2._weig;
+				return _weig > e._weig;
 			}
 		};
 		WeightType Kruskal(Self& minTree)
@@ -188,8 +190,17 @@ namespace limou
 			/* 使用 Kruskal 算法给无向图生成最小生成树 */
 			if (Direction != true)
 			{
-				priority_queue<Edge, vector<Edge>, greater<Edge>> minque;//存储较小的路径
 				size_t n = _vertexs.size();//统计顶点个数
+
+				minTree._vertexs = _vertexs;
+				minTree._indexMap = _indexMap;
+				minTree._weights.resize(n);
+				for (size_t i = 0; i < n; i++)
+				{
+					minTree._weights[i].resize(n, MAX_W);
+				}
+
+				priority_queue<Edge, vector<Edge>, greater<Edge>> minque;//存储较小的路径
 
 				//遍历邻接矩阵，如果有权值就插入优先级队列中
 				for (size_t i = 0; i < n; i++)
@@ -203,18 +214,31 @@ namespace limou
 					}
 				}
 
-				//选出 n-1 条边
-				int count = n - 1;
-				UnionFindSet<> ufs(n);
-				while (count--)
+				//选出边组成最小生成树
+				int count = 0; //统计选择的边数
+				int totalw = 0; //统计最小生成树的权值
+				UnionFindSet<int> ufs(n);
+				while (!minque.empty())
 				{
 					Edge min = minque.top();
 					minque.pop();
 
-					if (ufs.InSet(min._srci, min._dsti))
+					if (!ufs.InSet(min._srci, min._dsti)) //判断边的两顶点不在同一个集合
 					{
-						minTree.AddEdge();
+						minTree._AddEdge(min._srci, min._dsti, min._weig); //添加该边进入最小生成树
+						ufs.Union(min._srci, min._dsti); //将两个顶点归为一个集合
+						++count;
+						totalw += min._weig;
 					}
+				}
+
+				if (count == n - 1)
+				{
+					return totalw;
+				}
+				else
+				{
+					return WeightType();//都走到这里了说明改图没有最小生成树（也就是图不是连通图）
 				}
 			}
 		}
@@ -241,7 +265,7 @@ namespace limou
 		amg.Print();
 	}
 
-	void TestAMGraphBFS()
+	void TestAMGraphTraversal()
 	{
 		vector<string> vec = { "张三", "李四", "王五", "赵六", "周七" };
 		AMGraph<string, int, INT_MAX> amg(vec, 5);
@@ -252,5 +276,36 @@ namespace limou
 		amg.BFS("张三");
 		amg.BFS("李四");
 		amg.DFS("赵六");
+	}
+
+	void TestAMGraphMinTree()
+	{
+		string str = "abcdefghi";
+		vector<char> vec(str.begin(), str.end());
+
+		AMGraph<char, int> g(vec, str.size());
+		g.AddEdge('a', 'b', 4);
+		g.AddEdge('a', 'h', 8);
+		//g.AddEdge('a', 'h', 9);
+		g.AddEdge('b', 'c', 8);
+		g.AddEdge('b', 'h', 11);
+		g.AddEdge('c', 'i', 2);
+		g.AddEdge('c', 'f', 4);
+		g.AddEdge('c', 'd', 7);
+		g.AddEdge('d', 'f', 14);
+		g.AddEdge('d', 'e', 9);
+		g.AddEdge('e', 'f', 10);
+		g.AddEdge('f', 'g', 2);
+		g.AddEdge('g', 'h', 1);
+		g.AddEdge('g', 'i', 6);
+		g.AddEdge('h', 'i', 7);
+
+		AMGraph<char, int> kminTree;
+		cout << "Kruskal:" << g.Kruskal(kminTree) << '\n';
+		kminTree.Print();
+
+		//AMGraph<char, int> pminTree;
+		//cout << "Prim:" << g.Prim(pminTree, 'a') << '\n';
+		//pminTree.Print();
 	}
 }

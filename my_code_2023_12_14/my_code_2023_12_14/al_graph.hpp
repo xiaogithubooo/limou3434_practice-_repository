@@ -49,7 +49,7 @@ namespace limou
 			for (size_t i = 0; i < arrSize; ++i)
 			{
 				_vertexs.push_back(arr[i]);
-				_indexMap[arr[i]] = (int)i;
+				_indexMap[arr[i]] = i;
 			}
 
 			_tables.resize(arrSize, nullptr);
@@ -73,13 +73,13 @@ namespace limou
 			size_t srci = GetVertexIndex(src); //找到源点对应的索引
 			size_t dsti = GetVertexIndex(dst); //找到源点对应的索引
 
-			Edge<WeightType>* eg = new Edge<WeightType>((int)dsti, w); //头插
+			Edge<WeightType>* eg = new Edge<WeightType>(dsti, w); //头插
 			eg->_next = _tables[srci];
 			_tables[srci] = eg;
 
 			if (Direction == false) //如果是无向图还需要进一步镜像处理
 			{
-				Edge<WeightType>* eg = new Edge<WeightType>((int)srci, w); //头插
+				Edge<WeightType>* eg = new Edge<WeightType>(srci, w); //头插
 				eg->_next = _tables[dsti];
 				_tables[dsti] = eg;
 			}

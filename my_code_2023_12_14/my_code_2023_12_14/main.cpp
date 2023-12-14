@@ -2,9 +2,9 @@
 
 int main()
 {
-	limou::TestAMGraph();
-
-	limou::TestAMGraphBFS();
+	//limou::TestAMGraph();
+	//limou::TestAMGraphTraversal();
+	limou::TestAMGraphMinTree();
 	return 0;
 }
 
