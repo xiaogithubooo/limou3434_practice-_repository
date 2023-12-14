@@ -100,13 +100,17 @@ namespace limou
 			{
 				for (size_t j = 0; j < _weights[i].size(); j++)
 				{
-					if (_weights[i][j] != INT_MAX)
+					if (_weights[i][j] != INT_MAX && Direction == true)
 					{
-						printf("[%zd, %zd]:%-5d  ", i, j, _weights[i][j]);
+						printf("[%zd, %zd]%c->%c,%-2d  ", i, j, _vertexs[i], _vertexs[j], _weights[i][j]);
+					}
+					else if (_weights[i][j] != INT_MAX && Direction == false)
+					{
+						printf("[%zd, %zd]%c--%c,%-2d  ", i, j, _vertexs[i], _vertexs[j], _weights[i][j]);
 					}
 					else
 					{
-						printf("[%zd, %zd]:%-5d  ", i, j, 0);
+						printf("[%zd, %zd]%-7c  ", i, j, '*');
 					}
 				}
 				cout << '\n';
@@ -188,7 +192,7 @@ namespace limou
 		WeightType Kruskal(Self& minTree)
 		{
 			/* 使用 Kruskal 算法给无向图生成最小生成树 */
-			if (Direction != true)
+			if (Direction != true)//排除有向图的情况，因为有向图生成的是有向树而不是生成树
 			{
 				size_t n = _vertexs.size();//统计顶点个数
 
@@ -251,6 +255,7 @@ namespace limou
 
 	void TestAMGraph()
 	{
+		cout << "void TestAMGraph()" << '\n';
 		string str = "ABCD";
 		vector<char> vec(str.begin(), str.end());
 		AMGraph<char, int, INT_MAX, true> amg(vec, 4);
@@ -263,10 +268,12 @@ namespace limou
 		amg.AddEdge('C', 'A', 3);
 		amg.AddEdge('D', 'C', 6);
 		amg.Print();
+		cout << '\n';
 	}
 
 	void TestAMGraphTraversal()
 	{
+		cout << "void TestAMGraphTraversal()" << '\n';
 		vector<string> vec = { "张三", "李四", "王五", "赵六", "周七" };
 		AMGraph<string, int, INT_MAX> amg(vec, 5);
 		amg.AddEdge("张三", "李四", 100);
@@ -276,10 +283,12 @@ namespace limou
 		amg.BFS("张三");
 		amg.BFS("李四");
 		amg.DFS("赵六");
+		cout << '\n';
 	}
 
 	void TestAMGraphMinTree()
 	{
+		cout << "void TestAMGraphMinTree()" << '\n';
 		string str = "abcdefghi";
 		vector<char> vec(str.begin(), str.end());
 
@@ -307,5 +316,7 @@ namespace limou
 		//AMGraph<char, int> pminTree;
 		//cout << "Prim:" << g.Prim(pminTree, 'a') << '\n';
 		//pminTree.Print();
+
+		cout << '\n';
 	}
 }
