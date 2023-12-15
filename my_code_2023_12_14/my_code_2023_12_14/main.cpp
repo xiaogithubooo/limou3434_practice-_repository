@@ -2,9 +2,20 @@
 
 int main()
 {
-	limou::TestAMGraph();
-	limou::TestAMGraphTraversal();
-	limou::TestAMGraphMinTree();
+	try
+	{
+		//limou::TestAMGraph();
+		//limou::TestAMGraphTraversal();
+		limou::TestAMGraphMinTree();
+	}
+	catch (std::string message)
+	{
+		std::cout << message << '\n';
+	}
+	catch (...)
+	{
+		std::cout << "δ֪�쳣" << '\n';
+	}
 	return 0;
 }
 

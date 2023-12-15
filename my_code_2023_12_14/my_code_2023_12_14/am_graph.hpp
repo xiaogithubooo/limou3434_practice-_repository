@@ -65,8 +65,11 @@ namespace limou
 			{
 				return it->second;
 			}
-			throw invalid_argument("顶点不存在"); //运行时报错
-			return -1; //防止编译器警告
+
+			cout << v;
+			std::string message = " 顶点不存在，请检查";
+			throw message; //运行时报错
+			return -1; //防止编译器警告（不加在有的编译器过不了）
 		}
 
 		void _AddEdge(const size_t& srci, const size_t& dsti, const WeightType& w)
@@ -177,7 +180,7 @@ namespace limou
 
 		struct Edge
 		{
-			/* 专门服务于 Kruskal 的结构体 */
+			/* 专门服务于下面两种算法的结构体 */
 			size_t _srci;
 			size_t _dsti;
 			WeightType _weig;
@@ -191,22 +194,24 @@ namespace limou
 				return _weig > e._weig;
 			}
 		};
+
 		WeightType Kruskal(Self& minTree)
 		{
 			/* 使用 Kruskal 算法给无向图生成最小生成树 */
-			if (Direction != true)//排除有向图的情况，因为有向图生成的是有向树而不是生成树
+			if (Direction != true) //排除有向图的情况，因为有向图生成的是有向树而不是生成树
 			{
-				size_t n = _vertexs.size();//统计顶点个数
+				//初始化
+				size_t n = _vertexs.size(); //统计顶点个数
 
-				minTree._vertexs = _vertexs;
-				minTree._indexMap = _indexMap;
-				minTree._weights.resize(n);
+				minTree._vertexs = _vertexs; //复制顶点表
+				minTree._indexMap = _indexMap; //复制映射表
+				minTree._weights.resize(n); //权值表提前扩容
 				for (size_t i = 0; i < n; i++)
 				{
 					minTree._weights[i].resize(n, MAX_W);
 				}
 
-				priority_queue<Edge, vector<Edge>, greater<Edge>> minque;//存储较小的路径
+				priority_queue<Edge, vector<Edge>, greater<Edge>> minque; //存储较小的路径
 
 				//遍历邻接矩阵，如果有权值就插入优先级队列中
 				for (size_t i = 0; i < n; i++)
@@ -256,8 +261,11 @@ namespace limou
 			/* 使用 Prim 算法给无向图生成最小生成树 */
 			if (Direction != true) //排除有向图的情况，因为有向图生成的是有向树而不是生成树
 			{
+				//初始化最小生成树
 				size_t srci = GetVertexIndex(src); //获取起点索引
 				size_t n = _vertexs.size(); //统计顶点个数
+				size_t count = 0; //统计已选择的边数
+				WeightType totalW = 0; //权值总和
 
 				minTree._vertexs = _vertexs;
 				minTree._indexMap = _indexMap;
@@ -267,16 +275,13 @@ namespace limou
 					minTree._weights[i].resize(n, MAX_W);
 				}
 
-				set<int> X; //X 集合
-				set<int> Y; //Y 集合
-				X.insert(srci); //插入起点
-				for (size_t i = 0; i < n; ++i) //插入其他顶点
-				{
-					if (i != srci)
-					{
-						Y.insert(i);
-					}
-				}
+				//设置两个集合
+				vector<bool> X; //X 集合
+				vector<bool> Y; //Y 集合
+				X.resize(n, false); //设置 X 中的顶点
+				Y.resize(n, true); //设置 Y 中的顶点
+				X[srci] = true; //在 X 中插入起点
+				Y[srci] = false; //在 Y 中删除起点
 
 				//从 X-Y 中选择权值小的边构成最小生成树，并且迁移 Y 集合中的元素到 X 集合
 				priority_queue<Edge, vector<Edge>, greater<Edge>> minq;
@@ -287,32 +292,37 @@ namespace limou
 						minq.push(Edge(srci, i, _weights[srci][i])); //将和起点相关的边及其信息入队
 					}
 				}
-				size_t count = 0; //统计已选择的边数
-				WeightType totalW = 0; //权值总和
+
 				while (!minq.empty())
 				{
 					//选出最小的边
 					Edge min = minq.top();
 					minq.pop();
 
-					//添加到最小生成树中
-					minTree._AddEdge(min._srci, min._dsti, min._weig);
-
-					//转移两个集合元素
-					X.insert(min._dsti);
-					Y.erase(min._dsti);
-					++count;
-					totalW += min._weig;
-
-					if (count == n - 1)
-						break;
-
-					//继续走其他顶点
-					for (size_t i = 0; i < n; ++i)
+					//排除环的情况
+					if (X[min._dsti] != true) //终点也在 X 集合就会构成环，要避免这种情况
 					{
-						if (_weights[min._dsti][i] != MAX_W && X.count(i) == 0) //后一个条件是为了避免重复添加之前就添加的边
+						//添加到最小生成树中
+						minTree._AddEdge(min._srci, min._dsti, min._weig);
+
+						//转移两个集合元素
+						X[min._dsti] = true;
+						Y[min._dsti] = false;
+						
+						//统计顶点数和权值和
+						++count;
+						totalW += min._weig;
+
+						if (count == n - 1)
+							break;
+
+						//继续走其他顶点
+						for (size_t i = 0; i < n; ++i)
 						{
-							minq.push(Edge(min._dsti, i, _weights[min._dsti][i]));
+							if (_weights[min._dsti][i] != MAX_W && Y[i] == true) //后一个条件是为了避免重复添加之前就添加的边
+							{
+								minq.push(Edge(min._dsti, i, _weights[min._dsti][i]));
+							}
 						}
 					}
 				}
