@@ -412,4 +412,9 @@ namespace limou
 
 		cout << '\n';
 	}
+
+	void TestAMGraphShortestPath()
+	{
+
+	}
 }
