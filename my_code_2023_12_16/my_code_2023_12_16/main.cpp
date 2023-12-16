@@ -10,29 +10,23 @@ int main()
 	for (auto& it : arr) cout << (it = rand() % 10) << " "; cout << '\n';
 	//上面代码交给用户通过 IN 指令输入，被循环输入 10 次
 	
-//LOOP:
-
-	int m0 = 0;
-	//MOV #0H, R0
-
-	int m1 = 0;
-	//MOV #0H, R1
-
-	int m2 = 0;
-	//MOV #0H, R2
+	int m0 = 0;//MOV R0,#0H
+	int m1 = 0;//MOV R1,#0H
+	int m2 = 0;//MOV R2,#0H
 
 LOOP1:
 	if (m0 - 9 < 0)
-	//MOV a, R0
-	//sub a, #09H
-	//jz EXIT1
+	//MOV a,R0
+	//SUB a,#09H
+
 
 	{
 		m1 = 0;
-		//MOV #0H, R1
+		//MOV  R1,#0H
 
 	LOOP2:
 		if (m1 + m0 - 9 < 0)
+
 		{
 			if (*(arr + m1) - *(arr + m1 + 1) > 0)
 			{
@@ -46,8 +40,8 @@ LOOP1:
 		m0++;
 		goto LOOP1;
 	}
-
-//EXIT1:
+	
+	EXIT1:
 
 	for (const auto& it : arr) cout << it << " ";
 	return 0;

@@ -340,6 +340,64 @@ namespace limou
 			return WeightType();
 		}
 
+		void Dijkstra(const VertexType& src, vector<WeightType>&dist, vector<int>& pPath)
+		{
+			//				[0]	[1]	[2]	[3]	[4]
+			//s->[]			s	y	z	t	x
+			//
+			//dist[]代价		0	*	*	*	*
+			//pPath[]父路径	0	-1	-1	-1	-1
+			//
+			//dist[]代价		0	5	*	10	*
+			//pPath[]父路径	0	0	-1	0	-1
+			//
+			//dist[]代价		0	5	7	8	14
+			//pPath[]父路径	0	0	1	1	1
+			//
+			//dist[]代价		0	5	7	8	13
+			//pPath[]父路径	0	0	1	1	2
+			//
+			//dist[]代价		0	5	7	8	9
+			//pPath[]父路径	0	0	1	1	3
+
+			//初始化两个数组，并且设置起点和父路径
+			size_t srci = GetVertexIndex(src); //查询起点的索引
+			size_t n = _vertexs.size(); //查询图的顶点个数
+			dist.resize(n, MAX_W); //初始化代价表
+			pPath.resize(n, -1); //初始化父路径表
+			dist[srci] = 0; //设置起点到起点的代价（注意这里的 srci 为图中定义的编号，和 dist、pPath、isShortest 是一样的）
+			pPath[srci] = srci; //设置父路径
+			vector<bool> isShortest(n, false); //已经确定最短路径的顶点集合
+
+			for (size_t j = 0; j < n; ++j) //执行 n 次，一次确定一个终点的最短路径
+			{
+				int ver = 0;
+				WeightType min = MAX_W;
+
+				for (size_t i = 0; i < n; ++i) //遍历每一个顶点
+				{
+					if (isShortest[i] == false && dist[i] < min)
+					{
+						ver = i;
+						min = dist[i];
+					}
+
+					isShortest[ver] = true;
+
+					//松弛更新 ver 链接的顶点 v，srci->ver + ver->v ? srci->v
+					for (size_t v = 0; v < n; ++v)
+					{
+						if (_weights[ver][v] != MAX_W
+							&& (dist[ver] + _weights[ver][v] < dist[v]))
+						{
+							dist[v] = dist[ver] + _weights[ver][v];
+							pPath[v] = ver;
+						}
+					}
+				}
+			}
+		}
+
 	private:
 		vector<VertexType> _vertexs; //顶点表
 		vector<vector<WeightType>> _weights; //邻接矩阵（无向图的时候表示链接关系，有向图的时候不仅可以查看是否有链接，还可以查看权值）
@@ -415,6 +473,26 @@ namespace limou
 
 	void TestAMGraphShortestPath()
 	{
+		cout << "void TestAMGraphShortestPath()" << '\n';
+		string str = "syztx";
+		vector<char> vec(str.begin(), str.end());
 
+		AMGraph<char, int, INT_MAX, true> g(vec, str.size());
+		g.AddEdge('s', 't', 10);
+		g.AddEdge('s', 'y', 5);
+		g.AddEdge('y', 't', 3);
+		g.AddEdge('y', 'x', 9);
+		g.AddEdge('y', 'z', 2);
+		g.AddEdge('z', 's', 7);
+		g.AddEdge('z', 'x', 6);
+		g.AddEdge('t', 'y', 2);
+		g.AddEdge('t', 'x', 1);
+		g.AddEdge('x', 'z', 4);
+
+		vector<int> dist;
+		vector<int> parentPath;
+		g.Dijkstra('s', dist, parentPath);
+
+		cout << '\n';
 	}
 }

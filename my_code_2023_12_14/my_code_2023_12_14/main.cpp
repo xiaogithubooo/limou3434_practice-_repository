@@ -6,7 +6,8 @@ int main()
 	{
 		//limou::TestAMGraph();
 		//limou::TestAMGraphTraversal();
-		limou::TestAMGraphMinTree();
+		//limou::TestAMGraphMinTree();
+		limou::TestAMGraphShortestPath();
 	}
 	catch (std::string message)
 	{
