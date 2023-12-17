@@ -1,4 +1,5 @@
 #pragma once
+#include "settings.hpp"
 
 namespace limou
 {
