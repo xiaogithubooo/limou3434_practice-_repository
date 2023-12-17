@@ -371,33 +371,63 @@ namespace limou
 
 			vector<bool> isShortest(n, false); //已经确定最短路径的顶点集合
 
-			for (size_t j = 0; j < n; ++j) //执行 n 次，一次确定一个顶点辐射出去的最短路径，直到 n 个顶点都找到最短路径
+			//执行 n 次，一次确定一个顶点辐射出去的最短路径，直到 n 个顶点都找到最短路径
+			for (size_t j = 0; j < n; ++j) 
 			{
 				int ver = 0;
 				WeightType min = MAX_W;
 
-				for (size_t i = 0; i < n; ++i) //遍历顶点，顺序查找没有确定最短路径的顶点，利用顶点存储的代价+直接路径权值，让该顶点确定到其他顶点的最短路径
+				//遍历顶点，顺序查找没有确定最短路径的顶点，利用顶点存储的代价+直接路径权值，让该顶点确定到其他顶点的最短路径
+				for (size_t i = 0; i < n; ++i)
 				{
 					if (isShortest[i] == false && dist[i] < min)
 					{
 						ver = i; //找到需要松弛操作的顶点
 						min = dist[i]; //找到从起点到该点的代价
 					}
+					isShortest[ver] = true; //设置该点为已经确认最短路径
 
-					isShortest[ver] = true; //设置该点为以及确认最短路径
-
-					//松弛更新 ver 链接的顶点 v，srci->ver + ver->v ? srci->v
-					for (size_t v = 0; v < n; ++v)
+					//松弛更新 ver 链接的顶点 k，srci->ver + ver->k ? srci->k
+					for (size_t k = 0; k < n; ++k)
 					{
-						if (_weights[ver][v] != MAX_W
-							&& (dist[ver] + _weights[ver][v] < dist[v])) //有权值的情况下，更新从 ver 能到的所有点的所有代价
+						if (isShortest[k] == false && _weights[ver][k] != MAX_W
+							&& (dist[ver] + _weights[ver][k] < dist[k])) //有权值的情况下，更新从 ver 能到的所有点的所有代价
 						{
-							dist[v] = dist[ver] + _weights[ver][v];
-							pPath[v] = ver;
+							dist[k] = dist[ver] + _weights[ver][k];
+							pPath[k] = ver;
 						}
 					}
 				}
 			}
+		}
+
+		bool BellmanFord(const VertexType& src, vector<WeightType>& dist, vector<int>& pPath)
+		{
+			size_t n = _vertexs.size();
+			size_t srci = GetVertexIndex(src);
+
+			dist.resize(n, MAX_W);
+			pPath.resize(n, -1);
+
+			dist[srci] = WeightType();
+
+			for (size_t k = 0; k < n; k++) //暴力更新，为什么一点更新 n 呢？因为最多绕 n - 1 根线
+			{
+				for (int i = 0; i < n; i++)
+				{
+					for (int j = 0; j < n; j++)
+					{
+						if (_weights[i][j] != MAX_W
+							&& dist[i] + _weights[i][j] < dist[j])
+						{
+							dist[j] = dist[i] + _weights[i][j];
+							pPath[j] = i;
+						}
+					}
+				}
+			}
+
+			return true;
 		}
 
 	private:
@@ -493,7 +523,17 @@ namespace limou
 
 		vector<int> dist;
 		vector<int> parentPath;
-		g.Dijkstra('s', dist, parentPath);
+		g.BellmanFord('s', dist, parentPath);
+
+		cout << "打印代价表" << '\n';
+		for (auto it : dist)
+			cout << it << " ";
+		
+		cout << '\n';
+
+		cout << "打印父路径表" << '\n';
+		for (auto it : parentPath)
+			cout << it << " ";
 
 		cout << '\n';
 	}
