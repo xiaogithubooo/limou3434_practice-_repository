@@ -365,30 +365,32 @@ namespace limou
 			size_t n = _vertexs.size(); //查询图的顶点个数
 			dist.resize(n, MAX_W); //初始化代价表
 			pPath.resize(n, -1); //初始化父路径表
+
 			dist[srci] = 0; //设置起点到起点的代价（注意这里的 srci 为图中定义的编号，和 dist、pPath、isShortest 是一样的）
-			pPath[srci] = srci; //设置父路径
+			pPath[srci] = srci; //设置起点的父路径
+
 			vector<bool> isShortest(n, false); //已经确定最短路径的顶点集合
 
-			for (size_t j = 0; j < n; ++j) //执行 n 次，一次确定一个终点的最短路径
+			for (size_t j = 0; j < n; ++j) //执行 n 次，一次确定一个顶点辐射出去的最短路径，直到 n 个顶点都找到最短路径
 			{
 				int ver = 0;
 				WeightType min = MAX_W;
 
-				for (size_t i = 0; i < n; ++i) //遍历每一个顶点
+				for (size_t i = 0; i < n; ++i) //遍历顶点，顺序查找没有确定最短路径的顶点，利用顶点存储的代价+直接路径权值，让该顶点确定到其他顶点的最短路径
 				{
 					if (isShortest[i] == false && dist[i] < min)
 					{
-						ver = i;
-						min = dist[i];
+						ver = i; //找到需要松弛操作的顶点
+						min = dist[i]; //找到从起点到该点的代价
 					}
 
-					isShortest[ver] = true;
+					isShortest[ver] = true; //设置该点为以及确认最短路径
 
 					//松弛更新 ver 链接的顶点 v，srci->ver + ver->v ? srci->v
 					for (size_t v = 0; v < n; ++v)
 					{
 						if (_weights[ver][v] != MAX_W
-							&& (dist[ver] + _weights[ver][v] < dist[v]))
+							&& (dist[ver] + _weights[ver][v] < dist[v])) //有权值的情况下，更新从 ver 能到的所有点的所有代价
 						{
 							dist[v] = dist[ver] + _weights[ver][v];
 							pPath[v] = ver;
