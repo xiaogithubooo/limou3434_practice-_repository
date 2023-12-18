@@ -45,7 +45,6 @@ node SnakeMove(node* snake, int snakeLength, direction dir)
 {
 	//记录下蛇的尾部节点坐标
 	node tail = snake[snakeLength - 1];
-
 	//将每个前面的节点覆盖掉后面的节点
 	for (int i = snakeLength - 1; i > 0; i--)
 	{
