@@ -4,7 +4,7 @@ int main()
 {
 	//1.初始游戏背景、蛇和食物、游戏文字、游戏信息
 	GameInit();
-	node snake[100] = { {5,7}, {4,7}, {3,7}, {2,7}, {1,7} };	//初始蛇的坐标
+	node snake[100] = { {5,5}, {4,5}, {3,5}, {2,5} };	//初始蛇的坐标
 	int snakeLength = SNAKE_LENGTH;								//初始蛇的长度
 	enum direction dir = eRight;								//初始蛇头方向为右
 

@@ -16,7 +16,7 @@
 #define WINDOW_LENGTH 800					//窗体长度
 #define WINDOW_WIDTH 600					//窗体宽度
 
-#define SNAKE_LENGTH 5						//蛇初始长度
+#define SNAKE_LENGTH 4						//蛇初始长度
 #define SNAKE_MAX_LENGTH 50					//蛇最大长度
 #define SNAKE_SPEED 500						//蛇初始速度
 
