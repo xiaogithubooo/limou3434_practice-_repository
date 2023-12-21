@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 using namespace std;
 
 int main()
@@ -25,7 +26,9 @@ LOOP1:
 		//MOV  R1,#0H
 
 	LOOP2:
-		if (m1 + m0 - 9 < 0)
+		int num = m1 + m0 - 9;9
+		int flag = num & 32768;
+		if ((flag) == 1)//1??? ????|???? ????|???? ????|???? ????
 
 		{
 			if (*(arr + m1) - *(arr + m1 + 1) > 0)
