@@ -1,44 +1,25 @@
+//多次发送 2 号信号和其他信号，观察 pending 表的变化
 #include <iostream>
 #include <signal.h>
 #include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <cassert>
 using namespace std;
 
-void ShowPending(sigset_t& pending)
+volatile int flag = 0;
+
+void ChangFlag(int signum)
 {
-    cout << "进程 " << getpid() << " 打印一次 pending 集合" << '\n';
-    for(int sig = 1; sig <= 31; sig++)
-    {
-        if(sigismember(&pending, sig))
-            cout << "1";
-        else
-            cout << "0";
-    }
-    cout << '\n';
+    cout << "捕捉到信号:" << signum << '\n';
+    cout << "修改 flag=1" << '\n';
+    flag = 1;
 }
 
 int main()
 {
-    //屏蔽所有信号
-    sigset_t best;
-
-    for(int sig = 0; sig <= 31; sig++)
+    signal(2, ChangFlag);
+    while(!flag)
     {
-        sigemptyset(&best);
-        sigaddset(&best, sig);
-        int n = sigprocmask(SIG_BLOCK, &best, nullptr);
-        assert(n == 0), (void) n;
-    }
-
-    //不断获取 pending 信号集并且打印
-    sigset_t pending;
-    while(true)
-    {
-        sigpending(&pending);
-        ShowPending(pending);
-        sleep(1);
+        //cout << "flag..." << '\n';
+        //sleep(1);
     }
     return 0;
 }
