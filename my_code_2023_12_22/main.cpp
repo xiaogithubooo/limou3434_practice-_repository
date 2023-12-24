@@ -1,25 +1,31 @@
-//多次发送 2 号信号和其他信号，观察 pending 表的变化
+//基于信号版本的子进程回收机制（父进程无需等待子进程，自己清理自己）
 #include <iostream>
+#include <cstdlib>
 #include <signal.h>
 #include <unistd.h>
 using namespace std;
 
-volatile int flag = 0;
-
-void ChangFlag(int signum)
+void handler(int signum)
 {
-    cout << "捕捉到信号:" << signum << '\n';
-    cout << "修改 flag=1" << '\n';
-    flag = 1;
+    cout << "子进程已退出，父进程接受到信号为: " << signum << '\n';
 }
 
 int main()
 {
-    signal(2, ChangFlag);
-    while(!flag)
+    signal(SIGCHLD, SIG_IGN); //手动设置忽略
+
+    if(fork() == 0)
     {
-        //cout << "flag..." << '\n';
-        //sleep(1);
+        cout << "子进程: " << getpid() << " 启动" << '\n';
+        sleep(5);
+        exit(10);
     }
+
+    while(true) 
+    {
+        cout << "父进程: " << getpid() << " 执行自己的代码" << '\n';
+        sleep(5);
+    }
+
     return 0;
 }
