@@ -1,42 +1,54 @@
-//尝试等待新线程（注意使用 g++ 编译的时候加上参数 -lpthread）
+//尝试线程分离
 #include <iostream>
 #include <string>
+#include <cerrno>
+#include <cstring>
 #include <pthread.h>
 #include <unistd.h>
 using namespace std;
 
-void* ThreadRun(void* args) //args 获取参数，也就是 pthread_create() 的最后一个参数
-{
-    int i = 0;
+int g_val = 0; //由于是全局变量并且进程地址空间共享，因此每个线程都可以访问
 
-    while(true)
-    {
-        const string name = (char*)args;
-        cout << "新线程的 name:" << name << '\n'; //显示线程名
-        sleep(1);
-        if(i++ == 5)
-            break;
-    }
+//新线程运行逻辑
+void* ThreadRoutine(void* args) //args 获取参数，也就是 pthread_create() 的最后一个参数
+{
+    pthread_detach(pthread_self()); //线程分离
+    cout
+        << (char*)args
+        << " g_val:" << g_val
+        << " and &g_val:" << &g_val
+        << '\n';
     
-    return (void*)10;
+    g_val++, sleep(1);
+
+    pthread_exit((void*)11);
 }
 
 int main()
 {
-    //创建 1 个新线程
-    pthread_t tid = 0; //线程名
-    string name = "new thread ";
+    //创建新线程并且运行
+    pthread_t tid = 0; //新线程 id
+    string name = "new thred"; //新线程名
     pthread_create(
-        &tid, //线程 id
-        nullptr, //线程属性
-        ThreadRun, //使用回调函数的方式让线程执行一部分的代码
-        (void*)name.c_str() //传递给函数指针的参数
+        &tid, //设置新线程 id
+        nullptr, //设置新线程属性
+        ThreadRoutine, //设置新线程的回调函数
+        (void*)name.c_str() //设置传递给回调函数的参数
     );
 
-    //线程等待，并且获取线程的结果
-    void* ret = nullptr; //void* 大小就是 4/8，ret 作为变量为指针（我用的是 8 字节空间）
-    pthread_join(tid, &ret); //阻塞等待新线程退出
-    cout << "main thread wait done ... main quit, return value = " << (long long)ret << '\n'; //long long 是为了避免截断问题，因为这里的平台是 64 位，指针大小为 8
-    
+    //主线程运行逻辑
+    cout
+        << "main thread"
+        << " g_val:" << g_val
+        << " and &g_val:" << &g_val
+        << '\n';
+    sleep(1);
+
+    //强行等待
+    int n = pthread_join(tid, nullptr);
+    cout
+        << "n:" << n << '\n'
+        << "errstrong:" << strerror(n) << '\n'; //提示参数错误
+
     return 0;
 }
