@@ -12,8 +12,11 @@ void func()
 int main()
 {
     cout << "I am a main thread!" << '\n';
+
     thread t(func); //创建线程
     Sleep(2000);
+
     t.join(); //销毁线程
+
     return 0;
 }
