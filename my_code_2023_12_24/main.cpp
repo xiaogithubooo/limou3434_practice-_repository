@@ -1,54 +1,43 @@
-//尝试线程分离
+//多线程抢票
 #include <iostream>
-#include <string>
-#include <cerrno>
-#include <cstring>
 #include <pthread.h>
 #include <unistd.h>
 using namespace std;
 
-int g_val = 0; //由于是全局变量并且进程地址空间共享，因此每个线程都可以访问
+int ticket = 10000; //票数，模拟临界资源，没有被保护的情况下被并发访问
 
-//新线程运行逻辑
-void* ThreadRoutine(void* args) //args 获取参数，也就是 pthread_create() 的最后一个参数
+void* GetTickets(void* args) //模拟临界区代码
 {
-    pthread_detach(pthread_self()); //线程分离
-    cout
-        << (char*)args
-        << " g_val:" << g_val
-        << " and &g_val:" << &g_val
-        << '\n';
-    
-    g_val++, sleep(1);
-
-    pthread_exit((void*)11);
+    (void)args;
+    while(true)
+    {
+        if(ticket > 0)
+        {
+            usleep(1000);
+            printf("%p sells ticket:%d\n", pthread_self(), ticket--);
+            //(1)实际上 -- 操作有三个执行步骤，先从内存中读取数据到 CPU 的上下文寄存器中
+            //(2)CPU 进行自减操作
+            //(3)自减操作做完后，写回进程中
+            //在线程频繁切换中，有可能会触发上下文保护
+            //被切出的线程记录了没有被 -- 操作的上下文
+            //但是下一个线程切入的时候就把 -- 操作做完了
+            //而原先的进程再次切入时，会把上一个线程的结果覆盖，数据就出现了错乱
+        }
+    }
 }
 
 int main()
 {
-    //创建新线程并且运行
-    pthread_t tid = 0; //新线程 id
-    string name = "new thred"; //新线程名
-    pthread_create(
-        &tid, //设置新线程 id
-        nullptr, //设置新线程属性
-        ThreadRoutine, //设置新线程的回调函数
-        (void*)name.c_str() //设置传递给回调函数的参数
-    );
+    //创建 5 个新线程
+    pthread_t t1, t2, t3;
+    pthread_create(&t1, nullptr, GetTickets, nullptr); //这里的多个执行流同时调用 GetTickets() ，也就是对该函数进行重入
+    pthread_create(&t2, nullptr, GetTickets, nullptr);
+    pthread_create(&t3, nullptr, GetTickets, nullptr);
 
-    //主线程运行逻辑
-    cout
-        << "main thread"
-        << " g_val:" << g_val
-        << " and &g_val:" << &g_val
-        << '\n';
-    sleep(1);
-
-    //强行等待
-    int n = pthread_join(tid, nullptr);
-    cout
-        << "n:" << n << '\n'
-        << "errstrong:" << strerror(n) << '\n'; //提示参数错误
+    //等待释放 5 个新线程
+    pthread_join(t1, nullptr);
+    pthread_join(t2, nullptr);
+    pthread_join(t3, nullptr);
 
     return 0;
 }
