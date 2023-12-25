@@ -1,29 +1,19 @@
-#include <stdio.h>
-#include <string>
+#include <iostream>
+#include <thread>
+#include <windows.h>
 using namespace std;
+
+void func()
+{
+    cout << "I am a new thread!" << '\n';
+    Sleep(1000);
+}
 
 int main()
 {
-    string str1 = "hello world";
-    string str2 = str1;
-
-    printf("Sharing the memory:\n");
-    printf("\tstr1's address: %x\n", str1.c_str());
-    printf("\tstr2's address: %x\n", str2.c_str());
-
-    str1[1] = 'q';
-    str2[1] = 'w';
-
-    printf("After Copy-On-Write:\n");
-    printf("\tstr1's address: %x\n", str1.c_str());
-    printf("\tstr2's address: %x\n", str2.c_str());
-
-    char tmp[] = "hello world";
-    string str_tmp_1 = tmp;
-    string str_tmp_2 = tmp;
-    printf("Sharing the memory:\n");
-    printf("\tstr1's address: %x\n", str_tmp_1.c_str());
-    printf("\tstr2's address: %x\n", str_tmp_2.c_str());
-
+    cout << "I am a main thread!" << '\n';
+    thread t(func); //创建线程
+    Sleep(2000);
+    t.join(); //销毁线程
     return 0;
 }
