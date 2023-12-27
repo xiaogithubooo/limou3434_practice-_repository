@@ -21,11 +21,11 @@ void* GetTickets(void* args) //模拟临界区代码
         if(ticket > 0)
         {
             printf("%p sells ticket:%d\n", pthread_self(), ticket--);
-            pthread_mutex_unlock(&mtx); //解锁，不要放太后，减少加锁的颗粒度，否则打印的效率更低，导致代码整体效率低
+            pthread_mutex_lock(&mtx); //解锁，不要放太后，减少加锁的颗粒度，否则打印的效率更低，导致代码整体效率低
         }
         else
         {
-            n = pthread_mutex_unlock(&mtx); //解锁
+            n = pthread_mutex_lock(&mtx); //解锁
             assert(n == 0); //检查是否解锁，没有则断死
 
             break;
