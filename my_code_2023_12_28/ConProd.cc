@@ -32,7 +32,6 @@ void* producer(void* args)
         << " and func()"
         << '\n';
 
-        sleep(1);
     }
     return nullptr;
 }
