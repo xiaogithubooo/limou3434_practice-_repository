@@ -19,4 +19,5 @@ int main()
 	}
 	printf("%zd", sizeof(arr));
 	return 0;
+	
 }
