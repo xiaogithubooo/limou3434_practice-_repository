@@ -32,6 +32,7 @@ void* producer(void* args)
         << " and func()"
         << '\n';
 
+        sleep(1);
     }
     return nullptr;
 }
@@ -48,7 +49,7 @@ void* consumer(void* args)
         //输出结果
         std::cout << pthread_self() << "消费任务:" << t._x << " and " << t._y << " --> " << t() << '\n';
     
-        usleep(100);
+        sleep(10);
     }
     return nullptr;
 }
