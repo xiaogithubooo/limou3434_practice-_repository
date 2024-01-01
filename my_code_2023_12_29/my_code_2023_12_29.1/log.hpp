@@ -1,4 +1,4 @@
-//log.h
+//log.hpp
 #pragma once
 #include <iostream>
 #include <string>
