@@ -5,24 +5,32 @@
 #include <functional>
 #include <pthread.h>
 
+struct ThreadData
+{
+    void* _args;
+    std::string _name;
+};
+
 typedef void*(*func_t)(void*);
 
 class Thread
 {
     /*线程封装*/
 public:
-    Thread(int num)
-        : _func(nullptr)
+    Thread(int num, func_t callback, void* args)
+        : _func(callback)
     {
         /*传递名称*/
         std::string name = "Thread-";
         name += std::to_string(num);
+        _tdata._args = args;
+        _tdata._name = name;
     }
 
-    void Start(func_t callback, void* args)
+    void Start()
     {
         /*线程启动*/
-        pthread_create(&_tid, nullptr, callback, args);
+        pthread_create(&_tid, nullptr, _func, (void*)(&_tdata));
     }
 
     void Join()
@@ -34,13 +42,13 @@ public:
     std::string Name()
     {
         /*线程名字*/
-        return _name;
+        return _tdata._name;
     }
 
     ~Thread()
     {}
 private:
-    std::string _name;
     pthread_t _tid;
+    ThreadData _tdata;
     func_t _func;
 };
