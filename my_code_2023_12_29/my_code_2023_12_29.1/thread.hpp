@@ -5,13 +5,14 @@
 #include <functional>
 #include <pthread.h>
 
-typedef void*(func_t)(void*);
+typedef void*(*func_t)(void*);
 
 class Thread
 {
     /*线程封装*/
 public:
     Thread(int num)
+        : _func(nullptr)
     {
         /*传递名称*/
         std::string name = "Thread-";
