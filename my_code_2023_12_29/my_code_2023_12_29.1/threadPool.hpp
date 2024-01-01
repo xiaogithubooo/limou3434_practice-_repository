@@ -2,10 +2,12 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <string>
 #include "thread.hpp"
 
 //线程池（这里的运行逻辑实际上就是生产者-消费者模型）
+template <typename T>
 class ThreadPool
 {
 public:
