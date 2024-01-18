@@ -1,5 +1,0 @@
-@@flowname: 'my_pad_code_2023_4_8'
-External.RunFlow FlowId: '0970b190-cdbd-432c-af09-8ec8ce85140a'
-WAIT 3
-CALL Subflow_1
-# 这是一个limou的流程序

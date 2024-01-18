@@ -1,7 +1,0 @@
-Workstation.PlaySound.PlaySystemSound SystemSound: System.SystemSound.Asterisk
-Workstation.GetDefaultPrinter PrinterName=> PrinterName
-Workstation.SetDefaultPrinter PrinterName: $'''Foxit PDF Reader Printer'''
-Workstation.GetDefaultPrinter PrinterName=> PrinterName
-Workstation.PrintDocument DocumentPath: $'''C:\\Users\\DELL\\Desktop\\19种论文研究方法.docx'''
-Scripting.RunPythonScript PythonCode: $'''print(\"limou\")''' ScriptOutput=> PythonScriptOutput
-Display.ShowMessageDialog.ShowMessageWithTimeout Title: $'''提示''' Message: PythonScriptOutput Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True Timeout: 3 ButtonPressed=> ButtonPressed
