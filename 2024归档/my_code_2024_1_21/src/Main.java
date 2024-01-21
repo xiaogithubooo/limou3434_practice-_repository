@@ -4,7 +4,8 @@ class Data {
     public int _month;
     public int _day;
 
-    Data() {}
+    Data()
+    {}
 
     public void SetData(int year, int month, int day) {
         _year = year;
