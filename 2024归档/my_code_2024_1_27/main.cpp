@@ -1,6 +1,9 @@
-//使用匿名管道（父进程读，子进程写）
+//尝试编写一个简单的进程池
 #include <iostream>
 #include <string>
+#include <vector>
+#include <unordered_map>
+#include <functional>
 
 #include <unistd.h>
 #include <sys/types.h>
@@ -10,90 +13,327 @@
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
-#include <cerrno>
+#include <ctime>
 
 using namespace std;
 
+//信道类
+struct Channel
+{
+    Channel(const int& fd, const pid_t& id, const string& channelName)
+        : _fd(fd), _id(id), _channelName(channelName) {}
+    
+    int _fd; //对应的管道文件
+    pid_t _id; //对应的子进程 id
+    string _channelName; //对应的信道名字（方便日志打印）
+};
+
+//子进程的工作
+void work()
+{
+    int code = 0;
+    ssize_t n = read(0, &code, sizeof(code)); assert(n != sizeof(code)); (void)n; //返回读取到的字节个数，断死不匹配字节的情况
+    
+}
+
+//创建多个信道
+/*
+编码规范：
+1.输入型参数(const &)
+2.输出型参数(*)
+3.输入输出型参数(&)
+*/
+const int PROCESS_NUM = 5; //进程池中子进程的数量
+void CreatChannels(vector<Channel>* pchannels)
+{
+    for (int i = 0; i < PROCESS_NUM; i++)
+    {
+        //创建管道和创建子进程
+        int pipefd[2] = {0};
+        int n = pipe(pipefd); assert(n >= 0), (void)n;
+        pid_t id = fork(); assert(id != -1);
+
+        string name = "channelName_"; name += to_string(i);
+        pchannels->push_back(Channel(pipefd[1], id, name));
+        
+        //子进程部分
+        if (id == 0)
+        {
+            close(pipefd[1]); //关闭子进程的管道文件写端，子进程读取父进程的命令
+            dup2(pipefd[0], 0); //重定向到子进程的标准输入，可以避免给 work() 传参
+            work(); //执行对应的工作
+            exit(10); //设置子进程退出码
+        }
+
+        //父进程部分
+        close(pipefd[0]); //关闭父进程的读端，由父进程进行写入管道，通知其他进程
+    }
+}
+
+//打印多个信道的结果
+void PrintChannels(const vector<Channel>& channels)
+{
+    for (auto it : channels)
+    {
+        cout << it._channelName << ":" << it._id << "-->read[" << it._fd << "]" << endl;
+    }
+}
+
+//打印选择界面
+void PrintChoice()
+{
+    cout << "------------------------------------" << endl;
+    cout << "| 1.show functions  2.send command |" << endl;
+    cout << "| 3.quit the program               |" << endl;
+    cout << "------------------------------------" << endl;
+    cout << "<Please Select>:";
+}
+
 int main()
 {
-    //1.创建管道
-    int pipefd[2] = { 0 }; //这里的数组数据最后会被子进程拷贝了，所以子进程也看得到文件标识符
-    int n = pipe(pipefd);
-    assert(n != -1), (void)n; //检查管道是否创建成功，并且消除警告，由于这个返回值 n 只是检查是否成功，在 release 模式下 assert() 会失效，导致没人使用 n 从而引起报警，所以使用 void 强转一下
-    
-    //2.创建进程
-    pid_t id = fork();
-    assert(id != -1);
-    
-    //3.创建信道
-    //3.1.子进程执行部分（子进程为写端）
-    if (id == 0)
-    {
-        close(pipefd[0]); //关闭子进程读端
-        char send_buffer[1024] = { 0 }; //自定义写缓冲区
+    //创建多个信道，并且显示创建结果
+    vector<Channel> channels;
+    CreatChannels(&channels);
+    PrintChannels(channels);
 
-        while (true)
-        {
-            //3.1.1.正常写入管道文件
-            string message;
-            cin >> message; //用户输入消息
-            
-            snprintf(send_buffer, sizeof(send_buffer), "%s", message.c_str()); //写到自定义的缓冲区中
-            write(pipefd[1], send_buffer, strlen(send_buffer)); //写到管道文件中
-
-            //3.1.2.关闭管道文件的写端
-            if (message == "write_exit")
-            {
-                cout << "子进程关闭写端" << endl;
-                close(pipefd[1]); //检测父进程提前关闭写端的现象
-                break;
-            }
-        }
-        
-        exit(10);
-    }
-
-    //3.2.父进程执行部分（父进程为读段）
-    close(pipefd[1]); //关闭父进程的写端
-    char buffer[1024] = { 0 }; //自定义读缓冲区
-
+    //父进程部分
+    srand(((unsigned long)time(nullptr)) ^ getpid() ^ 114514L); //获取随机数（这里做了一些数据操作，让数据源更加随机）
     while (true)
     {
-        //3.2.1.正常读取管道文件
-        ssize_t s = read(pipefd[0], buffer, sizeof(buffer) - 1); //读取管道数据到自定义的缓冲区中
-        if (s > 0)
-        {
-            sleep(3); //这个睡眠秒数在检验一些情况的时候可以稍微调整一下
-            cout << "读取到的字符个数:" << s << endl;
-            buffer[s] = 0; //添加 '\0' 因为系统调用不靠该字符结尾
-            cout << "[" << getpid() << "]:Father get a message" << ", child sad:[" << buffer << "]" << endl;
+        //3.1.打印 UI 界面
+        PrintChoice();
 
-            //3.1.2.关闭管道文件的读端
-            if (strcmp(buffer, "read_exit") == 0)
-            {
-                cout << "父进程关闭读端" << endl;
-                close(pipefd[0]);
-                break;
-            }
-        }
-        else if(s == 0)
+        //3.2.用户进行命令输入
+        int n = 0;
+        cin >> n;
+        if (n == 1)
         {
-            cout << "子进程将写端关闭了，read() 直接返回:" << s << endl;
-            break;
+            PrintChoice();
+        }
+        else if (n == 2)
+        {
+            //TODO
+        }
+        else if(n == 3)
+        {
+            goto BREAK;
         }
         else
         {
-            //todo...
+            assert(false); //断死其他的意外情况，供开发者调试使用
         }
     }
 
-    //4.等待和检测子进程信息
-    int status = 0; //获取子进程信号
-    pid_t ret = waitpid(id, &status, 0); //等待子进程
-    assert(ret > 0), (void)ret; //检查和消除警告
-
-    printf("I am father process, wait success, my pid: %d, sub pid: %d, exit code: %d, exit sig: %d\n"
-        , getpid(), id, (status >> 8) & 0xFF, status & 0x7F);
-    
+BREAK:
     return 0;
 }
+
+
+
+
+
+// //等待读取函数
+// int waitCommand(int waitFd, bool& quit);
+
+// //使用包装类定义一个调用类型（可以使用函数指针），指向的调用对象是各个任务
+// //查询数据
+// void readSQL();
+// //解析地址
+// void execuleUrl();
+// //加密任务
+// void cal();
+// //数学计算
+// void mathCalculate();
+
+// //包装类对象
+
+
+// void load();              //填充若干调用
+// void show();              //查看任务名称
+// int handlerSize();        //查看任务数量
+// void sendAndWakeup(       //布置一个任务（父进程通过管道布置任务）
+//     pid_t who, //子进程 pid
+//     int fd, //管道文件标识符
+//     int command //命令字符串
+// ); 
+
+// //处理主逻辑
+// unordered_map<int, string> desc; //创建哈希表
+// int main()
+// {
+//     //1.装载任务
+//     load();
+
+//     //2.构造进程池，让管道文件和子进程一一对应
+//     vector<pair<pid_t, int>> slots;
+    
+//     for (int i = 0; i < PROCESS_NUM; i++)
+//     {
+//         //1.1.创建管道
+//         int pipefd[2] = {0};
+//         int n = pipe(pipefd); assert(n >= 0), (void)n;
+
+//         //1.2.创建进程
+//         pid_t id = fork(); assert(id != -1);
+
+//         //1.2.1.子进程部分
+//         if (id == 0)
+//         {
+//             close(pipefd[1]); //关闭子进程的管道文件写端，子进程读取父进程的命令
+//             while (true)
+//             {
+//                 bool quit = false;
+//                 int command = waitCommand(pipefd[0], quit); //如果父进程不写就进入阻塞，如果父进程关闭了写段就会设置 quit=false
+//                 if (quit)
+//                 {
+//                     break;
+//                 }
+                
+//                 if (command >= 0 && command < handlerSize())
+//                 {
+//                     callbacks[command](); //调用对应的方法
+//                 }
+//                 else
+//                 {
+//                     cout << "error command:" << command << endl; //报错
+//                 }
+//             }
+
+//             exit(10); //设置子进程退出码
+//         }
+
+//         //1.2.2.父进程部分
+//         close(pipefd[0]); //关闭父进程的读端，由父进程进行写入管道，通知其他进程
+//         slots.push_back(pair<pid_t, int>(id, pipefd[1])); //子进程 id 和各管道写标识符建立键值对，调用哪一个进程就可以找到其对应的管道文件
+//     }
+
+//     //3.父进程派发任务（这就相当于单机版的负载均衡）
+//     srand(((unsigned long)time(nullptr)) ^ getpid() ^ 114514L); //获取随机数（这里做了一些数据操作，让数据源更加随机）
+//     while (true)
+//     {
+//         //3.1.打印 UI 界面
+//         int n = 0;
+//         int command = 0;
+//         cout << "--------------------------------" << endl;
+//         cout << "1.show functions  2.send command" << endl;
+//         cout << "3.quit the program              " << endl;
+//         cout << "--------------------------------" << endl;
+//         cout << "<Please Select>:";
+
+//         //3.2.用户进行命令输入
+//         cin >> n;
+//         if (n == 1)
+//         {
+//             show();
+//         }
+//         else if (n == 2)
+//         {
+//             show();
+//             cout << "<Enter Your Command>:";
+//             //选择任务
+//             cin >> command;
+//             //随机选择进程
+//             int choice = rand() % slots.size();
+//             //布置任务
+//             sendAndWakeup(slots[choice].first, slots[choice].second, command); //传递子进程 id 和对应的管道文件 fd，还有参数 command 用来决定该进程执行哪一些任务
+//         }
+//         else if(n == 3)
+//         {
+//             cout << "This code has exited!" << endl;
+//             goto BREAK;
+//         }            
+//         else
+//         {
+//             assert(false); //断死其他的意外情况，供开发者调试使用
+//         }
+//     }
+
+// BREAK:
+//     //4.关闭管道 fd（其实可以不关），等待回收所有子进程，并且获取子进程的退出码和信号
+//     for (const auto slot : slots)
+//     {
+//         close(slot.second); //父进程关闭掉所有的写端
+//     }
+//     for (const auto& solt : slots)
+//     {
+//         int status = 0;
+//         waitpid(solt.first, &status, WUNTRACED); //父进程阻塞回收所有子进程信息
+//         cout << "sub exit code:" << WEXITSTATUS(status) << ", sub signal:" << WTERMSIG(status) << endl;
+//     }
+
+//     return 0;
+// }
+
+// void load()
+// {
+//     //注意 callbacks 会随着插入为变大
+//     desc.insert({ callbacks.size(), "readSQL-读取数据库" });
+//     callbacks.push_back(readSQL);
+
+//     desc.insert({callbacks.size(), "execuleUrl-解析URL"});
+//     callbacks.push_back(execuleUrl);
+
+//     desc.insert({callbacks.size(), "cal-加密"});
+//     callbacks.push_back(cal);
+
+//     desc.insert({callbacks.size(), "mathCalculate-数学计算"});
+//     callbacks.push_back(mathCalculate);
+// }
+
+// int handlerSize()
+// {
+//     /* 返回任务数量 */
+//     return callbacks.size();
+// }
+
+// void sendAndWakeup(pid_t who, int fd, int command)
+// {
+//     write(fd, &command, sizeof(command)); //向管道输入指定的任务
+
+//     cout << "call process:" << who //指定某子进程
+//         << ", execute:" << desc[command] //执行某任务
+//         << ", through:" << fd //直通某管道
+//         << endl;
+// }
+
+// void show()
+// {
+//     /* 查看可执行的任务列表 */
+//     for(const auto &iter : desc)
+//     {
+//         cout << iter.first << "\t" << iter.second << endl;
+//     }
+// }
+
+// int waitCommand(int waitFd, bool& quit) //注意 quit 是引用参数
+// {
+//     int command = 0; //四字节缓冲区
+//     ssize_t s = read(waitFd, &command, sizeof(command)); //从读端读给 command
+//     if(s == 0) //如果 s 为 0，则说明父进程已经关闭了写段，此时就应该停止后续的代码
+//     {
+//         quit = true;
+//         return -1;
+//     }
+//     return command;
+// }
+
+// void readSQL()
+// {
+//     sleep(3);
+//     cout << "process[" << getgid() << "] 执行了访问数据库的任务" << endl;
+// }
+// void execuleUrl()
+// {
+//     sleep(3);
+//     cout << "process[" << getgid() << "] 执行了解析URL地址的任务" << endl;
+// }
+// void cal()
+// {
+//     sleep(3);
+//     cout << "process[" << getgid() << "] 执行了加密的任务" << endl;
+// }
+// void mathCalculate()
+// {
+//     sleep(3);
+//     cout << "process[" << getgid() << "] 执行了数学计算的任务" << endl;
+// }
