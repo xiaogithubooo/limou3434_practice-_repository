@@ -30,9 +30,10 @@ int main()
                 break;
             }
         }
-        else if(s == 0)
+        else if(s == 0) //子进程关闭了，没有写端
         {
             cerr << "read end of file!" << endl;
+            break;
         }
         else //出现错误
         {
