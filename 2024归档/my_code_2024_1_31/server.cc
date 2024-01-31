@@ -25,6 +25,10 @@ int main()
         if(s > 0) //读取成功
         {
             cout << "client say: " << buffer << endl;
+            if (strcmp(buffer, "exit") == 0)
+            {
+                break;
+            }
         }
         else if(s == 0)
         {
@@ -35,7 +39,7 @@ int main()
             perror("read() wrong!");
         }
     }
-    
+
     //4.关闭管道文件
     close(fd);
 

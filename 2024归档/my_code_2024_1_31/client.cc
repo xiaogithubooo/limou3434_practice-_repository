@@ -22,6 +22,10 @@ int main()
             perror("write() error!");
             break;
         }
+        if (strcmp(buffer.c_str(), "exit") == 0)
+        {
+            break;
+        }
     }
 
     //3.关闭管道文件
