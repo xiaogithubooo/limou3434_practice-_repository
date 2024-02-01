@@ -10,7 +10,7 @@ int main()
         << endl;
 
     //2.获得共享内存
-    int shmid = shmget(k, SHM_SIZE, 0); assert(shmid != -1);
+    int shmid = shmget(k, SHM_SIZE, IPC_CREAT); assert(shmid != -1);
 
     //3.挂接共享内存
     char* shmaddr = (char*)shmat(shmid, nullptr, 0); assert(shmaddr != nullptr);
