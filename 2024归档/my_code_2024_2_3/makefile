@@ -10,4 +10,4 @@ shmServer:shmServer.cpp
 
 .PHONY:clean
 clean:
-	rm -f shmClient shmServer .fifo.ipc
+	rm -f shmClient shmServer

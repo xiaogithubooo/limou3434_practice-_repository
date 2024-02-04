@@ -4,11 +4,7 @@
 int main()
 {
     //1.创建共同的 key
-    key_t k = ftok(PATH_NAME, PROJ_ID); assert(k != -1);
-    cout
-        << hex << k << " "//使用 16 进制输出
-        << dec << k //使用 10 进制输出
-        << endl;
+    key_t k = GetKey();
 
     //2.获得共享内存（注意是获得，在 shmServer 中已经获取了）
     int shmid = shmget(k, SHM_SIZE, IPC_CREAT); assert(shmid != -1);

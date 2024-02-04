@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <cassert>
 #include <cstring>
+#include <cstdlib>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -25,13 +26,12 @@ const std::string ipcPath = "./.fifo.ipc"; //管道文件路径（默认设置�
 
 using namespace std;
 
-bool MakeFifo()
+void MakeFifo()
 {
-    if(mkfifo(ipcPath.c_str(), MOOD) < 0)
-    {
-        perror("mkfifo() wrong!");
-        return false;
-    }
+    mkfifo(ipcPath.c_str(), MOOD);
+}
 
-    return true;
+key_t GetKey()
+{
+    return ftok(PATH_NAME, PROJ_ID);
 }
