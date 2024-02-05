@@ -1,4 +1,4 @@
-//comm.hpp
+//comm.hpp(封装代码)
 #pragma once
 
 #include <iostream>
@@ -16,20 +16,13 @@
 #include <sys/shm.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <sys/msg.h>
 
 #define PATH_NAME "/home/ljp" //路径名
-#define MOOD 0666 //设置管道文件初始权限
 #define PROJ_ID 0x666 //项目 ID（用于创建 key）
 #define SHM_SIZE 4096 //共享内存大小
 
-const std::string ipcPath = "./.fifo.ipc"; //管道文件路径（默认设置为隐藏文件）
-
 using namespace std;
-
-void MakeFifo()
-{
-    mkfifo(ipcPath.c_str(), MOOD);
-}
 
 key_t GetKey()
 {

@@ -1,13 +1,13 @@
 # makefile
 .PHONY:all
-all:shmClient shmServer
+all:msgClient msgServer
 
-shmClient:shmClient.cpp
+msgClient:msgClient.cpp
 	g++ $^ -o $@ -std=c++11
 
-shmServer:shmServer.cpp
+msgServer:msgServer.cpp
 	g++ $^ -o $@ -std=c++11
 
 .PHONY:clean
 clean:
-	rm -f shmClient shmServer
+	rm -f msgClient msgServer
