@@ -1,32 +1,33 @@
-//使用 sigaction() 做类似 signal() 的行为
+//基于信号的智能子进程回收机制（父进程无需等待子进程，自己清理自己）
 #include <iostream>
+#include <cstdlib>
 #include <signal.h>
 #include <unistd.h>
 using namespace std;
 
 void handler(int signum)
 {
-    cout << "获取信号:" << signum << '\n';
-    sleep(10); //尝试在 10s 内不断发送 2 号信号
+    cout << "子进程已退出，父进程接受到信号为: " << signum << '\n';
 }
+
 int main()
 {
-    signal(2, SIG_IGN); //捕捉到 2 号信号，对于的信号行为是 SIG_IGN，即忽略
+    //手动设置忽略，父进程就不需要自己回收子进程了，子进程会自动释放，也不会通知父进程回收信息
+    //(1)如果我们只是单纯希望不出现僵尸进程，就可以用下述设置忽略的做法
+    //(2)如果我们还希望得到子进程的信息，就一定需要父进程进行等待，就不能设置忽略
+    signal(SIGCHLD, SIG_IGN);
 
-    struct sigaction act, oact; //设置新旧信号捕捉结构体
-    
-    act.sa_flags = 0;
-    sigemptyset(&act.sa_mask); //清空信号集
-    act.sa_handler = handler;
-
-    sigaction(2, &act, &oact);
-
-    while (true)
+    if(fork() == 0)
     {
-        cout << "pid:" << getpid() << endl
-        << " 新捕捉方法:" << (void*)(oact.sa_handler) << endl
-        << " 旧捕捉方法:" << (void*)(act.sa_handler) << endl;
-        sleep(1);
+        cout << "子进程: " << getpid() << " 启动" << '\n';
+        sleep(5);
+        exit(10);
+    }
+
+    while(true) 
+    {
+        cout << "父进程: " << getpid() << " 执行自己的代码" << '\n';
+        sleep(5);
     }
 
     return 0;
