@@ -15,14 +15,14 @@ static void Usage(std::string proc)
 
 int main(int argc, char* argv[]) // ./udp_client 127.0.0.1 8080
 {
-    //1.¼ì²éÃüÁîĞĞÊäÈë
+    //1.æ£€æŸ¥å‘½ä»¤è¡Œè¾“å…¥
     if (argc != 3)
     {
         Usage(argv[0]);
         exit(50);
     }
 
-    //2.³õÊ¼»¯ WinSock
+    //2.åˆå§‹åŒ– WinSock
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
     {
@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) // ./udp_client 127.0.0.1 8080
         exit(60);
     }
 
-    //3.´´½¨Ì×½Ó×Ö
+    //3.åˆ›å»ºå¥—æ¥å­—
     SOCKET sock = socket(AF_INET, SOCK_DGRAM, 0);
     if (sock == INVALID_SOCKET)
     {
@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) // ./udp_client 127.0.0.1 8080
         exit(70);
     }
 
-    //4.Ïò·şÎñ¶Ë·¢ËÍÊı¾İ
+    //4.å‘æœåŠ¡ç«¯å‘é€æ•°æ®
     std::string message;
 
     sockaddr_in server;
@@ -50,16 +50,16 @@ int main(int argc, char* argv[]) // ./udp_client 127.0.0.1 8080
     char readBuff[readBuffSize] = { 0 };
     while (true)
     {
-        std::cout << "Ïò·şÎñÆ÷·¢ËÍĞÅºÅ" << std::endl;
+        std::cout << "å‘æœåŠ¡å™¨å‘é€ä¿¡å·" << std::endl;
         std::getline(std::cin, message);
-        if (message == "exit") // ĞŞÕı±È½Ï×Ö·û´®µÄ·½Ê½
+        if (message == "exit") // ä¿®æ­£æ¯”è¾ƒå­—ç¬¦ä¸²çš„æ–¹å¼
             break;
 
         sendto(sock, message.c_str(), message.size(), 0,
             (struct sockaddr*)&server, sizeof(server));
 
-        //5.¶ÁÈ¡·şÎñ¶Ë·µ»ØµÄÊı¾İ
-        sockaddr_in temp; //Õ¼Î»·û
+        //5.è¯»å–æœåŠ¡ç«¯è¿”å›çš„æ•°æ®
+        sockaddr_in temp; //å ä½ç¬¦
         int len = sizeof(temp);
         int s = recvfrom(sock, readBuff, sizeof(readBuff), 0,
             (struct sockaddr*)&temp, &len);

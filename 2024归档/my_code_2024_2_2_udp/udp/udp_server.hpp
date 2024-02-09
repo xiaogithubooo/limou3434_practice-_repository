@@ -2,6 +2,7 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
 
 #include <cerrno>
 #include <cstring>
@@ -37,7 +38,7 @@ public:
         }
 
         //2.绑定套接字
-        struct sockaddr_in local;
+        struct sockaddr_in local; //ipv4
         bzero(&local, sizeof(local));
 
         local.sin_port = htons(_port); //由于需要把本机的端口号发送给对方，因此需要转化字节序再填入端口号
@@ -68,7 +69,7 @@ public:
             char result[1024] = { 0 }; //后续读取命令返回结果时要用的读取缓冲区
             std::string cmd_echo; //读取后的所有结果存储在 cmd_echo 中，然后发送回客户端
         
-            ssize_t s = recvfrom(_sock, readBuff, sizeof(readBuff) - 1,
+            ssize_t s = recvfrom(_sock, readBuff, sizeof(readBuff) - 1, //读取数据
                 0, (struct sockaddr*)&peer, &peerLen);
 
             if (s > 0)
@@ -77,37 +78,14 @@ public:
                 //1.2.指明是谁发送的信息
                 uint16_t cli_port = ntohs(peer.sin_port); //需要反序列
                 std::string cli_ip = inet_ntoa(peer.sin_addr); //反序列后转化为点分十进制字符串
-                std::cout
-                    << "port:[" << cli_port << "]"
-                    << "ip:[" << cli_ip << "], sad:"
-                    << readBuff << std::endl;
-                
-                //1.3.过滤命令
-                if(strcasestr(readBuff, "rm") != nullptr
-                        || strcasestr(readBuff, "rmdir") != nullptr)
-                {
-                    std::cout << "用户指令包含 rm 类的不安全指令" << std::endl;
-                    std::string warn = "你想干嘛？！\n";
-                    sendto(_sock, warn.c_str(), warn.size(),
-                        0, (struct sockaddr*)&peer, peerLen);
-                    continue;
-                }
-                
-                //1.4.执行命令
-                FILE* fp = popen(readBuff, "r");
-                if(nullptr == fp)
-                {
-                    LogMessage(ERROR, "popen:%s:%d,%s", errno, strerror(errno), "非法命令");
-                    continue;
-                }
 
-                //1.5.读取返回结果
-                while(fgets(result, sizeof(result), fp) != nullptr)
+                char key[64] = { 0 };
+                snprintf(key, sizeof(key), "%s=%u", cli_ip.c_str(), cli_port);
+                auto it = _users.find(key);
+                if (it == _users.end()) //对应用户端的 key-套接字 键值对
                 {
-                    cmd_echo += result;
+                    _users.insert({ key, peer });
                 }
-
-                fclose(fp); //更严谨一些
             }
             else
             {
@@ -115,11 +93,11 @@ public:
                 exit(40);
             }
 
-            //2.分析数据
-
-            //3.写回数据
-            sendto(_sock, cmd_echo.c_str(), cmd_echo.size(),
-                0, (struct sockaddr*)&peer, peerLen);
+            for (auto& iter : _users)
+            {
+                //2.根据不同用户端，写回数据
+                sendto(_sock, readBuff, strlen(readBuff), 0, (struct sockaddr*)&iter.second, sizeof(iter.second));
+            }
         }
     }
 
@@ -133,4 +111,5 @@ private:
     uint16_t _port; //端口号（一般是 16 位的整数）
     std::string _ip; //ip 地址
     int _sock; //套接字（当作文件描述符理解）
+    std::unordered_map<std::string, struct sockaddr_in> _users; //存储不同客户端发送过来的套接字结构
 };

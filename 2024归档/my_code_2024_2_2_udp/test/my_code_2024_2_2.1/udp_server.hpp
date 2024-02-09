@@ -23,25 +23,25 @@ const int readBuffSize = 1024;
 class UdpServer
 {
 public:
-    /* ³õÊ¼»¯·şÎñ¶ÏÅäÖÃ */
-    UdpServer(uint16_t port, std::string ip = "") //IP µØÖ·¼Ù¶¨Îª¿Õ
+    /* åˆå§‹åŒ–æœåŠ¡æ–­é…ç½® */
+    UdpServer(uint16_t port, std::string ip = "") //IP åœ°å€å‡å®šä¸ºç©º
         : _port(port), _ip(ip), _sock(-1)
     {
-        //ÏÂÃæ¿ªÊ¼ÎÒÃÇµÄÍøÂç±à³Ì
-        //1.´´½¨Ì×½Ó×Ö
+        //ä¸‹é¢å¼€å§‹æˆ‘ä»¬çš„ç½‘ç»œç¼–ç¨‹
+        //1.åˆ›å»ºå¥—æ¥å­—
         if ((_sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
         {
             LogMessage(FATAL, "%d:%s", errno, strerror(errno));
             exit(20);
         }
 
-        //2.°ó¶¨Ì×½Ó×Ö
+        //2.ç»‘å®šå¥—æ¥å­—
         struct sockaddr_in local;
         bzero(&local, sizeof(local));
 
-        local.sin_port = htons(_port); //ÓÉÓÚĞèÒª°Ñ±¾»úµÄ¶Ë¿ÚºÅ·¢ËÍ¸ø¶Ô·½£¬Òò´ËĞèÒª×ª»¯×Ö½ÚĞòÔÙÌîÈë¶Ë¿ÚºÅ
-        local.sin_addr.s_addr = _ip.empty() ? INADDR_ANY : inet_addr(_ip.c_str()); //ÌîÈë·´×Ö½ÚĞòµÄ ip µØÖ·£¨ÈôÎª¿ÕÔòÌîÈëÈÎÒâ IP µØÖ·£¬¿ÉÒÔÈÃ·şÎñÆ÷´ÓÈÎÒâ IP ÖĞ»ñÈ¡Êı¾İ£¬¸Ã¹Ø¼ü×ÖÊµ¼ÊÊÇ 0£©
-        local.sin_family = AF_INET; //ÉèÖÃĞ­Òé¼Ò×å
+        local.sin_port = htons(_port); //ç”±äºéœ€è¦æŠŠæœ¬æœºçš„ç«¯å£å·å‘é€ç»™å¯¹æ–¹ï¼Œå› æ­¤éœ€è¦è½¬åŒ–å­—èŠ‚åºå†å¡«å…¥ç«¯å£å·
+        local.sin_addr.s_addr = _ip.empty() ? INADDR_ANY : inet_addr(_ip.c_str()); //å¡«å…¥åå­—èŠ‚åºçš„ ip åœ°å€ï¼ˆè‹¥ä¸ºç©ºåˆ™å¡«å…¥ä»»æ„ IP åœ°å€ï¼Œå¯ä»¥è®©æœåŠ¡å™¨ä»ä»»æ„ IP ä¸­è·å–æ•°æ®ï¼Œè¯¥å…³é”®å­—å®é™…æ˜¯ 0ï¼‰
+        local.sin_family = AF_INET; //è®¾ç½®åè®®å®¶æ—
 
         if (bind(_sock, (struct sockaddr*)&local, sizeof(local)) < 0)
         {
@@ -52,26 +52,26 @@ public:
         LogMessage(NORMAL, "init udp server done ... %s", strerror(errno));
     }
 
-    /*Æô¶¯½ø³Ì*/
+    /*å¯åŠ¨è¿›ç¨‹*/
     void Start()
     {
-        //×¢Òâ£¬Ö»ÒªÖ÷»ú²»±¼À£·şÎñ¶Ë²»³ö´í£¬·şÎñ¶Ë½«ÓÀÔ¶²»ÍË³ö£¨¶ÔÓÚÏµÍ³À´Ëµ£¬¾ÍÊÇÒ»¸ö³£×¤½ø³Ì£©
-        char readBuff[readBuffSize] = { 0 }; //³õÊ¼»¯Îª 0£¬ºóĞø¾Í²»ÓÃÌí¼Ó '\0' ÁË
+        //æ³¨æ„ï¼Œåªè¦ä¸»æœºä¸å¥”æºƒæœåŠ¡ç«¯ä¸å‡ºé”™ï¼ŒæœåŠ¡ç«¯å°†æ°¸è¿œä¸é€€å‡ºï¼ˆå¯¹äºç³»ç»Ÿæ¥è¯´ï¼Œå°±æ˜¯ä¸€ä¸ªå¸¸é©»è¿›ç¨‹ï¼‰
+        char readBuff[readBuffSize] = { 0 }; //åˆå§‹åŒ–ä¸º 0ï¼Œåç»­å°±ä¸ç”¨æ·»åŠ  '\0' äº†
         while (true)
         {
-            //1.¶ÁÈ¡Êı¾İ
-            struct sockaddr_in peer; bzero(&peer, sizeof(peer)); //´¿Êä³öĞÍ²ÎÊı
-            socklen_t peerLen = sizeof(peer); //ÊäÈëÊä³öĞÍ²ÎÊı£¬ÊäÈë£º»º³åÇø´óĞ¡£¬Êä³ö£ºÊµ¼Ê¶Áµ½µÄ peer ´óĞ¡
+            //1.è¯»å–æ•°æ®
+            struct sockaddr_in peer; bzero(&peer, sizeof(peer)); //çº¯è¾“å‡ºå‹å‚æ•°
+            socklen_t peerLen = sizeof(peer); //è¾“å…¥è¾“å‡ºå‹å‚æ•°ï¼Œè¾“å…¥ï¼šç¼“å†²åŒºå¤§å°ï¼Œè¾“å‡ºï¼šå®é™…è¯»åˆ°çš„ peer å¤§å°
 
             ssize_t s = recvfrom(_sock, readBuff, sizeof(readBuff) - 1,
                 0, (struct sockaddr*)&peer, &peerLen);
 
             if (s > 0)
             {
-                //1.1.¶ÁÈ¡µ½µÄĞÅÏ¢
-                //1.2.Ö¸Ã÷ÊÇË­·¢ËÍµÄĞÅÏ¢
-                uint16_t cli_port = ntohs(peer.sin_port); //ĞèÒª·´ĞòÁĞ
-                std::string cli_ip = inet_ntoa(peer.sin_addr); //·´ĞòÁĞºó×ª»¯Îªµã·ÖÊ®½øÖÆ×Ö·û´®
+                //1.1.è¯»å–åˆ°çš„ä¿¡æ¯
+                //1.2.æŒ‡æ˜æ˜¯è°å‘é€çš„ä¿¡æ¯
+                uint16_t cli_port = ntohs(peer.sin_port); //éœ€è¦ååºåˆ—
+                std::string cli_ip = inet_ntoa(peer.sin_addr); //ååºåˆ—åè½¬åŒ–ä¸ºç‚¹åˆ†åè¿›åˆ¶å­—ç¬¦ä¸²
                 std::cout
                     << "port:[" << cli_port << "]"
                     << "ip:[" << cli_ip << "], sad:"
@@ -83,9 +83,9 @@ public:
                 exit(40);
             }
 
-            //2.·ÖÎöÊı¾İ
+            //2.åˆ†ææ•°æ®
 
-            //3.Ğ´»ØÊı¾İ
+            //3.å†™å›æ•°æ®
             sendto(_sock, readBuff, strlen(readBuff),
                 0, (struct sockaddr*)&peer, peerLen);
         }
@@ -98,7 +98,7 @@ public:
     }
 
 private:
-    uint16_t _port; //¶Ë¿ÚºÅ£¨Ò»°ãÊÇ 16 Î»µÄÕûÊı£©
-    std::string _ip; //ip µØÖ·
-    int _sock; //Ì×½Ó×Ö£¨µ±×÷ÎÄ¼şÃèÊö·ûÀí½â£©
+    uint16_t _port; //ç«¯å£å·ï¼ˆä¸€èˆ¬æ˜¯ 16 ä½çš„æ•´æ•°ï¼‰
+    std::string _ip; //ip åœ°å€
+    int _sock; //å¥—æ¥å­—ï¼ˆå½“ä½œæ–‡ä»¶æè¿°ç¬¦ç†è§£ï¼‰
 };
