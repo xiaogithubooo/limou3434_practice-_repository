@@ -2,6 +2,7 @@
 #pragma once
 
 #include <string>
+#include <queue>
 #include <unordered_map>
 
 #include <cerrno>
@@ -72,6 +73,7 @@ public:
             ssize_t s = recvfrom(_sock, readBuff, sizeof(readBuff) - 1, //读取数据
                 0, (struct sockaddr*)&peer, &peerLen);
 
+            char key[64] = { 0 };
             if (s > 0)
             {
                 //1.1.读取到的信息
@@ -79,11 +81,12 @@ public:
                 uint16_t cli_port = ntohs(peer.sin_port); //需要反序列
                 std::string cli_ip = inet_ntoa(peer.sin_addr); //反序列后转化为点分十进制字符串
 
-                char key[64] = { 0 };
-                snprintf(key, sizeof(key), "%s=%u", cli_ip.c_str(), cli_port);
+                snprintf(key, sizeof(key), "%s+%d", cli_ip.c_str(), cli_port);
+                LogMessage(NORMAL, "key:%s", key); //输出接受到的用户端套接字信息
                 auto it = _users.find(key);
                 if (it == _users.end()) //对应用户端的 key-套接字 键值对
                 {
+                    LogMessage(NORMAL, "Add new user:%s", key);
                     _users.insert({ key, peer });
                 }
             }
@@ -93,10 +96,14 @@ public:
                 exit(40);
             }
 
+            //2.根据不同用户端，写回数据
             for (auto& iter : _users)
             {
-                //2.根据不同用户端，写回数据
-                sendto(_sock, readBuff, strlen(readBuff), 0, (struct sockaddr*)&iter.second, sizeof(iter.second));
+                std::string sendMessage = key; //接受到的报文
+                sendMessage += "# ";
+                sendMessage += readBuff;
+                LogMessage(NORMAL, "push message to %s", iter.first.c_str());
+                sendto(_sock, sendMessage.c_str(), sendMessage.size(), 0, (struct sockaddr*)&iter.second, sizeof(iter.second));
             }
         }
     }
