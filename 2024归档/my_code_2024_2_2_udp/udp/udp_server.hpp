@@ -34,7 +34,7 @@ public:
         //1.创建套接字
         if ((_sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
         {
-            LogMessage(FATAL, "%d:%s", errno, strerror(errno));
+            LogMessage(FATAL, "%d:%s|[%s][%d]", errno, strerror(errno), __FILE__, __LINE__);
             exit(20);
         }
 
@@ -48,11 +48,11 @@ public:
 
         if (bind(_sock, (struct sockaddr*)&local, sizeof(local)) < 0)
         {
-            LogMessage(FATAL, "%d:%s", errno, strerror(errno));
+            LogMessage(FATAL, "%d:%s|[%s][%d]", errno, strerror(errno), __FILE__, __LINE__);
             exit(30);
         }
 
-        LogMessage(NORMAL, "init udp server done ... %s", strerror(errno));
+        LogMessage(NORMAL, "init udp server done ... %s|[%s][%d]", strerror(errno), __FILE__, __LINE__);
     }
 
     /*启动进程*/
@@ -82,17 +82,17 @@ public:
                 std::string cli_ip = inet_ntoa(peer.sin_addr); //反序列后转化为点分十进制字符串
 
                 snprintf(key, sizeof(key), "%s+%d", cli_ip.c_str(), cli_port);
-                LogMessage(NORMAL, "key:%s", key); //输出接受到的用户端套接字信息
+                LogMessage(NORMAL, "key:%s|[%s][%d]", key, __FILE__, __LINE__); //输出接受到的用户端套接字信息
                 auto it = _users.find(key);
                 if (it == _users.end()) //对应用户端的 key-套接字 键值对
                 {
-                    LogMessage(NORMAL, "Add new user:%s", key);
+                    LogMessage(NORMAL, "Add new user:%s|[%s][%d]", key, __FILE__, __LINE__);
                     _users.insert({ key, peer });
                 }
             }
             else
             {
-                LogMessage(FATAL, "%d:%s", errno, strerror(errno));
+                LogMessage(FATAL, "%d:%s|[%s][%d]", errno, strerror(errno), __FILE__, __LINE__);
                 exit(40);
             }
 
@@ -102,7 +102,7 @@ public:
                 std::string sendMessage = key; //接受到的报文
                 sendMessage += "# ";
                 sendMessage += readBuff;
-                LogMessage(NORMAL, "push message to %s", iter.first.c_str());
+                LogMessage(NORMAL, "push message to %s|[%s][%d]", iter.first.c_str(), __FILE__, __LINE__);
                 sendto(_sock, sendMessage.c_str(), sendMessage.size(), 0, (struct sockaddr*)&iter.second, sizeof(iter.second));
             }
         }
