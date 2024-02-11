@@ -5,16 +5,18 @@
 #include <cerrno>
 #include <cstring>
 #include <cstdio>
+#include <cassert>
 
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <unistd.h>
+#include <signal.h>
 
 #include "log.hpp"
 
-static void Service_1(int serviceSock, const std::string& client_ip, const uint16_t& client_port)
+static void Service(int serviceSock, const std::string& client_ip, const uint16_t& client_port)
 {
     //返回内容
     while (true)
@@ -30,6 +32,7 @@ static void Service_1(int serviceSock, const std::string& client_ip, const uint1
         else if (s == 0) //代表对端关闭链接
         {
             LogMessage(NORMAL, "%s-%d shutdown, me too!|[%s][%d]", client_ip.c_str(), client_port, __FILE__, __LINE__);
+            break;
         }
         else //s < 0 读取失败
         {
@@ -92,6 +95,8 @@ public:
 
     void Start()
     {
+        signal(SIGCHLD, SIG_IGN); //主动忽略 SIGCHLD 信号，子进程退出不会产生僵尸进程
+
         while (true)
         {
             //4.获取链接（UDP 则是直接发送和接收，无需链接）
@@ -119,9 +124,21 @@ public:
             LogMessage(NORMAL, "link succer, serviceSock:%d, client ip:%s, client port:%d", serviceSock, client_ip.c_str(), client_port);
 
             //6.通信服务
-            Service_1(serviceSock, client_ip, client_port); //单进程循环版本
+            //6.1.单进程死循环版本
+            //Service(serviceSock, client_ip, client_port);
 
-            //7.关闭链接
+            //6.2.多进程死循环版本
+            pid_t id = fork();
+            assert(id != -1);
+            if (id == 0)
+            {
+                //子进程
+                close(_listenSock); //子进程只需要充当招客员即可，无需进行监听
+                Service(serviceSock, client_ip, client_port); 
+                exit(0); //退出，进入僵尸状态
+            }
+
+            //8.关闭链接
             close(serviceSock);
         }
     }
