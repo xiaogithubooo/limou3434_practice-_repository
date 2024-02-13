@@ -14,6 +14,8 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <signal.h>
+#include <sys/wait.h>
+#include <pthread.h>
 
 #include "log.hpp"
 
@@ -46,10 +48,25 @@ static void Service(int serviceSock, const std::string& client_ip, const uint16_
     }
 }
 
+struct ThreadData
+{
+    int _sock;
+    std::string _ip;
+    uint16_t _port;
+};
+
 class TcpServer
 {
 private:
     const static int gBackLog = 20; //这个全局静态变量用就行，以后解释
+    static void* ThreadRoutine(void* args)
+    {
+        pthread_detach(pthread_self()); //线程分离可以让新线程自己释放自己，不必让主线程使用 pthread_join() 等待
+        ThreadData* td = static_cast<ThreadData*>(args);
+        Service(td->_sock, td->_ip, td->_port);
+        delete td;
+        return nullptr;
+    }
 
 public:
     TcpServer(uint16_t port, std::string ip = "")
@@ -96,7 +113,7 @@ public:
 
     void Start()
     {
-        signal(SIGCHLD, SIG_IGN); //主动忽略 SIGCHLD 信号，子进程退出不会产生僵尸进程
+        //signal(SIGCHLD, SIG_IGN); //主动忽略 SIGCHLD 信号，子进程退出不会产生僵尸进程
 
         while (true)
         {
@@ -129,17 +146,40 @@ public:
             //Service(serviceSock, client_ip, client_port);
 
             //6.2.多进程死循环版本
-            pid_t id = fork();
-            assert(id != -1);
-            if (id == 0)
-            {
-                //子进程
-                close(_listenSock); //子进程只需要充当招客员即可，无需进行监听
-                Service(serviceSock, client_ip, client_port); 
-                exit(0); //退出，进入僵尸状态
-            }
+            //pid_t id = fork();
+            //assert(id != -1);
+            //if (id == 0)
+            //{
+            //    //子进程
+            //    close(_listenSock); //子进程只需要充当招客员即可，无需进行监听
+            //    Service(serviceSock, client_ip, client_port); 
+            //    exit(0); //退出，进入僵尸状态
+            //}
+            //close(serviceSock);
 
-            //8.关闭链接
+            //6.3.多进程非阻塞版本
+            //pid_t id = fork();
+            //if (id == 0) //子进程
+            //{
+            //    close(_listenSock);
+            //    if (fork() > 0) //如果 fork() 的返回值大于 0，则为子进程本身，立马退出，但是如果是 0，则多创建了一个孙进程
+            //        exit(-1);
+            //    Service(serviceSock, client_ip, client_port); //真正给用户提供服务的是孙进程（并且是孤儿进程，被操作系统领养，会被操作系统自动回收）
+
+            //    exit(0); //孙进程执行完后退出，等待操作系统自动回收
+            //}
+            //waitpid(id, nullptr, 0); //由于子进程立即退出，这里就不会立刻陷入阻塞状态（而是先回收子进程）
+
+            //6.4.多线程版本
+            struct ThreadData* td = new ThreadData(); //这里不直接使用一个对象而是使用指针的原因是：由于线程安全
+            td->_sock = serviceSock;
+            td->_ip = client_ip;
+            td->_port = client_port;
+            pthread_t tid;
+            pthread_create(&tid, nullptr, ThreadRoutine, td);
+            //不进行线程等待，而是线程分离 
+
+            //7.关闭链接
             close(serviceSock);
         }
     }
