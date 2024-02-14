@@ -2,6 +2,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <memory>
 
 #include <cerrno>
 #include <cstring>
@@ -18,6 +19,8 @@
 #include <pthread.h>
 
 #include "log.hpp"
+#include "threadPool.hpp"
+#include "Task.hpp"
 
 static void Service(int serviceSock, const std::string& client_ip, const uint16_t& client_port)
 {
@@ -46,13 +49,14 @@ static void Service(int serviceSock, const std::string& client_ip, const uint16_
         //和文件一样写入
         write(serviceSock, readBuff, strlen(readBuff));
     }
+    close(serviceSock);
 }
 
-struct ThreadData
+struct SocketData
 {
-    int _sock;
-    std::string _ip;
-    uint16_t _port;
+   int _sock;
+   std::string _ip;
+   uint16_t _port;
 };
 
 class TcpServer
@@ -62,7 +66,7 @@ private:
     static void* ThreadRoutine(void* args)
     {
         pthread_detach(pthread_self()); //线程分离可以让新线程自己释放自己，不必让主线程使用 pthread_join() 等待
-        ThreadData* td = static_cast<ThreadData*>(args);
+        SocketData* td = static_cast<SocketData*>(args);
         Service(td->_sock, td->_ip, td->_port);
         delete td;
         return nullptr;
@@ -70,7 +74,7 @@ private:
 
 public:
     TcpServer(uint16_t port, std::string ip = "")
-        : _port(port), _ip(ip)
+        : _port(port), _ip(ip), _threadpool_ptr(new ThreadPool<Task>(3))
     {
         //1.创建套接字
         _listenSock = socket(
@@ -114,6 +118,8 @@ public:
     void Start()
     {
         //signal(SIGCHLD, SIG_IGN); //主动忽略 SIGCHLD 信号，子进程退出不会产生僵尸进程
+
+        _threadpool_ptr->Run(); //运行线程池
 
         while (true)
         {
@@ -171,13 +177,17 @@ public:
             //waitpid(id, nullptr, 0); //由于子进程立即退出，这里就不会立刻陷入阻塞状态（而是先回收子进程）
 
             //6.4.多线程版本
-            struct ThreadData* td = new ThreadData(); //这里不直接使用一个对象而是使用指针的原因是：由于线程安全
-            td->_sock = serviceSock;
-            td->_ip = client_ip;
-            td->_port = client_port;
-            pthread_t tid;
-            pthread_create(&tid, nullptr, ThreadRoutine, td);
+            //struct SocketData* td = new SocketData(); //这里不直接使用一个对象而是使用指针的原因是：由于线程安全
+            //td->_sock = serviceSock;
+            //td->_ip = client_ip;
+            //td->_port = client_port;
+            //pthread_t tid;
+            //pthread_create(&tid, nullptr, ThreadRoutine, td);
             //不进行线程等待，而是线程分离 
+
+            //6.5.线程池版本
+            Task t(serviceSock, client_ip, client_port, Service);
+            _threadpool_ptr->PushTask(t);
 
             //7.关闭链接
             close(serviceSock);
@@ -193,4 +203,5 @@ private:
     uint16_t _port;
     std::string _ip;
     int _listenSock;
+    std::unique_ptr<ThreadPool<Task>> _threadpool_ptr;//线程池
 };

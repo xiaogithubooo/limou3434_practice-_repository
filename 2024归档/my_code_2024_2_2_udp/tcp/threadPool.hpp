@@ -30,7 +30,6 @@ private:
                 while(tp->IsEmpty()) tp->WaitCond(); //内部自动释放锁（在被重新唤醒时会自动持有锁，不影响后续析构）
                 
                 task = tp->GetTask(); //获取任务（从共享空间拿到私有空间）
-                LogMessage(DEBUG, "%s:%d+%d=%d | file:%s | line:%d", td->_name.c_str(), task._x, task._y, task()), __FILE__, __LINE__;
             }
 
             sleep(10);
