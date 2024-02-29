@@ -1,33 +1,9 @@
-class Student {
-    public String name;
-    public String gender;
-    public int age;
-    public double score;
-    public static String school = "limou school";
-
-    public void Init(String name, String gender, int age, double score) {
-        this.name = name;
-        this.gender = gender;
-        this.age = age;
-        this.score = score;
-    }
-
-    public static void ShowSchool() {
-        System.out.println(Student.school);
-    }
-}
-
 public class Main {
     public static void main(String[] args) {
-        // 静态成员变量可以直接通过类名访问
-        System.out.println(Student.school);
-        Student s1 = new Student();
-        Student s2 = new Student();
-        Student s3 = new Student();
-        s1.Init("Li leilei", "男", 18, 3.8);
-        s2.Init("Han MeiMei", "女", 19, 4.0);
-        s3.Init("Jim", "男", 18, 2.6);
-        // 也可以通过对象访问：但是 school 是三个对象共享的
-        Student.ShowSchool();
+        String str = "Hello 👋"; // 这里的 👋 是一个Emoji字符，使用了Unicode代理对
+        int length = str.length(); // 会返回7或更多，因为Emoji表情符号是用代理对表示的
+        int codePointCount = str.codePointCount(0, str.length()); // 更准确地反映了"用户感知"的字符数量
+        System.out.println(length);
+        System.out.println(codePointCount);
     }
 }
