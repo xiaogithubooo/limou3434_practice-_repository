@@ -1,9 +1,22 @@
+import java.io.Console;
+
 public class Main {
     public static void main(String[] args) {
-        String str = "Hello 👋"; // 这里的 👋 是一个Emoji字符，使用了Unicode代理对
-        int length = str.length(); // 会返回7或更多，因为Emoji表情符号是用代理对表示的
-        int codePointCount = str.codePointCount(0, str.length()); // 更准确地反映了"用户感知"的字符数量
-        System.out.println(length);
-        System.out.println(codePointCount);
+        // 获取控制台对象
+        Console console = System.console();
+
+        if (console != null) {
+            // 读取用户输入的用户名
+            String username = console.readLine("请输入用户名：");
+
+            // 读取用户输入的密码（不显示在控制台上）
+            char[] password = console.readPassword("请输入密码：");
+
+            // 对用户输入的用户名和密码进行处理
+            System.out.println("用户名：" + username);
+            System.out.println("密码：" + new String(password));
+        } else {
+            System.out.println("未能获取控制台对象");
+        }
     }
 }
