@@ -5,9 +5,11 @@
 #include <unistd.h>
 using namespace std;
 
+int tid = pthread_self();
+
 //新线程运行逻辑
 void* ThreadRun(void* args) //args 获取参数，也就是 pthread_create() 的最后一个参数
-{
+{ 
     // for(int i = 0; i < 10; i++)
     while(true)
     {
@@ -16,7 +18,7 @@ void* ThreadRun(void* args) //args 获取参数，也就是 pthread_create() 的
         << pthread_self() //获取新线程 id
         << '\n';
 
-        sleep(1);
+        sleep( 1);
     }
     return nullptr;
 }
