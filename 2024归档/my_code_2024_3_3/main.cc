@@ -1,50 +1,15 @@
-//尝试获取线程 tid
-#include <iostream>
-#include <string>
-#include <pthread.h>
-#include <unistd.h>
-using namespace std;
-
-int tid = pthread_self();
-
-//新线程运行逻辑
-void* ThreadRun(void* args) //args 获取参数，也就是 pthread_create() 的最后一个参数
-{ 
-    // for(int i = 0; i < 10; i++)
-    while(true)
-    {
-        cout << (char*)args 
-        << " tid:"
-        << pthread_self() //获取新线程 id
-        << '\n';
-
-        sleep( 1);
-    }
-    return nullptr;
-}
-
-int main()
+class ReadView
 {
-    //创建新线程并且运行
-    pthread_t tid =  0; //新线程 id
-    string name = "new thred"; //新线程名
-    pthread_create(
-        &tid, //设置新线程 id
-        nullptr, //设置新线程属性
-        ThreadRun, //设置新线程的回调函数
-        (void*)name.c_str() //设置传递给回调函数的参数
-    );
+private:
+    trx_id_t m_low_limit_id; //高水位（没写错），大于等于这个 ID 的事务均不可见
+    trx_id_t m_up_limit_id; //低水位（没写错），小于等于这个 ID 的事务均可见
+    
+    trx_id_t m_creator_trx_id; //创建该 Read View 对象的事务 ID
+    
+    ids_t m_ids; //创建视图时的其他一起活跃事务的 ID 列表
+    up_limit_id; //记录 m_ids 列表中事务 ID 最小的 ID（没有写错）
+    low_limit_id; //Read View 生成时刻系统尚未分配的下一个事务 ID，就是目前已出现事务 ID 的最大值 +1（没有写错）
 
-    //主线程运行逻辑
-    cout << "main thred"
-    << " tid:"
-    << pthread_self() //获取主线程 id
-    << '\n';
-
-    sleep(5);
-
-    //没有线程等待
-
-    return 0;
-}
-
+    trx_id_t m_low_limit_no; //配合 purge 值，了解一下就行，我们不关心
+    bool m_closed; //标记视图是否被关闭，也不太关心
+};
