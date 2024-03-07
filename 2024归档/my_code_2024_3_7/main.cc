@@ -43,9 +43,10 @@ int main()
     }
     
     //5.操作数据库
-    std::string sql;
     while(true)
     {
+        std::string sql;
+        
         std::cout << "insert sql >>> "; 
         
         if (!std::getline(std::cin, sql))
@@ -66,30 +67,45 @@ int main()
         }
          
         //6.读取
-        MYSQL_RES* res = mysql_store_result(mySql); //MYSQL_RES 是一个类型，指向的对象可以保存查询的数据，把数据全部当作字符串存储起来，可以看作一个 char** arr[]，每个元素都是一个 char* arr[]
-		if (res == nullptr)
+        if (sql.find("select") != std::string::npos) //有读取的命令
         {
-            std::cerr << "mysql_store_result() error" << std::endl;
-            exit(4);
-        }
-        else
-        {
-            //读取行数和列数
-            my_ulonglong rows = mysql_num_rows(res);
-            my_ulonglong fields = mysql_num_fields(res);
-            std::cout << "rows: " << rows << "fields: " << fields << std::endl;
-            
-            //读取具体的行内内容
-            //该函数行为类似 C++ 的迭代器
-            for (int i = 0; i < rows; i++)
+            MYSQL_RES* res = mysql_store_result(mySql); //MYSQL_RES 是一个类型，指向的对象可以保存查询的数据，把数据全部当作字符串存储起来，可以看作一个 char** arr[]，每个元素都是一个 char* arr[]，实际上这些空间也是 new/malloc() 出来的，因此最后一定要记得释放
+
+            if (res == nullptr)
             {
-                MYSQL_ROW row = mysql_fetch_row(res); //每次遍历自动移动行
-                for (int j = 0; j < fields; j++)
+                std::cerr << "mysql_store_result() error" << std::endl;
+                exit(4);
+            }
+            else
+            {
+                //读取行数和列数
+                my_ulonglong rows = mysql_num_rows(res);
+                my_ulonglong fields = mysql_num_fields(res);
+                std::cout << "rows: " << rows << " and fields: " << fields << std::endl;
+
+                //读取具体的列的属性
+                MYSQL_FIELD* field_arry = mysql_fetch_fields(res); //该函数行为类似 C++ 的迭代器，每次遍历自动移动行
+                for (int i = 0; i < fields; i++)
                 {
-                    std::cout << row[j] << "\t";
+                    std::cout << field_arry[i].name << "\t";
                 }
                 std::cout << "\n";
+
+                //读取具体的行内内容
+                for (int i = 0; i < rows; i++)
+                {
+                    MYSQL_ROW row = mysql_fetch_row(res); //该函数行为类似 C++ 的迭代器，每次遍历自动移动行
+                    for (int j = 0; j < fields; j++)
+                    {
+                        std::cout << row[j] << "\t";
+                    }
+                    std::cout << "\n";
+                }
+                //实际上还可以通过 field_arry[index].属性 的方式获取值
+                //若为 NULL 值则打印的结果为空
             }
+
+            mysql_free_result(res);
         }
     }
     
