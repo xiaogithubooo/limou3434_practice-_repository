@@ -42,7 +42,7 @@ int main()
         exit(2);
     }
     
-    //3.操作数据库
+    //5.操作数据库
     std::string sql;
     while(true)
     {
@@ -52,6 +52,7 @@ int main()
         {
             break;
         }
+        
         if (sql == "quit" || sql == "exit")
         {
             std::cout << "bye~" << std::endl;
@@ -63,10 +64,36 @@ int main()
             std::cerr << "mysql_query() error" << std::endl;
             exit(3);
         }
-    } 
-
+         
+        //6.读取
+        MYSQL_RES* res = mysql_store_result(mySql); //MYSQL_RES 是一个类型，指向的对象可以保存查询的数据，把数据全部当作字符串存储起来，可以看作一个 char** arr[]，每个元素都是一个 char* arr[]
+		if (res == nullptr)
+        {
+            std::cerr << "mysql_store_result() error" << std::endl;
+            exit(4);
+        }
+        else
+        {
+            //读取行数和列数
+            my_ulonglong rows = mysql_num_rows(res);
+            my_ulonglong fields = mysql_num_fields(res);
+            std::cout << "rows: " << rows << "fields: " << fields << std::endl;
+            
+            //读取具体的行内内容
+            //该函数行为类似 C++ 的迭代器
+            for (int i = 0; i < rows; i++)
+            {
+                MYSQL_ROW row = mysql_fetch_row(res); //每次遍历自动移动行
+                for (int j = 0; j < fields; j++)
+                {
+                    std::cout << row[j] << "\t";
+                }
+                std::cout << "\n";
+            }
+        }
+    }
     
-    //4.释放句柄
+    //7.释放句柄
     mysql_close(mySql);
     
     return 0;
