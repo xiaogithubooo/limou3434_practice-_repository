@@ -68,36 +68,30 @@ class UdpServer
             std::string cmd_echo; //用于存储指令执行的结果返回给用户
             if (recvfrom(_sock, readBuff, sizeof(readBuff) - 1, 0, (struct sockaddr*)&peer, &peerLen) > 0) //读取成功
             {
-                /*
-                //读取到数据后把客户端发送的数据打印出来，包括客户端的 ip 和 port
-                uint16_t cli_port = ntohs(peer.sin_port); //需要反序列
-                std::string cli_ip = inet_ntoa(peer.sin_addr); //反序列后转化为点分十进制字符串（还有其他类似的接口）
-                std::cout << "ip:[" << cli_ip << "] port:[" << cli_port << "]" << " sad:" << readBuff << std::endl;
-                //LogMessage(NORMAL, "server read done ... %d %s %s %d", errno, strerror(errno), __FILE__, __LINE__);
-                */
-
                 //8.更换模块，可以远程执行命令
                 if (strcmp(readBuff, "rm") == 0 || strcmp(readBuff, "rmdir") == 0) //避免危险的指令
                 {
                     LogMessage(WARNING, "!!! The user executes dangerous instructions !!! %d %s %s %d", errno, strerror(errno), __FILE__, __LINE__);
-                    cmd_echo = "!!! error !!!";
-                    continue;
+                    cmd_echo += "!!! error !!!";
                 }
-
-                FILE* fp = popen(readBuff, "r");
-                if (nullptr == fp)
+                else
                 {
-                    LogMessage(ERROR, "%s command not found %d %s %s %d", readBuff, errno, strerror(errno), __FILE__, __LINE__);
-                    continue;
+                    FILE* fp = popen(readBuff, "r");
+                    if (nullptr == fp)
+                    {
+                        LogMessage(ERROR, "%s command not found %d %s %s %d", readBuff, errno, strerror(errno), __FILE__, __LINE__);
+                        cmd_echo += "command not found";
+                    }
+                    else
+                    {
+                        char result[256] = { 0 };
+                        while (fgets(result, sizeof(result), fp) != nullptr)
+                        {
+                            cmd_echo += result;
+                        }
+                    }
+                    fclose(fp); //关闭管道文件
                 }
-
-                char result[256] = { 0 };
-                while (fgets(result, sizeof(result), fp) != nullptr)
-                {
-                    cmd_echo += result;
-                }
-
-                fclose(fp); //关闭管道文件
             }
             else //读取失败
             {
@@ -106,17 +100,14 @@ class UdpServer
             }
 
             //9.写回数据
-            //char writerBuff[buffSize] = "Ok~"; //初始化为 0，后续就不用添加 '\0' 了
-            //if (sendto(_sock, writerBuff, strlen(writerBuff), 0, (struct sockaddr*)&peer, peerLen) > 0) //读取成功
-            //{
-            //    LogMessage(NORMAL, "server write done ... %d %s %s %d", errno, strerror(errno), __FILE__, __LINE__);
-            //}
-            //由于我们希望客户端之间可以通过服务端来通信，因此这里直接把服务端从客户端中读取的数据返回客户端即可，这也后续有多个客户端向服务端发送消息时，服务端返回的信息可以同步给每一个客户端
-            if ( sendto(_sock, cmd_echo.c_str(), cmd_echo.size(), 0, (struct sockaddr*)&peer, peerLen) > 0 ) //读取成功，注意这里是 strlen()，只发送有效的数据，并且前面读取数据的时候也获取了客户端的套接字消息，可以直接在这里使用
+            ssize_t s = sendto(_sock, cmd_echo.c_str(), cmd_echo.size(), 0, (struct sockaddr*)&peer, peerLen);
+            printf("%d ", s);
+            std::cout << cmd_echo.size() << " ";
+            if (s > 0) //写回成功，注意这里是 strlen()，只发送有效的数据，并且前面读取数据的时候也获取了客户端的套接字消息，可以直接在这里使用
             {
                 LogMessage(NORMAL, "server write done ... %d %s %s %d", errno, strerror(errno), __FILE__, __LINE__);
             }
-            else //读取失败
+            else //写回失败
             {
                 LogMessage(FATAL, "%d %s %s %d", errno, strerror(errno), __FILE__, __LINE__);
                 exit(40);
