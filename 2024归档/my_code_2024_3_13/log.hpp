@@ -1,4 +1,4 @@
-//log.hpp
+//log.hpp(远程操作程序)
 #pragma once
 
 #include <iostream>

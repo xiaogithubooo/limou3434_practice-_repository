@@ -1,4 +1,4 @@
-# makefile
+# makefile(远程操作程序)
 .PHONY:all
 all:udp_client udp_server
 
