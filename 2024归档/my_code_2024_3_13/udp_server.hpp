@@ -87,7 +87,7 @@ class UdpServer
                 FILE* fp = popen(readBuff, "r");
                 if (nullptr == fp)
                 {
-                    LogMessage(ERROR, "%d %s %s %d", errno, strerror(errno), __FILE__, __LINE__);
+                    LogMessage(ERROR, "%s command not found %d %s %s %d", readBuff, errno, strerror(errno), __FILE__, __LINE__);
                     continue;
                 }
 

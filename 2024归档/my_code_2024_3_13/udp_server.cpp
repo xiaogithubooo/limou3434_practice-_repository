@@ -30,6 +30,7 @@ int main(int argc, char* argv[]) //服务器启动指令 ./udp_server ip port
     else
     {
         Usage(argv[0]);
+        exit(-1);
     }
 
     //4.使用智能指针托管服务端指针
