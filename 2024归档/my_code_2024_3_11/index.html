@@ -1,0 +1,78 @@
+<!-- 演示选择器 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        /* 普通选择器 */
+        h {
+            color: red;
+        }
+
+        .class_1 {
+            color: chocolate;
+        }
+        .class_2 {
+            color: burlywood;
+        }
+
+        h1.class_1 {
+            color: blue;
+        }
+
+        #my_id_1{
+            color: blueviolet;
+        }
+        h2.class_1#my_id_1 {
+            color: chartreuse;
+        }
+
+        /* 后代选择器 */
+        ol li {
+            color: aquamarine;
+        }
+
+        /* 通用选择器 */
+        * {
+            font-size:20px;
+        }
+
+        /* 伪类选择器 */
+        a {
+            color: black;
+        }
+        a:hover {
+            color: brown;
+        }
+        a:active {
+            color: chartreuse;
+        }
+    </style>
+</head>
+    <h1>test_1</h1> <!--标签选择器-->
+
+    <p class="class_1">test_2</p> <!--类选择器-->
+    <p class="class_2">test_3</p> <!--类选择器-->
+    <p class="class_1 class_2">test_3</p> <!--叠加类选择器-->
+    <h1 class="class_1 class_2">test_4</h1> <!--标签选择器 + 类选择器-->
+
+    <p id="my_id_1">test_5</p> <!--id 选择器-->
+    <h2 class="class_1" id="my_id_1">test_6</h2> <!--标签选择器 + 类选择器 + id 选择器-->
+
+    <ul>
+        <li>test_7</li>
+        <li>test_7</li>
+        <li>test_7</li>
+    </ul>
+    <ol>
+        <li>test_8</li>
+        <li>test_8</li>
+        <li>test_8</li>
+    </ol>
+    
+    <a href="#">test_9</a>
+</body>
+</html>
