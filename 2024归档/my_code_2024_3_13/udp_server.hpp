@@ -69,28 +69,33 @@ class UdpServer
             if (recvfrom(_sock, readBuff, sizeof(readBuff) - 1, 0, (struct sockaddr*)&peer, &peerLen) > 0) //读取成功
             {
                 //8.更换模块，可以远程执行命令
-                if (strcmp(readBuff, "rm") == 0 || strcmp(readBuff, "rmdir") == 0) //避免危险的指令
+                if (strcmp(readBuff, "rm") == 0 || strcmp(readBuff, "rmdir") == 0) //危险的指令
                 {
                     LogMessage(WARNING, "!!! The user executes dangerous instructions !!! %d %s %s %d", errno, strerror(errno), __FILE__, __LINE__);
-                    cmd_echo += "!!! error !!!";
+                    cmd_echo = "refuse";
                 }
-                else
+                else //非危险指令
                 {
                     FILE* fp = popen(readBuff, "r");
-                    if (nullptr == fp)
+
+                    if (nullptr == fp) //管道创建出错
                     {
-                        LogMessage(ERROR, "%s command not found %d %s %s %d", readBuff, errno, strerror(errno), __FILE__, __LINE__);
-                        cmd_echo += "command not found";
+                        LogMessage(ERROR, "%s popen() error %d %s %s %d", readBuff, errno, strerror(errno), __FILE__, __LINE__);
+                        exit(50);
                     }
-                    else
+                    else //管道创建无错
                     {
                         char result[256] = { 0 };
                         while (fgets(result, sizeof(result), fp) != nullptr)
                         {
                             cmd_echo += result;
                         }
+
+                        if (cmd_echo.size() == 0) //有可能出现没有返回值，这里比较武断直接判断为非法指令（实际上有些不准确）
+                            cmd_echo = "command not found";
+
+                        fclose(fp); //关闭管道文件
                     }
-                    fclose(fp); //关闭管道文件
                 }
             }
             else //读取失败
@@ -100,10 +105,7 @@ class UdpServer
             }
 
             //9.写回数据
-            ssize_t s = sendto(_sock, cmd_echo.c_str(), cmd_echo.size(), 0, (struct sockaddr*)&peer, peerLen);
-            printf("%d ", s);
-            std::cout << cmd_echo.size() << " ";
-            if (s > 0) //写回成功，注意这里是 strlen()，只发送有效的数据，并且前面读取数据的时候也获取了客户端的套接字消息，可以直接在这里使用
+            if ( sendto(_sock, cmd_echo.c_str(), cmd_echo.size(), 0, (struct sockaddr*)&peer, peerLen) > 0 ) //写回成功，注意这里是 strlen()，只发送有效的数据，并且前面读取数据的时候也获取了客户端的套接字消息，可以直接在这里使用
             {
                 LogMessage(NORMAL, "server write done ... %d %s %s %d", errno, strerror(errno), __FILE__, __LINE__);
             }
