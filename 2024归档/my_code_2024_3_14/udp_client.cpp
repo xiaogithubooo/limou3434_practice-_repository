@@ -43,7 +43,7 @@ static void UdpSend(int* psock)
     while (true)
     {
         std::string message;
-        std::cout << "clien >: ";
+        std::cerr << "clien >: "; //这里只是利用 cerr 方便重定向而已
         std::getline(std::cin, message); //用户输入想要发送的数据
         if ( message == "exit" ) 
             break;
