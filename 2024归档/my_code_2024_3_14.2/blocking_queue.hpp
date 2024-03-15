@@ -1,9 +1,10 @@
-//blocking_queue.hpp
+//blocking_queue.hpp(健壮性更强的版本)
 #pragma once
 #include <iostream>
 #include <queue>
 #include <unistd.h>
 #include <pthread.h>
+#include "lock_guard.hpp"
 
 const int gDefaultCap = 5;
 
@@ -26,18 +27,17 @@ class BlockingQueue
     }
     public:void Push(const T& in)
     {
-        //加锁
-        pthread_mutex_lock(&_mutex);
+        {
+            //智能锁
+            LockGuard lockguard(&_mutex);
 
-        //检测临界资源是否满足访问条件（队列是否为满）
-        if (_isQueueFull())
-            pthread_cond_wait(&_p_cond, &_mutex);
+            //检测临界资源是否满足访问条件（队列是否为满）
+            while (_isQueueFull())
+                pthread_cond_wait(&_p_cond, &_mutex);
 
-        //访问临界资源，生产数据
-        _bq.push(in);
-
-        //解锁
-        pthread_mutex_unlock(&_mutex);
+            //访问临界资源，生产数据
+            _bq.push(in);
+        }
 
         //唤醒消费者
         pthread_cond_signal(&_c_cond);
@@ -50,19 +50,18 @@ class BlockingQueue
     }
     public:void Pop(T* out)
     {
-        //加锁
-        pthread_mutex_lock(&_mutex);
+        {
+            //智能锁
+            LockGuard lockguard(&_mutex);
 
-        //检测临界资源是否满足访问条件（队列是否为空）
-        if (_isQueueEmpty())
-            pthread_cond_wait(&_c_cond, &_mutex);
+            //检测临界资源是否满足访问条件（队列是否为空）
+            while (_isQueueEmpty())
+                pthread_cond_wait(&_c_cond, &_mutex);
 
-        //访问临界资源，取得数据
-        *out = _bq.front();
-        _bq.pop();
-
-        //解锁
-        pthread_mutex_unlock(&_mutex);
+            //访问临界资源，取得数据
+            *out = _bq.front();
+            _bq.pop();
+        }
 
         //唤醒生产者
         pthread_cond_signal(&_p_cond);
