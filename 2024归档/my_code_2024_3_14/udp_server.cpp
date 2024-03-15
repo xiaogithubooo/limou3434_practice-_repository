@@ -1,4 +1,4 @@
-//udp_server.cpp(远程操作程序)
+//udp_server.cpp(群体聊天程序)
 #include <iostream>
 #include <memory>
 #include <string>

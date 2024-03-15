@@ -1,4 +1,4 @@
-//udp_server.hpp(网络通信程序)
+//udp_server.hpp(群体聊天程序)
 #pragma once
 
 #include <string>
@@ -89,15 +89,19 @@ class UdpServer
             auto it = _users.find(key);
             if (it == _users.end()) //用户不存在用户列表中
             {
+                LogMessage(NORMAL, "add new user %s, %d %s %s %d", key, errno, strerror(errno), __FILE__, __LINE__);
                 _users[key] = peer;
             }
 
             //9.更换模块：改为群聊系统
             for (auto& iter : _users)
             {
-                if ( sendto(_sock, readBuff, strlen(readBuff), 0, (struct sockaddr*)&(iter.second), peerLen) >= 0) //写回成功
+                std::string sendMessage = iter.first;
+                sendMessage += "# ";
+                sendMessage += readBuff;
+                if (sendto(_sock, sendMessage.c_str(), sendMessage.size(), 0, (struct sockaddr*)&(iter.second), peerLen) >= 0) //写回成功
                 {
-                    LogMessage(NORMAL, "server write done ... %d %s %s %d", errno, strerror(errno), __FILE__, __LINE__);
+                    LogMessage(NORMAL, "push message to %s, server write done ... %d %s %s %d", iter.first.c_str(), errno, strerror(errno), __FILE__, __LINE__);
                 }
                 else //写回失败
                 {

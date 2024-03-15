@@ -1,4 +1,4 @@
-//log.hpp(网络通信程序)
+//log.hpp(群体聊天程序)
 #pragma once
 
 #include <iostream>
