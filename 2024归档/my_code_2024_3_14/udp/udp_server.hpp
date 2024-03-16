@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <unordered_map>
+#include <queue>
 
 #include <cerrno>
 #include <cstring>
@@ -96,7 +97,7 @@ class UdpServer
             //9.更换模块：改为群聊系统
             for (auto& iter : _users)
             {
-                std::string sendMessage = iter.first;
+                std::string sendMessage = key;
                 sendMessage += "# ";
                 sendMessage += readBuff;
                 if (sendto(_sock, sendMessage.c_str(), sendMessage.size(), 0, (struct sockaddr*)&(iter.second), peerLen) >= 0) //写回成功
