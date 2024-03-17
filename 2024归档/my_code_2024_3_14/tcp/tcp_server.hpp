@@ -1,8 +1,9 @@
-//tcp_server.hpp
+//tcp_server.hpp(孤儿进程自动回收服务端)
 #pragma once
 
 #include <cerrno>
 #include <cstring>
+#include <cassert>
 
 #include <sys/types.h> //套接字编程的头文件
 #include <sys/socket.h>
@@ -11,6 +12,10 @@
 #include <arpa/inet.h>
 
 #include <unistd.h> //主要是文件 IO 接口的头文件
+#include <signal.h>
+#include <pthread.h>
+
+#include <sys/wait.h>
 
 #include "log.hpp"
 
@@ -41,13 +46,21 @@ static void Service(const int& serviceSock, const std::string& client_ip, const 
         else 
         {
             LogMessage(FATAL, "read() error, %d %s %s %d", errno, strerror(errno), __FILE__, __LINE__);
-            exit(40);
+            exit(60);
         }
         
         //写入数据到服务端
         write(serviceSock, readBuffer, strlen(readBuffer));
     }
 }
+
+//存储线程调用所需的参数包
+struct ThreadData
+{
+    int _sock;
+    std::string _ip;
+    uint16_t _port;
+};
 
 class TcpServer
 {
@@ -87,8 +100,28 @@ class TcpServer
         LogMessage(NORMAL, "init tcp server done ... %d %s %s %d", errno, strerror(errno), __FILE__, __LINE__);
     }
 
+    private:static void* ThreadRoutine(void* args)
+    {
+        //做线程分离，避免线程资源泄露
+        pthread_detach(pthread_self());
+
+        //解包参数包
+        ThreadData* ptd = static_cast<ThreadData*>(args);
+        
+        int serviceSock = ptd->_sock;
+        std::string client_ip = ptd->_ip;
+        uint16_t client_port = ptd->_port;
+
+        Service(serviceSock, client_ip, client_port);
+        
+        delete ptd;
+        return nullptr;
+    }
+
     public:void Start()
     {
+        //signal(SIGCHLD, SIG_IGN); //父进程由程序员主动设置忽略，因此子进程退出时会自动释放自己的僵尸状态
+        
         while (true)
         {
             //7.获取和客户端的连接（如果没有任何一个客户端连接服务端，服务端就会陷入阻塞状态）
@@ -109,7 +142,42 @@ class TcpServer
 
             //8.开始进行通信服务
             //version 1 -- 单进程循环版本
-            Service(serviceSock, client_ip, client_port);
+            //Service(serviceSock, client_ip, client_port);
+            
+            //version 2 -- 多进程循环版本
+            //pid_t id = fork();
+            //assert(id != -1);
+            //if (id == 0) //子进程，也能看到文件描述符，因此也可以提供服务工作，让连接工作交给父进程
+            //{
+            //    //但是子进程无需知道监听套接字，关闭即可，避免文件描述符资源越来越少
+            //    close(_ListenSock);
+            //	  Service(serviceSock, client_ip, client_port);
+            //    exit(40);
+            //}
+            //waitpid(); //这里我不设置非阻塞等待回收，也不设置子进程退出时信号的处理机制，我们使用信号忽略的方式，对应代码就在 Start() 方法的开头处
+            
+            //version 3 -- 多进程循环版本（孙进程托管版本）
+            //pid_t id = fork();
+            //if (id == 0) //子进程
+            //{
+            //    close(_ListenSock);
+            //    if (fork() > 0) //子进程自己立刻退出
+            //        exit(40);
+            //
+            //	Service(serviceSock, client_ip, client_port); //孙进程被子进程抛弃，成为孤儿进程被操作系统托养，因此由操作系统决定释放（相当于自动释放）
+            //    exit(50); //注意，这里孙进程执行完自己的任务后一定要退出，不然会出现意想不到的错误（例如在客户端使用 "exit" 退出时会导致父进程陷入死循环，这点您可以研究一下）
+            //}
+
+            //waitpid(id, nullptr, 0); //父进程阻塞等待回收子进程，由于子进程立刻退出，因此父进程可以立刻接收子进程再进行释放，而孙进程此时就在执行和服务端交互的任务
+           
+            //version 4 -- 多线程版本
+            pthread_t tid;
+            ThreadData *ptd = new ThreadData(); //这里如果直接写成 td 对象，则有可能在子线程方法还没有被启动之前，主线程又进行了一次新的连接，导致 td 被修改，而如果写成指针就没有这个问题，但是这样做就把释放指针的责任转交给了子线程的方法内部，因为对于主线程来说，ptd 指针变量会多次申请对空间，覆盖该变量存储的指针值
+            ptd->_sock = serviceSock;
+            ptd->_ip = client_ip;
+            ptd->_port = client_port;
+
+            pthread_create(&tid, nullptr, ThreadRoutine, ptd);
 
             //9.关闭服务套接字
             close(serviceSock);
@@ -128,3 +196,4 @@ private:
     uint16_t _port; //port
     int _ListenSock; //int _sock; //我们更愿意叫这个套接字为监听套接字，因此我们改一下名字
 };
+
