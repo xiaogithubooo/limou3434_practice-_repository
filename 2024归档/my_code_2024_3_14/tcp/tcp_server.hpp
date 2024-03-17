@@ -20,9 +20,33 @@ const int buffSize = 1024;
 
 const int g_backlog = 20; //一般不会太大，也不会太小
 
-static void Service(int& serviceSock, const std::string& client_ip, const uint16_t& client_port)
+static void Service(const int& serviceSock, const std::string& client_ip, const uint16_t& client_port)
 {
-
+    while(true)
+    {
+        //直接套用文件 IO 的接口 read() 和 write()
+        
+        //从服务端读取数据
+        char readBuffer[1024] = { 0 };
+        ssize_t s = read(serviceSock, readBuffer, sizeof(readBuffer) - 1);
+        if (s > 0)
+        {
+            std::cout << "[" << client_ip << ":" << client_port << "] echo " << readBuffer << std::endl;
+        }
+        else if (s == 0) //代表对端关闭了
+        {
+            LogMessage(NORMAL, "write close, me too! %d %s %s %d", errno, strerror(errno), __FILE__, __LINE__);
+            break;
+        }
+        else 
+        {
+            LogMessage(FATAL, "read() error, %d %s %s %d", errno, strerror(errno), __FILE__, __LINE__);
+            exit(40);
+        }
+        
+        //写入数据到服务端
+        write(serviceSock, readBuffer, strlen(readBuffer));
+    }
 }
 
 class TcpServer
@@ -81,9 +105,7 @@ class TcpServer
             }
             std::string client_ip = inet_ntoa(src.sin_addr);
             uint16_t client_port = ntohs(src.sin_port);
-            LogMessage(NORMAL, "link success, the \"service sock\" is [%d], the \"client sock\" is [%s:%d], %d %s %s %d",
-                serviceSock, client_port, client_ip, errno, strerror(errno), __FILE__, __LINE__
-            ); //提示连接成功
+            LogMessage(NORMAL, "link success, the \"service sock\" is [%d], the \"client sock\" is [%s:%d], %d %s %s %d", serviceSock, client_ip.c_str(), client_port, errno, strerror(errno), __FILE__, __LINE__); //提示连接成功
 
             //8.开始进行通信服务
             //version 1 -- 单进程循环版本
@@ -96,7 +118,8 @@ class TcpServer
 
     public:~TcpServer()
     {
-        
+        if(_ListenSock < 0)
+            close(_ListenSock);
     }
 
 private:
