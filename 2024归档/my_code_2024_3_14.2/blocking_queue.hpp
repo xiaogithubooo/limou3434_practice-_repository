@@ -1,4 +1,4 @@
-//blocking_queue.hpp(健壮性更强的版本)
+//blocking_queue.hpp(加载实际的任务)
 #pragma once
 #include <iostream>
 #include <queue>

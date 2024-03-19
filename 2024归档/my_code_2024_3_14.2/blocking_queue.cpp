@@ -1,4 +1,3 @@
-//blocking_queue.cpp
 #include <stdlib.h>
 #include <unistd.h>
 #include "blocking_queue.hpp"
@@ -6,6 +5,9 @@
 
 int productionSpeed = 1; //生产速率
 int consumptionSpeed = 5; //消费/速率
+
+const int num_of_producer = 3; //生产者个数
+const int num_of_consumer = 2; //消费者个数
 
 std::string opers = "+-*/%";
 
@@ -54,13 +56,20 @@ int main()
     BlockingQueue<Task>* bq = new BlockingQueue<Task>(); //不直接使用 STL 队列的原因是原生队列不是线程安全的
 
     //创建生产者和消费者进程
-    pthread_t p; //单个生产者线程
-    pthread_t c; //单个消费者线程
-    pthread_create(&p, nullptr, Consumer, bq);
-    pthread_create(&c, nullptr, Producer, bq);
+    pthread_t ps[num_of_producer]; //多个生产者线程
+    pthread_t cs[num_of_consumer]; //多个消费者线程
+    
+    for (int i = 0; i < num_of_producer; i++)
+        pthread_create(&ps[i], nullptr, Consumer, bq);
+    
+    for (int j = 0; j < num_of_consumer; j++)
+        pthread_create(&cs[j], nullptr, Producer, bq);
 
     //等待释放两种线程
-    pthread_join(p, nullptr);
-    pthread_join(c, nullptr);
+    for (int i = 0; i < num_of_producer; i++)
+        pthread_join(ps[i], nullptr);
+    
+    for (int j = 0; j < num_of_consumer; j++)
+        pthread_join(cs[j], nullptr);
     return 0;
 }
