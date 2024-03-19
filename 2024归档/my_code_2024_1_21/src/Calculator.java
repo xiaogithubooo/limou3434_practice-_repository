@@ -25,9 +25,6 @@ public class Calculator {
         }
     }
 
-//    public static void main(String[] args) {
-//        //初始化对象
-//        Scanner scanner = new Scanner(System.in);
 //        Random random = new Random();
 //
 //        while (true) {
