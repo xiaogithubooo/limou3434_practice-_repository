@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Click</title>
+</head>
+<body>
+    <h1>Click the button to get "hello"</h1>
+    <button id="myButton">Click Me</button>
+
+    <script>
+        document.getElementById('myButton').addEventListener('click', function() { //设置事件监听，监听点击类型的事件，一旦点击就会立刻执行接下来的匿名函数
+            const data = { name: 'limou'}; //需要发送给服务端的 JSON 数据
+            //发送 POST 请求把 data 发送到 Flask 服务器
+            fetch('/get_hello', {
+                method: 'POST',
+                headers: {  'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json()) //接受服务端的返回值，并且将其转化为 JSON 数据
+            .then(data => { alert(data.message); }); //在收到服务器响应后，弹出消息框打印消息
+        });
+    </script>
+</body>
+</html>
