@@ -131,9 +131,9 @@ public:
 
         //4.拼接为一个完整的消息
         std::string message;
-        message += "| 标准日志:"; message += stdBuffer;
-        message += " | 用户日志:"; message += logBuffer;
-        message += " |\n";
+        message += "--> 标准日志:"; message += stdBuffer;
+        message += "\t 用户日志:"; message += logBuffer;
+        message += "\n";
 
         //5.打印日志消息
         _WriteLog(level, message);
