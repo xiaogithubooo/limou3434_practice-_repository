@@ -1,4 +1,11 @@
-//task.hpp(多线程版本)
+//task.hpp(线程池)
+
+/* 使用方法
+Task t = Task(操作数1, 操作数2, 操作符);
+t.Run(); 或 仿函数 t(); 来调用执行任务，并且返回结果
+t.Show(); 查看任务的具体内容
+*/
+
 #pragma once
 
 const int gDefaultResult = 0;
@@ -12,14 +19,14 @@ enum
 
 class Task
 {
-    public:Task()
-    {}
+public:
+    Task() {}
 
-    public:Task(const int& x, const int& y, const char& op)
+    Task(const int& x, const int& y, const char& op)
         : _data_x(x), _data_y(y), _oper(op), _result(gDefaultResult), _code(OK)
     {}
 
-    public:int Run()
+    int Run()
     {
         switch (_oper)
         {
@@ -64,12 +71,12 @@ class Task
         return _result;
     }
 
-    public:int operator()()
+    int operator()()
     {
         return Run();
     }
 
-    public:std::string Show()
+    std::string Show()
     {
         std::string ret;
         ret += std::to_string(_data_x);
@@ -78,7 +85,7 @@ class Task
         return ret;
     }
 
-    public:void Status()
+    void Status()
     {
         std::cout << "status code:" << _code << std::endl;
     }
