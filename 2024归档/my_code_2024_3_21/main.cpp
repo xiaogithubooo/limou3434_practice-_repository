@@ -1,4 +1,4 @@
-//main.cpp
+//main.cpp(线程池)
 #include <iostream>
 #include <memory>
 #include <ctime>
@@ -13,7 +13,8 @@ const int gProductionSpeed = 1; //生产速度
 
 int main()
 {
-    std::unique_ptr<ThreadPool<Task>> tp(new ThreadPool<Task>());    
+    //std::unique_ptr<ThreadPool<Task>> tp(new ThreadPool<Task>());    
+    ThreadPool<Task>* tp = ThreadPool<Task>::GetInstance();
     tp->Start();
 
     while(true)
@@ -34,3 +35,4 @@ int main()
     tp->Wait();
     return 0;
 }
+

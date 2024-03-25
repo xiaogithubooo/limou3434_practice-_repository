@@ -1,4 +1,12 @@
-//thread_pool.hpp
+//thread_pool.hpp(懒汉-单例模式的线程池)
+
+/* 使用方法
+ThreadPool<任务类型> tp = ThreadPool<任务类型>();
+tp->Start();        //启动线程池，内部会创建多个线程等待处理任务
+tp->Push(任务);     //推送任务
+tp->Wait();         //手动释放线程池内的多线程
+*/
+
 #pragma once
 #include <iostream>
 #include <queue>
@@ -80,8 +88,6 @@ private:
         }
     }
 
-
-public:
     //构造函数，创建多个线程
     ThreadPool(int num_of_thread = gDefaultNum)
         : _num_of_thread(num_of_thread)
@@ -107,6 +113,27 @@ public:
             ); //emplace_back() 采用了参数包（parameter pack）的方式，允许直接在容器末尾构造新元素，而无需提前创建临时对象或者拷贝对象，更加高效
             log.LogMessage(DEBUG, "Thread()->emplace_back()->%s succeed in %s %d", tName.c_str(), __FILE__, __LINE__);
         }
+    }
+
+    //禁用拷贝构造和赋值重载
+    ThreadPool(const ThreadPool<T>& tp) = delete;
+    const ThreadPool<T>& operator=(const ThreadPool<T>& tp) = delete;
+
+public:
+    //获取单例指对象
+    static ThreadPool<T>* GetInstance(int num_of_thread = gDefaultNum)
+    {
+        if (_instance == nullptr) //这里之所以再次检查一遍，是为了防止早有一个线程申请到锁资源后，单例对象不为空时，其他线程依旧在无脑申请锁资源尝试创建单例对象的情况（提高效率）
+        {
+            LockGuard lockGuard(&sig_lock); //加锁，防止多个线程同时运行时，抢夺锁成功的线程申请完单例对象后，其他因为抢夺不到锁资源的线程从阻塞状态恢复后，依旧往下走的情况（避免二义性）
+            if (_instance == nullptr)
+            {
+                _instance = new ThreadPool(num_of_thread); //这里必须保证线程安全，不然在多个线程需要同时申请线程池的时候，会有可能发生多次单例的申请，多次重入这个 if 语句
+                log.LogMessage(DEBUG, "GetInstance() succeed in %s %d", __FILE__, __LINE__);
+            }
+        }
+
+        return _instance;
     }
 
     //启动多个线程
@@ -160,6 +187,15 @@ private:
     
     int _task_low_water; //最少的任务数，读取配置文件即可[拓展]
     int _task_high_water; //最多的任务数，读取配置文件即可[拓展]
+
+    static ThreadPool<T>* _instance; //单例指针
+    static pthread_mutex_t sig_lock; //单例对象的互斥锁，避免多次申请单例对象
 };
+
+template<class T>
+ThreadPool<T>* ThreadPool<T>::_instance = nullptr;
+
+template<class T>
+pthread_mutex_t ThreadPool<T>::sig_lock = PTHREAD_MUTEX_INITIALIZER;
 
 //TODO：这里再做一个拓展思路，假设让一个主进程管理多个子进程，每个子进程内部就可以管理各自的线程池，这将是个庞大线程池集群
