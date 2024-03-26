@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome</title>
+    <title>{% block title_value %} {% endblock %}</title>
 </head>
 <body>
-    <p>{{ args_value }}</p>
+    <p>{% block p_value %} {% endblock %}</p>
 </body>
 </html>
