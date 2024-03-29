@@ -1,4 +1,8 @@
 //tcp_server.hpp
+/* 文件描述
+主要是对 sock.hpp 的使用，构建一个可用的服务端类
+*/
+
 #pragma once
 #include <functional>
 #include <vector>
@@ -40,6 +44,7 @@ private: //定义一些私有函数
         td->_server->__Excute(td->_serviceSock); //执行所有绑定的方法
         close(td->_serviceSock);
         delete td;
+        return nullptr;
     }
 
 public: //定义一些公有函数

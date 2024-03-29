@@ -1,4 +1,8 @@
-//socket.hpp
+//sock.hpp
+/* 文件描述
+主要是对套接字编程的常见接口做封装
+*/
+
 #pragma once
 #include <memory>
 #include <sys/types.h> //套接字编程的头文件
@@ -73,6 +77,21 @@ public:
         *port = ntohs(src.sin_port);
         *ip = inet_ntoa(src.sin_addr);
         return serviceSock;
+    }
+
+    bool _Connect(int sock, const std::string& server_ip, const uint16_t& server_port)
+    {
+        struct sockaddr_in server;
+        memset(&server, 0, sizeof(server));
+        server.sin_family = AF_INET;
+        server.sin_port = htons(server_port);
+        server.sin_addr.s_addr = inet_addr(server_ip.c_str());
+
+        if (connect(sock, (struct sockaddr*)&server, sizeof(server)) == 0)
+            return true;
+
+        _log.LogMessage(FATAL, "connect() error %s %d", __FILE__, __LINE__);
+        return false;
     }
 
     Sock() {}
