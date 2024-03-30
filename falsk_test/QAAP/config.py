@@ -1,12 +1,14 @@
+""" 文件描述
+存放关于 Flask 对象的相关配置
 """
-配置文件：存放关于 Flask 对象的相关配置
-"""
+
 import os
 
-# 创建 SQLAlchemy 对象
-SQLALCHEMY_DATABASE_URI = (
-    f"mysql+pymysql://"
-    f"{os.getenv('EIMOU_DATABASE_USER')}:{os.getenv('EIMOU_DATABASE_PASSWORD')}@"
-    f"{os.getenv('EIMOU_DATABASE_HOST')}:3306/{os.getenv('EIMOU_DATABASE_NAME')}"
-    "?charset=utf8mb4"
-)
+USERNAME                = os.getenv('EIMOU_DATABASE_USER')
+PASSWORD                = os.getenv('EIMOU_DATABASE_PASSWORD')
+SERVER_IP               = os.getenv('EIMOU_DATABASE_HOST')
+SERVER_PORT             = '3306'
+DATABASE_NAME           = os.getenv('QAAP_DATABASE_NAME')
+
+DB_URI                  = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8mb4'.format(USERNAME, PASSWORD, SERVER_IP, SERVER_PORT, DATABASE_NAME)
+SQLALCHEMY_DATABASE_URI = DB_URI
