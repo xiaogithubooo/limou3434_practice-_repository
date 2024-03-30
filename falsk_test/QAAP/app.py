@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import config
@@ -23,7 +23,9 @@ class User(db.Model):
     age = db.Column(db.Integer) # 再再次新增的字段，再做命令行操作
 
 # 路由和视图函数的定义
-# ...
+@app.route('/')
+def index():
+    return render_template('index.html')
     
 # 启动 Web 后端服务
 if __name__ == '__main__':
