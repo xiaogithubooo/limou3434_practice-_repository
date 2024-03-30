@@ -1,6 +1,6 @@
 //log.hpp(线程池)
 
-/* 使用方法
+/* 文件描述
 Log log = Log(bool debugShow = true,    //选择是否显示 DEBUG 等级的日志消息
     std::string writeMode = "SCREEN",   //选择日志的打印方式
     std::string logFileName = "log"     //选择日志的文件名称
@@ -10,11 +10,9 @@ log.LogMessage(DEBUG | NORMAL | WARNING | ERROR | FATAL, "%s %d", __FILE__, __LI
 */
 
 #pragma once
-
 #include <iostream>
 #include <string>
 #include <fstream>
-
 #include <cstdio>
 #include <cstdarg>
 #include <ctime>
