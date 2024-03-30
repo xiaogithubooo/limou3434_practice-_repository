@@ -1,3 +1,4 @@
+# makefile(自定义协议)
 .PHONY:all
 all:cal_client cal_server
 

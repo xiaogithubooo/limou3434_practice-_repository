@@ -1,4 +1,5 @@
-//tcp_server.hpp
+//tcp_server.hpp(自定义协议)
+
 /* 文件描述
 主要是对 sock.hpp 的使用，构建一个可用的 TCP 服务端
 */

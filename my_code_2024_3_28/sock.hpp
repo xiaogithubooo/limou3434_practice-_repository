@@ -1,4 +1,5 @@
-//sock.hpp
+//sock.hpp(自定义协议)
+
 /* 文件描述
 主要是对套接字编程的常见接口做封装，是一个关于套接字的工具包
 */
@@ -101,7 +102,7 @@ public:
 
         if (connect(sock, (struct sockaddr*)&server, sizeof(server)) == 0)
         {
-            _log.LogMessage(FATAL, "accept() success %s %d", __FILE__, __LINE__);
+            _log.LogMessage(NORMAL, "accept() success %s %d", __FILE__, __LINE__);
             return true;
         }
 

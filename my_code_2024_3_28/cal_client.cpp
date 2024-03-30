@@ -1,4 +1,4 @@
-//cal_client.cpp
+//cal_client.cpp(自定义协议)
 #include <iostream>
 #include <string>
 #include <unistd.h>

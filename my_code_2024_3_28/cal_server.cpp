@@ -1,8 +1,9 @@
-//cal_server.cpp
+//cal_server.cpp(自定义协议)
 #include <signal.h>
+#include <cstdio>
 #include "tcp_server.hpp"
-#include "log.hpp"
 #include "protocol.hpp"
+#include "daemon.hpp"
 
 //使用手册
 static void Usage(std::string proc)
@@ -99,13 +100,9 @@ int main(int argc, char* argv[]) //使用 ./cal_server 8080 来启动服务端
         exit(4);
     }
 
-    //一般情况下 server 需要较为严谨的判断逻辑，通常都需要忽略 SIGPIPE 信号，
-    //防止运行过程中出现非法写入的问题（例如服务端写到一半时，客户端因为异常而被关闭）
-    //避免因为客户端出现问题，导致服务端跟着挂掉...
-    signal(SIGPIPE, SIG_IGN);
-
-    Log log = Log();
-
+    MyDaemon(); //调用后，父进程的部分退出，内部创建的子进程变成守护进程，后续可以使用 ps -axj | grep cal_server 来查看（可以观察到 PPID:1 ，这说明守护进程就是一种孤儿进程）
+    printf("dimou");
+    //以下步骤都开始由子进程进行操作，注意日志消息需要写入到文件中，而不能直接输出（为方便修改，我直接把之前写的日志类构造函数中的 writeMode 默认为 ONE_FILE），并且需要把所有的标准 IO 输出都会被重定向到 /dev/null 中
     std::unique_ptr<TcpServer> server(new TcpServer(atoi(argv[1])));
     server->BindService(Calculator); //在任务列表中绑定一些任务
     server->Start(); //启动服务器

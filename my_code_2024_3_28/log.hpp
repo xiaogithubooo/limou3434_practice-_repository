@@ -1,4 +1,4 @@
-//log.hpp(线程池)
+//log.hpp(自定义协议)
 
 /* 文件描述
 Log log = Log(bool debugShow = true,    //选择是否显示 DEBUG 等级的日志消息
@@ -89,7 +89,7 @@ private:
 
 public:
     //构造函数，debugShow 为是否显示 debug 消息，writeMode 为日志打印模式，logFileName 为日志文件名
-    Log(bool debugShow = true, const WriteMode& writeMode = SCREEN, std::string logFileName = "log")
+    Log(bool debugShow = true, const WriteMode& writeMode = ONE_FILE, std::string logFileName = "log")
         : _debugShow(debugShow), _writeMode(writeMode), _logFileName(logFileName)
     {
         mkdir(logdir.c_str(), 0775); //创建目录
