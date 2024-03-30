@@ -3,10 +3,10 @@
 all:cal_client cal_server
 
 cal_client:cal_client.cpp
-	g++ -o $@ $^ -std=c++11 -lpthread
+	g++ -o $@ $^ -std=c++11 -lpthread -ljsoncpp
 
 cal_server:cal_server.cpp
-	g++ -o $@ $^ -std=c++11 -lpthread
+	g++ -o $@ $^ -std=c++11 -lpthread -ljsoncpp
 
 .PHONY:clean
 clean:

@@ -15,6 +15,7 @@
 #include <cstring>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <jsoncpp/json/json.h>
 #include "log.hpp"
 
 #define SPACE " "
@@ -29,33 +30,25 @@ public:
     Request() {}
     Request(int x, int y, char op) : _x(x), _y(y), _op(op) {}
 
-    //序列化为 "_x _op _y"
+    //序列化为 JSON 字符串
     std::string Serialize()
     {
-        std::string str;
-        str += std::to_string(_x);
-        str += SPACE;
-        str += _op;
-        str += SPACE;
-        str += std::to_string(_y);
-        return str;
+        Json::Value root;
+        root["x"] = _x;
+        root["y"] = _y;
+        root["op"] = _op;
+        Json::FastWriter fwriter;
+        return fwriter.write(root);
     }
-    //反序列化为 { int _x; int _y; char _op; }
+    //反序列化为 JSON 数据
     bool Deserialize(const std::string& str)
     {
-        std::size_t left = str.find(SPACE);
-        if (left == std::string::npos)
-            return false;
-
-        std::size_t right = str.rfind(SPACE);
-        if (right == std::string::npos)
-            return false;
-
-        _x = atoi(str.substr(0, left).c_str());
-        _op = str[left + SPACE_LEN];
-        _y = atoi(str.substr(right + SPACE_LEN).c_str());
-
-        return true;
+        Json::Value root;
+        Json::Reader reader;
+        reader.parse(str, root); //第二个是输出型参数
+        _x = root["x"].asInt();
+        _y = root["y"].asInt();
+        _op = root["op"].asInt();
     }
 
 public:
@@ -71,24 +64,24 @@ public:
     Response() {}
     Response(int result, int code) : _result(result), _code(code) {}
 
-    //序列化为 "_code _result"
+    //序列化为 JSON 字符串
     std::string Serialize()
     {
-        std::string str;
-        str += std::to_string(_code);
-        str += SPACE;
-        str += std::to_string(_result);
-        return str;
+        Json::Value root;
+        root["result"] = _result;
+        root["code"] = _code;
+        Json::FastWriter fwriter;
+        return fwriter.write(root);
     }
-    //反序列化为 { int _result; int _code; }
+
+    //反序列化为 JSON 数据
     bool Deserialize(const std::string& str)
     {
-        std::size_t pos = str.find(SPACE);
-        if (pos == std::string::npos)
-            return false;
-
-        _code = atoi(str.substr(0, pos).c_str());
-        _result = atoi(str.substr(pos + SPACE_LEN).c_str());
+        Json::Value root;
+        Json::Reader reader;
+        reader.parse(str, root); //第二个是输出型参数
+        _result = root["result"].asInt();
+        _code = root["code"].asInt();
         return true;
     }
 
