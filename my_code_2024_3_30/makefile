@@ -4,4 +4,4 @@ http_server:http_server.cpp
 
 .PHONY:clean
 clean:
-	rm -rf http_server
+	rm -rf http_server log_dir 

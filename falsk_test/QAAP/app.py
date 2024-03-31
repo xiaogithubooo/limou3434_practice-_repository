@@ -2,7 +2,6 @@
 程序启动主逻辑
 """
 
-
 # flask 相关导入
 from flask import Flask
 import config

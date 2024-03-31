@@ -1,18 +1,31 @@
 #include <iostream>
+#include <vector>
 #include <memory>
 #include <cassert>
 #include "http_server.hpp"
 #include "usage.hpp"
+#include "util.hpp"
+
+#define ROOT "./wwwroot"
+#define HOMW_PAGE "index.html"
 
 void HandlerHttpRequest(int sockfd)
 {
     //1.读取请求
     char buffer[1024] = { 0 };
     ssize_t s = recv(sockfd, buffer, sizeof(buffer) - 1, 0);
-    if (s > 0)
+    // if (s > 0)
+    // {
+    //     buffer[s] = 0;
+    //     std::cout << buffer << "---------------\n" << std::endl;
+    // }
+
+    std::vector<std::string> v;
+    Util::_CutString(buffer, "\r\n", &v);
+
+    for (auto& iter : v)
     {
-        buffer[s] = 0;
-        std::cout << buffer << "---------------\n" << std::endl;
+        std::cout << iter << '\n' << std::endl;
     }
 
     //2.返回响应
