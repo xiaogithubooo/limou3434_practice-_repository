@@ -12,3 +12,6 @@ DATABASE_NAME           = os.getenv('QAAP_DATABASE_NAME')
 
 DB_URI                  = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8mb4'.format(USERNAME, PASSWORD, SERVER_IP, SERVER_PORT, DATABASE_NAME)
 SQLALCHEMY_DATABASE_URI = DB_URI
+
+if __name__ == '__main__':
+    print(SQLALCHEMY_DATABASE_URI)
