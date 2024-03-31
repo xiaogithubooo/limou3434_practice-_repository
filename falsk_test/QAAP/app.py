@@ -26,7 +26,7 @@ migrate.init_app(app, db)
 mail.init_app(app)
 
 # 绑定蓝图中的视图函数
-@app.route('/')
+@app.route('/') # 若没有给定 methods 参数则默认为 get 请求, 一般从服务器拿数据用 GET, 提交数据用 POST
 def index():
     return render_template('index.html')
 app.register_blueprint(qa_bp)

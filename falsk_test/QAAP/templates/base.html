@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/bootstrap.4.6.min.css') }}"> 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/init.css') }}">
-    {% block style_link_value %} {% endblock %} <!-- 交给子文件自定义样式 -->
+    <!-- 交给子文件自定义其他链接 -->
+    {% block other_link_value %} {% endblock %}
     <title>{% block title_value %} {% endblock %}</title>
 </head>
 <body>

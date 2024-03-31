@@ -9,6 +9,5 @@ from flask_migrate import Migrate
 
 
 db = SQLAlchemy()   # 数据库操作对象
-mail = Mail()       # 邮箱操作对象
 migrate = Migrate() # 模型同步操作对象
-
+mail = Mail()       # 邮箱操作对象
