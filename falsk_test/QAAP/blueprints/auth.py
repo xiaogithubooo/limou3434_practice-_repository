@@ -2,9 +2,9 @@
 用户授权逻辑相关蓝图
 """
 
-from flask import Blueprint # 导入蓝图类
-from flask import render_template # 导入渲染函数
-
+from flask import Blueprint, render_template
+from exts import mail
+from flask_mail import Message
 
 bp = Blueprint(
     'auth', # 设置蓝图名
@@ -21,3 +21,13 @@ def register():
 @bp.route('/login')
 def login():
     return render_template('login.html')
+
+# 邮箱测
+@bp.route('/emil')
+def emil():
+    msg = Message(
+        subject="测试",
+        body = "This is the email body"
+    )
+    mail.send(msg)
+    return "Message sent!" 
