@@ -1,3 +1,9 @@
+//http_server.hpp
+
+/* 文件描述
+使用 sock.hpp 工具包进一步封装的 HTTP 服务端
+*/
+
 #pragma once
 #include <signal.h>
 #include <functional>

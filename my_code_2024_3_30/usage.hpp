@@ -1,3 +1,7 @@
+/* 文件描述
+存放用户的说明手册
+*/
+
 #pragma once
 
 #include <iostream>

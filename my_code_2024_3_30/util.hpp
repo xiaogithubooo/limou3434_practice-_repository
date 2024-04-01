@@ -1,3 +1,5 @@
+//util.hpp
+
 /* 文件描述
 是一个针对字符串处理的工具包
 */
@@ -20,9 +22,12 @@ public:
             {
                 break;
             }
-            out->push_back(str.substr(start, pos));
-            start += pos; //到分割符的左侧
-            start += sep.size(); //跳过分隔符
+            std::string sub = str.substr(start, pos - start);
+            out->push_back(sub);
+            start += sub.size();
+            start += sep.size();
         }
+        if (start < str.size())
+            out->push_back(str.substr(start));
     }
 };
