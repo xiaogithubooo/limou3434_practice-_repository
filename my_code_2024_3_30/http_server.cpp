@@ -1,5 +1,4 @@
 //http_server.cpp
-
 #include <iostream>
 #include <vector>
 #include <memory>
@@ -61,6 +60,9 @@ void HandlerHttpRequest(int sockfd)
     else
     {
         httpResponse = "HTTP/1.1 200 OK\r\n"; //状态行
+        httpResponse += "Content-Type: text/html\r\n"; //状态行(支持文本和html)
+        httpResponse += "Content-Length: " + std::to_string(content.size()) + "\r\n"; //状态行(添加正文长度)
+        httpResponse += "Set-Cookie: This is a cookie.\r\n"; //状态行(设置 cookie)
     }
     httpResponse += "\r\n"; //暂时不写响应报头，直接添加空行（现代的浏览器大部分都可以补充上报头的属性，依旧可以进行自定义识别）
     httpResponse += content; //暂时不写响应报头，直接添加空行（现代的浏览器大部分都可以补充上报头的属性，依旧可以进行自定义识别）
