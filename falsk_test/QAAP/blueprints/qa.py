@@ -2,9 +2,9 @@
 问答逻辑相关蓝图
 """
 
-from flask import Blueprint, render_template, request, g, redirect
-from .forms import QuestionForm
-from models import QuestionModel, UserModel
+from flask import Blueprint, render_template, request, g, redirect, url_for
+from .forms import QuestionForm, AnswerForm
+from models import QuestionModel, UserModel, AnswerModel
 from exts import db
 from decorators import login_required
 
@@ -43,3 +43,19 @@ def detail(qa_id):
     a_question = QuestionModel.query.get(qa_id)
     a_user = UserModel.query.filter_by(id=a_question.author_id).first()
     return render_template('detail.html', question=a_question, user=a_user)
+
+# 发布评论接口
+@bp.route('/public_answer', methods=['POST'])
+@login_required
+def public_answer():
+    form = AnswerForm(request.form)
+    if form.validate():
+        content = form.content.data
+        question_id = form.question_id.data
+        answer = AnswerModel(content=content, question_id=question_id, author_id=g.user.id)
+        db.session.add(answer)
+        db.session.commit()
+        return redirect(url_for('qa.detail', qa_id=question_id))
+    else:
+        print(form.errors)
+        return redirect(url_for('qa.detail', qa_id=request.form.get('question_id')))

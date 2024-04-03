@@ -3,7 +3,7 @@
 """
 
 import wtforms
-from wtforms.validators import Email, Length, EqualTo
+from wtforms.validators import Email, Length, EqualTo, InputRequired
 from models import UserModel
 from models import EmailCaptchaModel
 from exts import db
@@ -50,3 +50,7 @@ class LoginForm(wtforms.Form): # 这里的 wtforms.Form 实际上就是检验表
 class QuestionForm(wtforms.Form): # 这里的 wtforms.Form 实际上就是检验表单提交的数据
     title = wtforms.StringField(validators=[Length(min=2, max=30, message="标题字数为 2 到 30 个字")]) # 标题检查
     content = wtforms.StringField(validators=[Length(min=10, max=1000, message="内容字数为 10 到 1000 个字")]) # 内容检查
+
+class AnswerForm(wtforms.Form): # 这里的 wtforms.Form 实际上就是检验表单提交的数据
+    content = wtforms.StringField(validators=[Length(min=3, max=1000, message="内容字数为 3 到 1000 个字")]) # 内容检查
+    question_id = wtforms.StringField(validators=[InputRequired(message='必须传入问题 id')]) # 检查帖子 id
