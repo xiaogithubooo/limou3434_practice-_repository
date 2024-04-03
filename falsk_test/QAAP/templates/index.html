@@ -12,23 +12,28 @@
 {% block container_value %}
 <div class="row" style="margin-top: 20px;">
     <div class="col"></div>
+
     <div class="col-10">
         <ul class="question-ul">
-            <li>
-                <div class="side-question">
-                    <img class="side-question-avatar" src="{{ url_for('static', filename='images/my.jpg') }}" alt="用户头像">
-                </div>
-                <div class="question-main">
-                    <div class="question-title"><a href="#">钢铁侠是怎样炼成的</a></div>
-                    <div class="question-content">传奇钢铁侠的成长之路</div>
-                    <div class="question-detail">
-                        <span class="question-author">limou3434</span>
-                        <span class="question-time">2022年12月1日</span>
+            {% for question in questions %}
+                <li>
+                    <div class="side-question">
+                        <img class="side-question-avatar" src="{{ url_for('static', filename='images/my.jpg') }}" alt="用户头像">
+                        <!-- TODO: 用户头像上传也可以尝试制作一下 -->
                     </div>
-                </div>
-            </li>
+                    <div class="question-main">
+                        <div class="question-title"><a href="{{ url_for('qa.detail', qa_id=question.id) }}">{{ question.title }}</a></div>
+                        <div class="question-content">{{ question.content }}</div>
+                        <div class="question-detail">
+                            <span class="question-author">{{ question.author.username }}</span>
+                            <span class="question-time">{{ question.create_time }}</span>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
         </ul>
     </div>
+
     <div class="col"></div>
 </div>
 {% endblock %}

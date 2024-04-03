@@ -108,4 +108,4 @@ def login():
 @bp.route('/logout')
 def logout():
     session.clear() # 去除所有得 cookie
-    return redirect('/')
+    return redirect('/qa/index')

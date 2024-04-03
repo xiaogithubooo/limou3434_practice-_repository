@@ -46,3 +46,7 @@ class LoginForm(wtforms.Form): # 这里的 wtforms.Form 实际上就是检验表
     password = wtforms.StringField(validators=[Length(min=6, max=20, message="密码格式错误, 不少于 6 位, 不大于 20 位")]) # ..., 检验密码格式
     # TODO: 这里也有一个小 bug, 用户登录最好也做一个验证码检验, 否者也有可能遭受攻击
     # TODO: 前面关于数据库账户密码的凭证检验可以尝试迁移到这里, 干脆一起检查了
+
+class QuestionForm(wtforms.Form): # 这里的 wtforms.Form 实际上就是检验表单提交的数据
+    title = wtforms.StringField(validators=[Length(min=2, max=30, message="标题字数为 2 到 30 个字")]) # 标题检查
+    content = wtforms.StringField(validators=[Length(min=10, max=1000, message="内容字数为 10 到 1000 个字")]) # 内容检查

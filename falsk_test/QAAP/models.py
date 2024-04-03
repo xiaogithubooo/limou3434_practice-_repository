@@ -6,15 +6,41 @@
 from exts import db
 from datetime import datetime
 
+# 用户数据表
 class UserModel(db.Model):
     __tablename__ = 'user'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     username = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
     join_time = db.Column(db.DateTime, default=datetime.now) # 注意这里的 now 是一个方法，这里只是传递一个方法，可以把当前用户添加进数据库的时间记录下来
-    
+
+# 验证码数据表   
 class EmailCaptchaModel(db.Model):
     __tablename__ = 'email_captcha'
     email = db.Column(db.String(100), primary_key=True, nullable=False)
     captcha = db.Column(db.String(100), nullable=False)
+
+# 问答内容数据表
+class QuestionModel(db.Model):
+    __tablename__ = 'question'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    create_time = db.Column(db.DateTime, default=datetime.now)
+
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False) # 注意这是一个外键
+    author = db.relationship(UserModel, backref='questions') # 关联数据表, 反向引用名称为 questions, 若有名为 a_user 的 UserModel 对象则可以通过 user.questions 来获取该用户发布的所有问题
+
+# 评论内容数据表
+class AnswerModel(db.Model): # TODO: 待设计
+    __tablename__ = 'answer'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    content = db.Column(db.Text, nullable=False)
+    create_time = db.Column(db.DateTime, default=datetime.now)
+
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False) # 注意这是一个外键
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False) # 注意这是一个外键
+    
+    question = db.relationship(QuestionModel, backref='answers') # 关联数据表, 反向引用名称为 questions, 若有名为 a_user 的 UserModel 对象则可以通过 user.questions 来获取该用户发布的所有问题
+    author = db.relationship(QuestionModel, backref='questions')

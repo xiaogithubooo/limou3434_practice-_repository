@@ -23,16 +23,11 @@ db.init_app(app)
 migrate.init_app(app, db)
 mail.init_app(app)
 
-# 设置默认的主页
-@app.route('/') # 若没有给定 methods 参数则默认为 get 请求, 一般从服务器拿数据用 GET, 提交数据用 POST
-def index():
-    return render_template('index.html')
-
 # 绑定蓝图中的视图函数
 app.register_blueprint(qa_bp)
 app.register_blueprint(auth_bp)
 
-# 设置钩子函数
+# 设置两个关于 cookie 的钩子函数
 # before_request: 在每次请求处理之前都会被调用, 通常用于执行需要在每个请求处理之前进行的操作, 比如身份验证、请求参数...若有多个 before_request 则会按照注册的顺序依次执行。
 # before_first_request: 只在应用处理第一个请求之前执行一次, 适用于只需要在应用启动后首次接收到请求时执行的操作, 比如初始化数据库连接、加载配置文件...
 # after_request: 在每次请求处理之后都会被调用，但在 before_request 之后, 通常用于执行需要在每个请求处理之后进行的操作, 比如清理资源、记录日志...需要注意 after_request 必须接收一个参数并返回一个响应对象, 否则可能会导致程序错误
