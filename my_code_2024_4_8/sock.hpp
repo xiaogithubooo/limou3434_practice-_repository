@@ -44,7 +44,7 @@ public:
     }
 
     //绑定监听套接字
-    static void _Bind(int listenSock, uint16_t port, std::string ip = "0.0.0.0")
+    static void _Bind(int listenSock, uint16_t port, std::string ip = "127.0.0.1")
     {
         struct sockaddr_in local;
         memset(&local, 0, sizeof local);
