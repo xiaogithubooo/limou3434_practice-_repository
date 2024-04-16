@@ -5,7 +5,7 @@
 
 void Change(std::string request) //服务端可以保证是完整请求
 {
-    //业务请求, 这里只是简单的让客户端的请求打印即可
+    //业务请求
     std::cout << "处理业务:" << request << std::endl;
 }
 

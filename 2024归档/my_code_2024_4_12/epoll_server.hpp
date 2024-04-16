@@ -36,7 +36,7 @@ private:
 
         _log.LogMessage(DEBUG, "get a new link success, %d->[%s:%d], %s %d", sock, client_ip.c_str(), client_port, __FILE__, __LINE__);
 
-        //将新的套接字 insert 到红黑树种
+        //将新的套接字 insert 到红黑树中
         if (!Epoll::CtrlEpoll(_epfd, EPOLL_CTL_ADD, sock, EPOLLIN))
         {
             _log.LogMessage(DEBUG, "add new sock, %s %d", sock, client_ip.c_str(), client_port, __FILE__, __LINE__);
@@ -68,7 +68,7 @@ private:
         else //读取出错
         {
             _log.LogMessage(WARNING, "recv client-[%d] error, error text is %s, %s %d", sock, strerror(errno), __FILE__, __LINE__);
-            //(1)把描述符从红黑树种去除(因为 epoll 有“只能去除‘合法’的描述符”)
+            //(1)把描述符从红黑树中去除(因为 epoll 有“只能去除‘合法’的描述符”)
             bool res = Epoll::CtrlEpoll(_epfd, EPOLL_CTL_DEL, sock, 0);
             assert(res);
             //(2)服务器也需要关闭该描述符资源
@@ -79,7 +79,7 @@ private:
     void __HanderEvents(int n)
     {
         assert(n > 0);
-        for (int i = 0; i < n; i++) //TODO: ???
+        for (int i = 0; i < n; i++)
         {
             uint32_t revents = _revs[i].events;
             int sock = _revs[i].data.fd;
@@ -99,7 +99,7 @@ private:
         }
     }
 
-    void _LoopOnce()
+    void _LoopOnce() //一次循环
     {
         int n = Epoll::WaitEpoll(_epfd, _revs, _num_of_revs, _timeout); //注意 _revs 是输出型参数
         switch (n)
@@ -167,11 +167,6 @@ public:
         {
             _LoopOnce();
         }
-    }
-
-    void DebugPrint()
-    {
-
     }
 
 private:
