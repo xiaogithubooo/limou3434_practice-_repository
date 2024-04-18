@@ -1,0 +1,607 @@
+bundle.cpp:72642:0: warning: ignoring #pragma comment  [-Wunknown-pragmas]
+ #pragma comment(lib, "Advapi32.lib")
+ ^
+bundle.cpp:103664:0: warning: ignoring #pragma warning  [-Wunknown-pragmas]
+ #pragma warning(disable : 4146)
+ ^
+bundle.cpp:114154:0: warning: "_ftelli64" redefined [enabled by default]
+ #define _ftelli64 ftello64
+ ^
+bundle.cpp:106810:0: note: this is the location of the previous definition
+ #define _ftelli64 ftello
+ ^
+bundle.cpp: In function ‘SRes LzmaEnc_Alloc(CLzmaEnc*, UInt32, ISzAlloc*, ISzAlloc*)’:
+bundle.cpp:64207:8: warning: variable ‘btMode’ set but not used [-Wunused-but-set-variable]
+   Bool btMode;
+        ^
+bundle.cpp: In function ‘void libzpaq::random(char*, int)’:
+bundle.cpp:65602:35: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if (in && fread(buf, 1, n, in)==n)
+                                   ^
+bundle.cpp: In function ‘bool bcm::compress(std::istream&, std::ostream&, uint64_t, int)’:
+bundle.cpp:83162:8: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+  if (b>ilen)
+        ^
+bundle.cpp: In function ‘void sendMTFValues(EState*)’:
+bundle.cpp:84509:19: warning: variable ‘nBytes’ set but not used [-Wunused-but-set-variable]
+    Int32 nGroups, nBytes;
+                   ^
+bundle.cpp: In member function ‘virtual void VerifyStream::write(const uint8_t*, size_t)’:
+bundle.cpp:101294:10: warning: unused variable ‘ref’ [-Wunused-variable]
+     auto ref = buffer[i];
+          ^
+bundle.cpp: In member function ‘void Dict::CodeWordGeneratorFast::generateCodeWords(Dict::Builder&, Dict::CodeWordSet*)’:
+bundle.cpp:101890:10: warning: unused variable ‘start’ [-Wunused-variable]
+     auto start = clock();
+          ^
+bundle.cpp:101780:9: warning: unused variable ‘start_time’ [-Wunused-variable]
+    auto start_time = clock();
+         ^
+bundle.cpp:101789:15: warning: unused variable ‘occurences’ [-Wunused-variable]
+    const auto occurences = word_pairs.size();
+               ^
+bundle.cpp:101805:32: warning: unused variable ‘num2’ [-Wunused-variable]
+    size_t num1 = words->num1_, num2 = 0, num3 = 0; // Number of first byte which are 1b/2b/3b.
+                                ^
+bundle.cpp: In member function ‘void Dict::Filter::createFromBuffer()’:
+bundle.cpp:102044:11: warning: unused variable ‘pos’ [-Wunused-variable]
+    size_t pos = 0;
+           ^
+bundle.cpp: In member function ‘virtual void Dict::Filter::forwardFilter(uint8_t*, size_t*, uint8_t*, size_t*)’:
+bundle.cpp:102128:67: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+       if (in_ptr + word_len >= in_limit && word_len != in_limit - in) {
+                                                                   ^
+bundle.cpp:102132:20: warning: unused variable ‘max_out’ [-Wunused-variable]
+       const size_t max_out = static_cast<size_t>(out_limit - out_ptr);
+                    ^
+bundle.cpp: In member function ‘virtual void Dict::Filter::reverseFilter(uint8_t*, size_t*, uint8_t*, size_t*)’:
+bundle.cpp:102195:34: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+      const bool first_cap = c == escape_cap_first_;
+                                  ^
+bundle.cpp:102196:32: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+      const bool all_cap = c == escape_cap_word_;
+                                ^
+bundle.cpp:102201:15: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+       if (c < word2bstart) {
+               ^
+bundle.cpp:102203:22: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+       } else if (c < word3bstart) {
+                      ^
+bundle.cpp:102226:15: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+      if (c == escape_char_) {
+               ^
+bundle.cpp: In static member function ‘static std::string Detector::profileToString(Detector::Profile)’:
+bundle.cpp:102776:10: warning: enumeration value ‘kProfileEOF’ not handled in switch [-Wswitch]
+   switch (profile) {
+          ^
+bundle.cpp:102776:10: warning: enumeration value ‘kProfileCount’ not handled in switch [-Wswitch]
+bundle.cpp:102776:10: warning: enumeration value ‘kProfileDetect’ not handled in switch [-Wswitch]
+bundle.cpp: In member function ‘Detector::DetectedBlock Detector::detectBlock()’:
+bundle.cpp:103008:18: warning: unused variable ‘bits_per_sample’ [-Wunused-variable]
+         uint32_t bits_per_sample = readBytes(fpos, 2, false); fpos += 2;
+                  ^
+bundle.cpp: In static member function ‘static Huffman::HuffTree* Huffman::buildTreePackageMerge(size_t*, uint32_t, uint32_t)’:
+bundle.cpp:104483:21: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if (total != 1 << max_depth) {
+                     ^
+bundle.cpp: In constructor ‘File::File()’:
+bundle.cpp:106854:8: warning: ‘File::handle’ will be initialized after [-Wreorder]
+  FILE* handle;
+        ^
+bundle.cpp:106853:11: warning:   ‘uint64_t File::offset’ [-Wreorder]
+  uint64_t offset; // Current offset in the file.
+           ^
+bundle.cpp:106856:2: warning:   when initialized here [-Wreorder]
+  File()
+  ^
+bundle.cpp: In member function ‘virtual void File::seek(uint64_t)’:
+bundle.cpp:106938:8: warning: unused variable ‘res’ [-Wunused-variable]
+   auto res = seek(static_cast<uint64_t>(pos), SEEK_SET);
+        ^
+bundle.cpp: In member function ‘int File::seek(int64_t, int)’:
+bundle.cpp:106942:36: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if (origin == SEEK_SET && pos == offset) {
+                                    ^
+bundle.cpp: In member function ‘void FileSegmentStream::nextRange()’:
+bundle.cpp:107254:38: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+     if (file_idx_ >= segments_->size()) return;
+                                      ^
+bundle.cpp: In member function ‘virtual void Wav16::compress(Stream*, Stream*, uint64_t)’:
+bundle.cpp:108296:13: warning: unused variable ‘pred_a2’ [-Wunused-variable]
+    uint16_t pred_a2 = 3 * last_a - 3 * last_a2 - last_a3;
+             ^
+bundle.cpp:108297:13: warning: unused variable ‘pred_b2’ [-Wunused-variable]
+    uint16_t pred_b2 = 3 * last_b - 3 * last_b2 - last_b3;
+             ^
+bundle.cpp: In member function ‘virtual void Wav16::decompress(Stream*, Stream*, uint64_t)’:
+bundle.cpp:108319:8: warning: unused variable ‘start’ [-Wunused-variable]
+   auto start = in_stream->tell();
+        ^
+bundle.cpp:108324:12: warning: variable ‘last_a3’ set but not used [-Wunused-but-set-variable]
+   uint16_t last_a3 = 0, last_b3 = 0;
+            ^
+bundle.cpp:108324:25: warning: variable ‘last_b3’ set but not used [-Wunused-but-set-variable]
+   uint16_t last_a3 = 0, last_b3 = 0;
+                         ^
+bundle.cpp: In constructor ‘Archive::Algorithm::Algorithm(const CompressionOptions&, Detector::Profile)’:
+bundle.cpp:108410:9: warning: enumeration value ‘kProfileWave16’ not handled in switch [-Wswitch]
+  switch (profile) {
+         ^
+bundle.cpp:108410:9: warning: enumeration value ‘kProfileEOF’ not handled in switch [-Wswitch]
+bundle.cpp:108410:9: warning: enumeration value ‘kProfileCount’ not handled in switch [-Wswitch]
+bundle.cpp:108410:9: warning: enumeration value ‘kProfileDetect’ not handled in switch [-Wswitch]
+bundle.cpp: In member function ‘Filter* Archive::Algorithm::createFilter(Stream*, Analyzer_MCM*)’:
+bundle.cpp:108497:9: warning: enumeration value ‘kFilterTypeNone’ not handled in switch [-Wswitch]
+  switch (filter_) {
+         ^
+bundle.cpp:108497:9: warning: enumeration value ‘kFilterTypeAuto’ not handled in switch [-Wswitch]
+bundle.cpp:108497:9: warning: enumeration value ‘kFilterTypeCount’ not handled in switch [-Wswitch]
+bundle.cpp: In member function ‘void Archive::constructBlocks(Stream*, Analyzer_MCM*)’:
+bundle.cpp:108528:11: warning: unused variable ‘total_in’ [-Wunused-variable]
+  uint64_t total_in = 0;
+           ^
+bundle.cpp: In member function ‘void Archive::writeBlocks()’:
+bundle.cpp:108570:7: warning: unused variable ‘start_pos’ [-Wunused-variable]
+  auto start_pos = stream_->tell();
+       ^
+bundle.cpp: In member function ‘void Archive::readBlocks()’:
+bundle.cpp:108584:7: warning: unused variable ‘start_pos’ [-Wunused-variable]
+  auto start_pos = stream_->tell();
+       ^
+bundle.cpp: In function ‘void testFilter(Stream*, Analyzer_MCM*)’:
+bundle.cpp:108633:7: warning: variable ‘start’ set but not used [-Wunused-but-set-variable]
+  auto start = clock();
+       ^
+bundle.cpp: In member function ‘void Archive::compress(Stream*)’:
+bundle.cpp:108688:9: warning: unused variable ‘dict’ [-Wunused-variable]
+   auto* dict = new Dict;
+         ^
+bundle.cpp:108696:8: warning: unused variable ‘start_pos’ [-Wunused-variable]
+   auto start_pos = stream_->tell();
+        ^
+bundle.cpp:108698:8: warning: unused variable ‘start’ [-Wunused-variable]
+   auto start = clock();
+        ^
+bundle.cpp:108677:7: warning: unused variable ‘start_a’ [-Wunused-variable]
+  auto start_a = clock();
+       ^
+bundle.cpp: In member function ‘void Archive::decompress(Stream*)’:
+bundle.cpp:108736:8: warning: unused variable ‘start_pos’ [-Wunused-variable]
+   auto start_pos = stream_->tell();
+        ^
+bundle.cpp:108749:8: warning: unused variable ‘start’ [-Wunused-variable]
+   auto start = clock();
+        ^
+bundle.cpp: In function ‘std::ostream& operator<<(std::ostream&, const CMProfile&)’:
+bundle.cpp:109108:9: warning: enumeration value ‘kProfileCount’ not handled in switch [-Wswitch]
+  switch (pattern) {
+         ^
+bundle.cpp: In member function ‘virtual uint32_t HuffmanStatic::compressBytes(byte*, byte*, uint32_t)’:
+bundle.cpp:109230:11: warning: unused variable ‘length’ [-Wunused-variable]
+  uint32_t length = 0;
+           ^
+bundle.cpp:109238:8: warning: unused variable ‘tree’ [-Wunused-variable]
+  auto* tree = huff.buildTreePackageMerge(&freq[0], kAlphabetSize, kCodeBits);
+        ^
+bundle.cpp: In member function ‘virtual void LZFast::decompressBytes(byte*, byte*, size_t)’:
+bundle.cpp:109894:8: warning: unused variable ‘start’ [-Wunused-variable]
+  byte *start = out, *limit = out + count;
+        ^
+bundle.cpp:109895:24: warning: unused variable ‘kCopyBufferSize’ [-Wunused-variable]
+  static const uint32_t kCopyBufferSize = 4;
+                        ^
+bundle.cpp: In member function ‘int Options::parse(int, char**)’:
+bundle.cpp:110616:12: warning: enumeration value ‘kModeUnknown’ not handled in switch [-Wswitch]
+     switch (mode) {
+            ^
+bundle.cpp:110616:12: warning: enumeration value ‘kModeTest’ not handled in switch [-Wswitch]
+bundle.cpp:110616:12: warning: enumeration value ‘kModeOpt’ not handled in switch [-Wswitch]
+bundle.cpp:110616:12: warning: enumeration value ‘kModeMemTest’ not handled in switch [-Wswitch]
+bundle.cpp:110616:12: warning: enumeration value ‘kModeSingleTest’ not handled in switch [-Wswitch]
+bundle.cpp:110616:12: warning: enumeration value ‘kModeCompress’ not handled in switch [-Wswitch]
+bundle.cpp:110616:12: warning: enumeration value ‘kModeDecompress’ not handled in switch [-Wswitch]
+bundle.cpp: In function ‘std::string trimExt(const string&)’:
+bundle.cpp:111138:53: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+  if ((pos = str.find_last_of('\\')) != std::string::npos) {
+                                                     ^
+bundle.cpp:111141:52: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+  if ((pos = str.find_last_of('/')) != std::string::npos) {
+                                                    ^
+bundle.cpp: In function ‘int baidu::zling::Decode(baidu::zling::Inputter*, baidu::zling::Outputter*, baidu::zling::ActionHandler*)’:
+bundle.cpp:112067:15: warning: unused variable ‘bitlen’ [-Wunused-variable]
+      uint32_t bitlen;
+               ^
+bundle.cpp: In function ‘bool bundle::{anonymous}::init_bsc()’:
+bundle.cpp:119523:22: warning: unused variable ‘init_bsc’ [-Wunused-variable]
+    static const bool init_bsc = (bsc_init(0), true);
+                      ^
+bundle.cpp: In function ‘bool bundle::{anonymous}::init_mcm()’:
+bundle.cpp:119530:22: warning: unused variable ‘init_mcm’ [-Wunused-variable]
+    static const bool init_mcm = (CompressorFactories::init(), true);
+                      ^
+bundle.cpp: In function ‘bool bundle_pack(unsigned int, const void*, size_t, void*, size_t*)’:
+bundle.cpp:120039:23: warning: unused variable ‘crt0’ [-Wunused-variable]
+     static const bool crt0 = bundle::init_bsc();
+                       ^
+bundle.cpp:120085:10: warning: unused variable ‘ok’ [-Wunused-variable]
+     bool ok = 0 == baidu::zling::Encode(&inputter, &outputter, 0/*&handler*/, 4 /*0..4*/);
+          ^
+bundle.cpp:120115:25: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+     for( int i = 0; i < inlen; i++ ) {
+                         ^
+bundle.cpp:120135:23: warning: unused variable ‘crt0’ [-Wunused-variable]
+     static const bool crt0 = bundle::init_mcm();
+                       ^
+bundle.cpp: In function ‘bool bundle_unpack(unsigned int, const void*, size_t, void*, size_t*)’:
+bundle.cpp:120249:23: warning: unused variable ‘crt0’ [-Wunused-variable]
+     static const bool crt0 = bundle::init_bsc();
+                       ^
+bundle.cpp:120312:26: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+     for( int i = 0; i < *outlen; i++ ) {
+                          ^
+bundle.cpp:120331:23: warning: unused variable ‘crt0’ [-Wunused-variable]
+     static const bool crt0 = bundle::init_mcm();
+                       ^
+bundle.cpp:120209:20: warning: unused variable ‘crt0’ [-Wunused-variable]
+  static const bool crt0 = bundle::init();
+                    ^
+bundle.cpp: In instantiation of ‘ByteBufferFilter<kBlockSize>::ByteBufferFilter(Stream*) [with unsigned int kBlockSize = 65536u]’:
+bundle.cpp:101559:63:   required from here
+bundle.cpp:101554:9: warning: ‘ByteBufferFilter<65536u>::block_pos_’ will be initialized after [-Wreorder]
+  size_t block_pos_;
+         ^
+bundle.cpp:101553:9: warning:   ‘size_t ByteBufferFilter<65536u>::block_size_’ [-Wreorder]
+  size_t block_size_;
+         ^
+bundle.cpp:101478:2: warning:   when initialized here [-Wreorder]
+  ByteBufferFilter(Stream* stream) : stream_(stream), block_pos_(0), block_size_(0) {
+  ^
+bundle.cpp: In instantiation of ‘CM_MCM<kCMType>::CM_MCM(uint32_t, bool, Detector::Profile) [with CMType kCMType = (CMType)0u; uint32_t = unsigned int]’:
+bundle.cpp:108454:65:   required from here
+bundle.cpp:106050:9: warning: ‘CM_MCM<(CMType)0u>::mem_usage’ will be initialized after [-Wreorder]
+  size_t mem_usage;
+         ^
+bundle.cpp:106009:11: warning:   ‘uint32_t CM_MCM<(CMType)0u>::opt_var’ [-Wreorder]
+  uint32_t opt_var;
+           ^
+bundle.cpp:100322:12: warning:   when initialized here [-Wreorder]
+ #define CM CM_MCM
+            ^
+bundle.cpp:106121:2: note: in expansion of macro ‘CM’
+  CM(uint32_t mem = 8, bool lzp_enabled = kUseLZP, Detector::Profile profile = Detector::kProfileDetect)
+  ^
+bundle.cpp: In instantiation of ‘CM_MCM<kCMType>::CM_MCM(uint32_t, bool, Detector::Profile) [with CMType kCMType = (CMType)1u; uint32_t = unsigned int]’:
+bundle.cpp:108457:64:   required from here
+bundle.cpp:106050:9: warning: ‘CM_MCM<(CMType)1u>::mem_usage’ will be initialized after [-Wreorder]
+  size_t mem_usage;
+         ^
+bundle.cpp:106009:11: warning:   ‘uint32_t CM_MCM<(CMType)1u>::opt_var’ [-Wreorder]
+  uint32_t opt_var;
+           ^
+bundle.cpp:100322:12: warning:   when initialized here [-Wreorder]
+ #define CM CM_MCM
+            ^
+bundle.cpp:106121:2: note: in expansion of macro ‘CM’
+  CM(uint32_t mem = 8, bool lzp_enabled = kUseLZP, Detector::Profile profile = Detector::kProfileDetect)
+  ^
+bundle.cpp: In instantiation of ‘CM_MCM<kCMType>::CM_MCM(uint32_t, bool, Detector::Profile) [with CMType kCMType = (CMType)2u; uint32_t = unsigned int]’:
+bundle.cpp:108459:63:   required from here
+bundle.cpp:106050:9: warning: ‘CM_MCM<(CMType)2u>::mem_usage’ will be initialized after [-Wreorder]
+  size_t mem_usage;
+         ^
+bundle.cpp:106009:11: warning:   ‘uint32_t CM_MCM<(CMType)2u>::opt_var’ [-Wreorder]
+  uint32_t opt_var;
+           ^
+bundle.cpp:100322:12: warning:   when initialized here [-Wreorder]
+ #define CM CM_MCM
+            ^
+bundle.cpp:106121:2: note: in expansion of macro ‘CM’
+  CM(uint32_t mem = 8, bool lzp_enabled = kUseLZP, Detector::Profile profile = Detector::kProfileDetect)
+  ^
+bundle.cpp: In instantiation of ‘CM_MCM<kCMType>::CM_MCM(uint32_t, bool, Detector::Profile) [with CMType kCMType = (CMType)3u; uint32_t = unsigned int]’:
+bundle.cpp:108461:64:   required from here
+bundle.cpp:106050:9: warning: ‘CM_MCM<(CMType)3u>::mem_usage’ will be initialized after [-Wreorder]
+  size_t mem_usage;
+         ^
+bundle.cpp:106009:11: warning:   ‘uint32_t CM_MCM<(CMType)3u>::opt_var’ [-Wreorder]
+  uint32_t opt_var;
+           ^
+bundle.cpp:100322:12: warning:   when initialized here [-Wreorder]
+ #define CM CM_MCM
+            ^
+bundle.cpp:106121:2: note: in expansion of macro ‘CM’
+  CM(uint32_t mem = 8, bool lzp_enabled = kUseLZP, Detector::Profile profile = Detector::kProfileDetect)
+  ^
+bundle.cpp: In instantiation of ‘CM_MCM<kCMType>::CM_MCM(uint32_t, bool, Detector::Profile) [with CMType kCMType = (CMType)4u; uint32_t = unsigned int]’:
+bundle.cpp:108463:63:   required from here
+bundle.cpp:106050:9: warning: ‘CM_MCM<(CMType)4u>::mem_usage’ will be initialized after [-Wreorder]
+  size_t mem_usage;
+         ^
+bundle.cpp:106009:11: warning:   ‘uint32_t CM_MCM<(CMType)4u>::opt_var’ [-Wreorder]
+  uint32_t opt_var;
+           ^
+bundle.cpp:100322:12: warning:   when initialized here [-Wreorder]
+ #define CM CM_MCM
+            ^
+bundle.cpp:106121:2: note: in expansion of macro ‘CM’
+  CM(uint32_t mem = 8, bool lzp_enabled = kUseLZP, Detector::Profile profile = Detector::kProfileDetect)
+  ^
+bundle.cpp: In instantiation of ‘void CM_MCM<kCMType>::init() [with CMType kCMType = (CMType)0u]’:
+bundle.cpp:109115:16:   required from here
+bundle.cpp:108774:13: warning: unused variable ‘start’ [-Wunused-variable]
+  const auto start = clock();
+             ^
+bundle.cpp: In instantiation of ‘void CM_MCM<kCMType>::compress(Stream*, Stream*, uint64_t) [with CMType kCMType = (CMType)0u; uint64_t = long unsigned int]’:
+bundle.cpp:109115:16:   required from here
+bundle.cpp:108926:17: warning: unused variable ‘start’ [-Wunused-variable]
+   const clock_t start = clock();
+                 ^
+bundle.cpp:108963:11: warning: unused variable ‘total’ [-Wunused-variable]
+  uint64_t total = 0;
+           ^
+bundle.cpp: In instantiation of ‘void CM_MCM<kCMType>::init() [with CMType kCMType = (CMType)1u]’:
+bundle.cpp:109116:16:   required from here
+bundle.cpp:108774:13: warning: unused variable ‘start’ [-Wunused-variable]
+  const auto start = clock();
+             ^
+bundle.cpp: In instantiation of ‘void CM_MCM<kCMType>::compress(Stream*, Stream*, uint64_t) [with CMType kCMType = (CMType)1u; uint64_t = long unsigned int]’:
+bundle.cpp:109116:16:   required from here
+bundle.cpp:108926:17: warning: unused variable ‘start’ [-Wunused-variable]
+   const clock_t start = clock();
+                 ^
+bundle.cpp:108963:11: warning: unused variable ‘total’ [-Wunused-variable]
+  uint64_t total = 0;
+           ^
+bundle.cpp: In instantiation of ‘void CM_MCM<kCMType>::init() [with CMType kCMType = (CMType)2u]’:
+bundle.cpp:109117:16:   required from here
+bundle.cpp:108774:13: warning: unused variable ‘start’ [-Wunused-variable]
+  const auto start = clock();
+             ^
+bundle.cpp: In instantiation of ‘void CM_MCM<kCMType>::compress(Stream*, Stream*, uint64_t) [with CMType kCMType = (CMType)2u; uint64_t = long unsigned int]’:
+bundle.cpp:109117:16:   required from here
+bundle.cpp:108926:17: warning: unused variable ‘start’ [-Wunused-variable]
+   const clock_t start = clock();
+                 ^
+bundle.cpp:108963:11: warning: unused variable ‘total’ [-Wunused-variable]
+  uint64_t total = 0;
+           ^
+bundle.cpp: In instantiation of ‘void CM_MCM<kCMType>::init() [with CMType kCMType = (CMType)3u]’:
+bundle.cpp:109118:16:   required from here
+bundle.cpp:108774:13: warning: unused variable ‘start’ [-Wunused-variable]
+  const auto start = clock();
+             ^
+bundle.cpp: In instantiation of ‘void CM_MCM<kCMType>::compress(Stream*, Stream*, uint64_t) [with CMType kCMType = (CMType)3u; uint64_t = long unsigned int]’:
+bundle.cpp:109118:16:   required from here
+bundle.cpp:108926:17: warning: unused variable ‘start’ [-Wunused-variable]
+   const clock_t start = clock();
+                 ^
+bundle.cpp:108963:11: warning: unused variable ‘total’ [-Wunused-variable]
+  uint64_t total = 0;
+           ^
+bundle.cpp: In instantiation of ‘void CM_MCM<kCMType>::init() [with CMType kCMType = (CMType)4u]’:
+bundle.cpp:109119:16:   required from here
+bundle.cpp:108774:13: warning: unused variable ‘start’ [-Wunused-variable]
+  const auto start = clock();
+             ^
+bundle.cpp: In instantiation of ‘void CM_MCM<kCMType>::compress(Stream*, Stream*, uint64_t) [with CMType kCMType = (CMType)4u; uint64_t = long unsigned int]’:
+bundle.cpp:109119:16:   required from here
+bundle.cpp:108926:17: warning: unused variable ‘start’ [-Wunused-variable]
+   const clock_t start = clock();
+                 ^
+bundle.cpp:108963:11: warning: unused variable ‘total’ [-Wunused-variable]
+  uint64_t total = 0;
+           ^
+bundle.cpp: In instantiation of ‘void NSStateMap<pshift>::build() [with int pshift = 12]’:
+bundle.cpp:110053:11:   required from here
+bundle.cpp:105542:10: warning: variable ‘n’ set but not used [-Wunused-but-set-variable]
+     byte n[2];
+          ^
+bundle.cpp:105537:12: warning: unused variable ‘mid’ [-Wunused-variable]
+   uint32_t mid = num_states / 2;
+            ^
+bundle.cpp: In instantiation of ‘tangelo::Encoder<encode>::Encoder(std::istream&, std::ostream&, size_t) [with bool encode = true; std::istream = std::basic_istream<char>; std::ostream = std::basic_ostream<char>; size_t = long unsigned int]’:
+bundle.cpp:120114:34:   required from here
+bundle.cpp:112985:17: warning: ‘tangelo::Encoder<true>::out’ will be initialized after [-Wreorder]
+   std::ostream &out;
+                 ^
+bundle.cpp:112735:5: warning:   ‘tangelo::Encoder<true>::Buf tangelo::Encoder<true>::buf’ [-Wreorder]
+ Buf buf;
+     ^
+bundle.cpp:113004:3: warning:   when initialized here [-Wreorder]
+   Encoder(std::istream &in, std::ostream &out, size_t MEM = (0x10000u << 7) /* may be increased up to 10 on x64 platforms */ ):
+   ^
+bundle.cpp: In instantiation of ‘tangelo::Encoder<encode>::Encoder(std::istream&, std::ostream&, size_t) [with bool encode = false; std::istream = std::basic_istream<char>; std::ostream = std::basic_ostream<char>; size_t = long unsigned int]’:
+bundle.cpp:120311:36:   required from here
+bundle.cpp:112985:17: warning: ‘tangelo::Encoder<false>::out’ will be initialized after [-Wreorder]
+   std::ostream &out;
+                 ^
+bundle.cpp:112735:5: warning:   ‘tangelo::Encoder<false>::Buf tangelo::Encoder<false>::buf’ [-Wreorder]
+ Buf buf;
+     ^
+bundle.cpp:113004:3: warning:   when initialized here [-Wreorder]
+   Encoder(std::istream &in, std::ostream &out, size_t MEM = (0x10000u << 7) /* may be increased up to 10 on x64 platforms */ ):
+   ^
+bundle.cpp: In instantiation of ‘CyclicBuffer<T>::CyclicBuffer() [with T = unsigned char]’:
+bundle.cpp:100840:40:   required from ‘CyclicDeque<T>::CyclicDeque() [with T = unsigned char]’
+bundle.cpp:102803:71:   required from here
+bundle.cpp:100750:5: warning: ‘CyclicBuffer<unsigned char>::storage_’ will be initialized after [-Wreorder]
+  T *storage_, *data_;
+     ^
+bundle.cpp:100749:15: warning:   ‘size_t CyclicBuffer<unsigned char>::mask_’ [-Wreorder]
+  size_t pos_, mask_, alloc_size_;
+               ^
+bundle.cpp:100771:2: warning:   when initialized here [-Wreorder]
+  CyclicBuffer() : storage_(nullptr), mask_(0) {
+  ^
+bundle.cpp: In instantiation of ‘uint32_t Range7::decodeBit(TIn&) [with TIn = BufferedStreamWriter<4096u>; uint32_t = unsigned int]’:
+bundle.cpp:108269:16:   required from ‘uint32_t Wav16::processSample(TStream&, size_t, size_t, uint32_t) [with bool kDecode = false; TStream = BufferedStreamWriter<4096u>; uint32_t = unsigned int; size_t = long unsigned int]’
+bundle.cpp:108303:44:   required from here
+bundle.cpp:104095:12: warning: unused variable ‘top’ [-Wunused-variable]
+   uint32_t top = Range;
+            ^
+bundle.cpp: In instantiation of ‘uint32_t Range7::decodeBit(TIn&) [with TIn = BufferedStreamReader<4096u>; uint32_t = unsigned int]’:
+bundle.cpp:108269:16:   required from ‘uint32_t Wav16::processSample(TStream&, size_t, size_t, uint32_t) [with bool kDecode = true; TStream = BufferedStreamReader<4096u>; uint32_t = unsigned int; size_t = long unsigned int]’
+bundle.cpp:108328:55:   required from here
+bundle.cpp:104095:12: warning: unused variable ‘top’ [-Wunused-variable]
+bundle.cpp: In instantiation of ‘void Huffman::build(const Huffman::Tree<T>*, uint32_t) [with T = unsigned int; uint32_t = unsigned int]’:
+bundle.cpp:108939:18:   required from ‘void CM_MCM<kCMType>::compress(Stream*, Stream*, uint64_t) [with CMType kCMType = (CMType)0u; uint64_t = long unsigned int]’
+bundle.cpp:109115:16:   required from here
+bundle.cpp:104359:37: warning: unused variable ‘cur_state_leaf’ [-Wunused-variable]
+   uint32_t cur_state = start_state, cur_state_leaf = cur_state + 0x100;
+                                     ^
+bundle.cpp: In instantiation of ‘size_t CM_MCM<kCMType>::processByte(TStream&, uint32_t) [with bool decode = false; TStream = BufferedStreamWriter<4096u>; CMType kCMType = (CMType)0u; size_t = long unsigned int; uint32_t = unsigned int]’:
+bundle.cpp:108957:14:   required from ‘void CM_MCM<kCMType>::compress(Stream*, Stream*, uint64_t) [with CMType kCMType = (CMType)0u; uint64_t = long unsigned int]’
+bundle.cpp:109115:16:   required from here
+bundle.cpp:106508:4: warning: suggest parentheses around assignment used as truth value [-Wparentheses]
+    if (mm_len = match_model.getLength()) {
+    ^
+bundle.cpp:106559:12: warning: unused variable ‘extra_len’ [-Wunused-variable]
+     size_t extra_len = mm_len - match_model.getMinMatch();
+            ^
+bundle.cpp:106447:12: warning: unused variable ‘random_words’ [-Wunused-variable]
+   uint32_t random_words[] = {
+            ^
+bundle.cpp:106456:16: warning: unused variable ‘blast’ [-Wunused-variable]
+   const size_t blast = bpos - 1; // Last seen char
+                ^
+bundle.cpp: In instantiation of ‘size_t CM_MCM<kCMType>::processByte(TStream&, uint32_t) [with bool decode = true; TStream = BufferedStreamReader<4096u>; CMType kCMType = (CMType)0u; size_t = long unsigned int; uint32_t = unsigned int]’:
+bundle.cpp:109088:25:   required from ‘void CM_MCM<kCMType>::decompress(Stream*, Stream*, uint64_t) [with CMType kCMType = (CMType)0u; uint64_t = long unsigned int]’
+bundle.cpp:109115:16:   required from here
+bundle.cpp:106508:4: warning: suggest parentheses around assignment used as truth value [-Wparentheses]
+    if (mm_len = match_model.getLength()) {
+    ^
+bundle.cpp:106559:12: warning: unused variable ‘extra_len’ [-Wunused-variable]
+     size_t extra_len = mm_len - match_model.getMinMatch();
+            ^
+bundle.cpp:106447:12: warning: unused variable ‘random_words’ [-Wunused-variable]
+   uint32_t random_words[] = {
+            ^
+bundle.cpp:106456:16: warning: unused variable ‘blast’ [-Wunused-variable]
+   const size_t blast = bpos - 1; // Last seen char
+                ^
+bundle.cpp: In instantiation of ‘size_t CM_MCM<kCMType>::processByte(TStream&, uint32_t) [with bool decode = false; TStream = BufferedStreamWriter<4096u>; CMType kCMType = (CMType)1u; size_t = long unsigned int; uint32_t = unsigned int]’:
+bundle.cpp:108957:14:   required from ‘void CM_MCM<kCMType>::compress(Stream*, Stream*, uint64_t) [with CMType kCMType = (CMType)1u; uint64_t = long unsigned int]’
+bundle.cpp:109116:16:   required from here
+bundle.cpp:106508:4: warning: suggest parentheses around assignment used as truth value [-Wparentheses]
+    if (mm_len = match_model.getLength()) {
+    ^
+bundle.cpp:106559:12: warning: unused variable ‘extra_len’ [-Wunused-variable]
+     size_t extra_len = mm_len - match_model.getMinMatch();
+            ^
+bundle.cpp:106447:12: warning: unused variable ‘random_words’ [-Wunused-variable]
+   uint32_t random_words[] = {
+            ^
+bundle.cpp:106456:16: warning: unused variable ‘blast’ [-Wunused-variable]
+   const size_t blast = bpos - 1; // Last seen char
+                ^
+bundle.cpp: In instantiation of ‘size_t CM_MCM<kCMType>::processByte(TStream&, uint32_t) [with bool decode = true; TStream = BufferedStreamReader<4096u>; CMType kCMType = (CMType)1u; size_t = long unsigned int; uint32_t = unsigned int]’:
+bundle.cpp:109088:25:   required from ‘void CM_MCM<kCMType>::decompress(Stream*, Stream*, uint64_t) [with CMType kCMType = (CMType)1u; uint64_t = long unsigned int]’
+bundle.cpp:109116:16:   required from here
+bundle.cpp:106508:4: warning: suggest parentheses around assignment used as truth value [-Wparentheses]
+    if (mm_len = match_model.getLength()) {
+    ^
+bundle.cpp:106559:12: warning: unused variable ‘extra_len’ [-Wunused-variable]
+     size_t extra_len = mm_len - match_model.getMinMatch();
+            ^
+bundle.cpp:106447:12: warning: unused variable ‘random_words’ [-Wunused-variable]
+   uint32_t random_words[] = {
+            ^
+bundle.cpp:106456:16: warning: unused variable ‘blast’ [-Wunused-variable]
+   const size_t blast = bpos - 1; // Last seen char
+                ^
+bundle.cpp: In instantiation of ‘size_t CM_MCM<kCMType>::processByte(TStream&, uint32_t) [with bool decode = false; TStream = BufferedStreamWriter<4096u>; CMType kCMType = (CMType)2u; size_t = long unsigned int; uint32_t = unsigned int]’:
+bundle.cpp:108957:14:   required from ‘void CM_MCM<kCMType>::compress(Stream*, Stream*, uint64_t) [with CMType kCMType = (CMType)2u; uint64_t = long unsigned int]’
+bundle.cpp:109117:16:   required from here
+bundle.cpp:106508:4: warning: suggest parentheses around assignment used as truth value [-Wparentheses]
+    if (mm_len = match_model.getLength()) {
+    ^
+bundle.cpp:106559:12: warning: unused variable ‘extra_len’ [-Wunused-variable]
+     size_t extra_len = mm_len - match_model.getMinMatch();
+            ^
+bundle.cpp:106447:12: warning: unused variable ‘random_words’ [-Wunused-variable]
+   uint32_t random_words[] = {
+            ^
+bundle.cpp:106456:16: warning: unused variable ‘blast’ [-Wunused-variable]
+   const size_t blast = bpos - 1; // Last seen char
+                ^
+bundle.cpp: In instantiation of ‘size_t CM_MCM<kCMType>::processByte(TStream&, uint32_t) [with bool decode = true; TStream = BufferedStreamReader<4096u>; CMType kCMType = (CMType)2u; size_t = long unsigned int; uint32_t = unsigned int]’:
+bundle.cpp:109088:25:   required from ‘void CM_MCM<kCMType>::decompress(Stream*, Stream*, uint64_t) [with CMType kCMType = (CMType)2u; uint64_t = long unsigned int]’
+bundle.cpp:109117:16:   required from here
+bundle.cpp:106508:4: warning: suggest parentheses around assignment used as truth value [-Wparentheses]
+    if (mm_len = match_model.getLength()) {
+    ^
+bundle.cpp:106559:12: warning: unused variable ‘extra_len’ [-Wunused-variable]
+     size_t extra_len = mm_len - match_model.getMinMatch();
+            ^
+bundle.cpp:106447:12: warning: unused variable ‘random_words’ [-Wunused-variable]
+   uint32_t random_words[] = {
+            ^
+bundle.cpp:106456:16: warning: unused variable ‘blast’ [-Wunused-variable]
+   const size_t blast = bpos - 1; // Last seen char
+                ^
+bundle.cpp: In instantiation of ‘size_t CM_MCM<kCMType>::processByte(TStream&, uint32_t) [with bool decode = false; TStream = BufferedStreamWriter<4096u>; CMType kCMType = (CMType)3u; size_t = long unsigned int; uint32_t = unsigned int]’:
+bundle.cpp:108957:14:   required from ‘void CM_MCM<kCMType>::compress(Stream*, Stream*, uint64_t) [with CMType kCMType = (CMType)3u; uint64_t = long unsigned int]’
+bundle.cpp:109118:16:   required from here
+bundle.cpp:106508:4: warning: suggest parentheses around assignment used as truth value [-Wparentheses]
+    if (mm_len = match_model.getLength()) {
+    ^
+bundle.cpp:106559:12: warning: unused variable ‘extra_len’ [-Wunused-variable]
+     size_t extra_len = mm_len - match_model.getMinMatch();
+            ^
+bundle.cpp:106447:12: warning: unused variable ‘random_words’ [-Wunused-variable]
+   uint32_t random_words[] = {
+            ^
+bundle.cpp:106456:16: warning: unused variable ‘blast’ [-Wunused-variable]
+   const size_t blast = bpos - 1; // Last seen char
+                ^
+bundle.cpp: In instantiation of ‘size_t CM_MCM<kCMType>::processByte(TStream&, uint32_t) [with bool decode = true; TStream = BufferedStreamReader<4096u>; CMType kCMType = (CMType)3u; size_t = long unsigned int; uint32_t = unsigned int]’:
+bundle.cpp:109088:25:   required from ‘void CM_MCM<kCMType>::decompress(Stream*, Stream*, uint64_t) [with CMType kCMType = (CMType)3u; uint64_t = long unsigned int]’
+bundle.cpp:109118:16:   required from here
+bundle.cpp:106508:4: warning: suggest parentheses around assignment used as truth value [-Wparentheses]
+    if (mm_len = match_model.getLength()) {
+    ^
+bundle.cpp:106559:12: warning: unused variable ‘extra_len’ [-Wunused-variable]
+     size_t extra_len = mm_len - match_model.getMinMatch();
+            ^
+bundle.cpp:106447:12: warning: unused variable ‘random_words’ [-Wunused-variable]
+   uint32_t random_words[] = {
+            ^
+bundle.cpp:106456:16: warning: unused variable ‘blast’ [-Wunused-variable]
+   const size_t blast = bpos - 1; // Last seen char
+                ^
+bundle.cpp: In instantiation of ‘size_t CM_MCM<kCMType>::processByte(TStream&, uint32_t) [with bool decode = false; TStream = BufferedStreamWriter<4096u>; CMType kCMType = (CMType)4u; size_t = long unsigned int; uint32_t = unsigned int]’:
+bundle.cpp:108957:14:   required from ‘void CM_MCM<kCMType>::compress(Stream*, Stream*, uint64_t) [with CMType kCMType = (CMType)4u; uint64_t = long unsigned int]’
+bundle.cpp:109119:16:   required from here
+bundle.cpp:106508:4: warning: suggest parentheses around assignment used as truth value [-Wparentheses]
+    if (mm_len = match_model.getLength()) {
+    ^
+bundle.cpp:106559:12: warning: unused variable ‘extra_len’ [-Wunused-variable]
+     size_t extra_len = mm_len - match_model.getMinMatch();
+            ^
+bundle.cpp:106447:12: warning: unused variable ‘random_words’ [-Wunused-variable]
+   uint32_t random_words[] = {
+            ^
+bundle.cpp:106456:16: warning: unused variable ‘blast’ [-Wunused-variable]
+   const size_t blast = bpos - 1; // Last seen char
+                ^
+bundle.cpp: In instantiation of ‘size_t CM_MCM<kCMType>::processByte(TStream&, uint32_t) [with bool decode = true; TStream = BufferedStreamReader<4096u>; CMType kCMType = (CMType)4u; size_t = long unsigned int; uint32_t = unsigned int]’:
+bundle.cpp:109088:25:   required from ‘void CM_MCM<kCMType>::decompress(Stream*, Stream*, uint64_t) [with CMType kCMType = (CMType)4u; uint64_t = long unsigned int]’
+bundle.cpp:109119:16:   required from here
+bundle.cpp:106508:4: warning: suggest parentheses around assignment used as truth value [-Wparentheses]
+    if (mm_len = match_model.getLength()) {
+    ^
+bundle.cpp:106559:12: warning: unused variable ‘extra_len’ [-Wunused-variable]
+     size_t extra_len = mm_len - match_model.getMinMatch();
+            ^
+bundle.cpp:106447:12: warning: unused variable ‘random_words’ [-Wunused-variable]
+   uint32_t random_words[] = {
+            ^
+bundle.cpp:106456:16: warning: unused variable ‘blast’ [-Wunused-variable]
+   const size_t blast = bpos - 1; // Last seen char
+                ^
+bundle.cpp: In instantiation of ‘void writeBytes(byte*, size_t, T) [with T = unsigned int; bool kBigEndian = false; byte = unsigned char; size_t = long unsigned int]’:
+bundle.cpp:110220:53:   required from ‘void DeltaFilter::process(byte*, size_t*, byte*, size_t*) [with bool encode = true; byte = unsigned char; size_t = long unsigned int]’
+bundle.cpp:110188:45:   required from here
+bundle.cpp:104793:4: warning: unused variable ‘acc’ [-Wunused-variable]
+  T acc = 0;
+    ^
