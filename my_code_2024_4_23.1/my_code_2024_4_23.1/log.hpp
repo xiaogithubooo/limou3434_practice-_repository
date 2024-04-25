@@ -1,4 +1,4 @@
-//log.hpp(远程操作程序)
+//log.hpp(群体聊天程序)
 
 /* 使用方法
 Log log = Log(bool debugShow = true,    //选择是否显示 DEBUG 等级的日志消息
@@ -10,11 +10,9 @@ log.LogMessage(DEBUG | NORMAL | WARNING | ERROR | FATAL, "%s %d", __FILE__, __LI
 */
 
 #pragma once
-
 #include <iostream>
 #include <string>
 #include <fstream>
-
 #include <cstdio>
 #include <cstdarg>
 #include <ctime>
@@ -24,11 +22,11 @@ log.LogMessage(DEBUG | NORMAL | WARNING | ERROR | FATAL, "%s %d", __FILE__, __LI
 #include <sys/types.h>
 
 //日志级别
-#define DEBUG 0 //调试
-#define NORMAL 1 //正常（或者叫 INFO）
-#define WARNING 2 //警告
-#define ERROR 3 //错误
-#define FATAL 4 //致命
+#define DEBUG 0     //调试
+#define NORMAL 1    //正常（或者叫 INFO）
+#define WARNING 2   //警告
+#define ERROR 3     //错误
+#define FATAL 4     //致命
 
 enum WriteMode
 {
@@ -38,11 +36,11 @@ enum WriteMode
 };
 
 const char* gLevelMap[] = {
-    "DEBUG", //debug 模式
-    "NORMAL", //正常（或者叫 INFO）
-    "WARNING", //警告
-    "ERROR", //非致命错误
-    "FATAL" //严重错误
+    "DEBUG",    //debug 模式
+    "NORMAL",   //正常（或者叫 INFO）
+    "WARNING",  //警告
+    "ERROR",    //非致命错误
+    "FATAL"     //严重错误
 };
 
 const std::string logdir = "log_dir";
@@ -59,6 +57,7 @@ private:
         out << message;
         out.close();
     }
+    
     void __WriteLogToClassFile(const int& level, const std::string& message)
     {
         std::string logFileName = "./";
@@ -70,6 +69,7 @@ private:
 
         __WriteLogToOneFile(logFileName, message);
     }
+    
     void _WriteLog(const int& level, const std::string& message)
     {
         switch (_writeMode)
@@ -89,8 +89,10 @@ private:
         }
     }
 
+
 public:
-    //构造函数，debugShow 为是否显示 debug 消息，writeMode 为日志打印模式，logFileName 为日志文件名
+    //构造函数
+    // debugShow 为是否显示 debug 消息, writeMode 为日志打印模式, logFileName 为日志文件名
     Log(bool debugShow = true, const WriteMode& writeMode = SCREEN, std::string logFileName = "log")
         : _debugShow(debugShow), _writeMode(writeMode), _logFileName(logFileName)
     {
@@ -106,7 +108,7 @@ public:
     //拼接日志消息并且输出
     void LogMessage(const int& level, const char* format, ...)
     {
-        //1.若不是 debug 模式，且 level == DEBUG 则不做任何事情
+        //1.若不是 debug 模式, 且 level == DEBUG 则不做任何事情
         if (_debugShow == false && level == DEBUG)
             return;
 
@@ -124,10 +126,10 @@ public:
 
         //3.收集日志自定义部分信息
         char logBuffer[1024];
-        va_list args; //声明可变参数列表，实际时一个 char* 类型
+        va_list args; //声明可变参数列表, 实际时一个 char* 类型
         va_start(args, format); //初始化可变参数列表
-        vsnprintf(logBuffer, sizeof logBuffer, format, args); //int vsnprintf(char *str, size_t size, const char *format, va_list ap); 是一个可变参数函数，将格式化后的字符串输出到缓冲区中。类似带 v 开头的可变参数函数有很多
-        va_end(args); //清理可变参数列表，类似 close() 和 delete
+        vsnprintf(logBuffer, sizeof logBuffer, format, args); //int vsnprintf(char *str, size_t size, const char *format, va_list ap); 是一个可变参数函数, 将格式化后的字符串输出到缓冲区中。类似带 v 开头的可变参数函数有很多
+        va_end(args); //清理可变参数列表, 类似 close() 和 delete
 
         //4.拼接为一个完整的消息
         std::string message;
@@ -138,6 +140,7 @@ public:
         //5.打印日志消息
         _WriteLog(level, message);
     }
+
 
 private:
     bool _debugShow;

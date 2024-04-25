@@ -1,10 +1,12 @@
-﻿//udp_server.cpp(远程操作程序)
+﻿//udp_server.cpp(群体聊天程序)
+
 #include <iostream>
 #include <memory>
 #include <string>
 #include <cstdlib>
 #include "udp_server.hpp"
 
+//使用手册
 static void Usage(std::string proc)
 {
     std::cout << "\nUsage: " << proc << " [ip(optional)] [port]\n" << std::endl;
@@ -12,7 +14,7 @@ static void Usage(std::string proc)
 
 int main(int argc, char* argv[]) //服务器启动指令 ./udp_server ip port
 {
-    //1.检查命令是否合法，否则打印使用手册
+    //1.检查命令是否合法, 否则打印使用手册
     uint16_t port;
     std::string ip;
     if (argc == 2)
