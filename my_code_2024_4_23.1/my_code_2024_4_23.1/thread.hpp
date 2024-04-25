@@ -1,12 +1,12 @@
-//thread.hpp(群体聊天程序)
+//thread.hpp(多进程死循环服务端)
 
 /* 使用方法
-    void Func(int data) { sleep(3); std::cout << data << std::endl; }
-    Thread<int>::thread_func_t func = Func;
-    Thread<int> t("threadName", func, 10);
-    std::cout << t.ThreadName() << std::endl;
-    t.Start();
-    while(t.IsRunning() == false) { t.Join(); }
+void Func(int data) { sleep(3); std::cout << data << std::endl; }
+Thread<int>::thread_func_t func = Func;
+Thread<int> t("threadName", func, 10);
+std::cout << t.ThreadName() << std::endl;
+t.Start();
+while(t.IsRunning() == false) { t.Join(); }
 */
 
 #pragma once
@@ -22,7 +22,6 @@ class Thread
 public:
     //线程方法类型
     using thread_func_t = std::function<void(T)>;
-
 
 private:
     //线程调用方法

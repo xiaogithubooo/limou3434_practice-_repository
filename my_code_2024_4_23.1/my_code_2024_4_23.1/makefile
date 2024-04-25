@@ -1,17 +1,13 @@
-# makefile(群体聊天程序)
+# makefile(多进程死循环服务端)
 
 .PHONY:all
-all:udp_client udp_server
+all:tcp_client tcp_server
 
-udp_client:udp_client.cpp
+tcp_client:tcp_client.cpp
 	g++ -o $@ $^ -std=c++11 -lpthread
-	mkfifo fifo1
-udp_server:udp_server.cpp
+tcp_server:tcp_server.cpp
 	g++ -o $@ $^ -std=c++11 -lpthread
-	mkfifo fifo2
 	
 .PHONY:clean
 clean:
-	rm -rf udp_client udp_server log_dir
-	unlink fifo1
-	unlink fifo2
+	rm -rf tcp_client tcp_server log_dir

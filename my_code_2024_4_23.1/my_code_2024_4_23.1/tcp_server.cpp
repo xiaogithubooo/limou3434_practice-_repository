@@ -1,12 +1,11 @@
-﻿//udp_server.cpp(群体聊天程序)
+﻿//tcp_server.cpp(多进程死循环服务端)
 
 #include <iostream>
 #include <memory>
 #include <string>
 #include <cstdlib>
-#include "udp_server.hpp"
+#include "tcp_server.hpp"
 
-//使用手册
 static void Usage(std::string proc)
 {
     std::cout << "\nUsage: " << proc << " [ip(optional)] [port]\n" << std::endl;
@@ -35,7 +34,7 @@ int main(int argc, char* argv[]) //服务器启动指令 ./udp_server ip port
     }
 
     //4.使用智能指针托管服务端指针
-    std::unique_ptr<UdpServer> svr(new UdpServer(port, ip));
+    std::unique_ptr<TcpServer> svr(new TcpServer(port, ip));
 
     //5.启动服务端服务
     svr->Start();

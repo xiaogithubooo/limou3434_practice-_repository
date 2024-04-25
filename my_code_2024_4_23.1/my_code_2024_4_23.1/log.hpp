@@ -1,4 +1,4 @@
-//log.hpp(群体聊天程序)
+//log.hpp(多进程死循环服务端)
 
 /* 使用方法
 Log log = Log(bool debugShow = true,    //选择是否显示 DEBUG 等级的日志消息
