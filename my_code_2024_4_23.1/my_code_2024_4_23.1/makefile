@@ -1,4 +1,4 @@
-# makefile(多进程死循环服务端)
+# makefile(线程池版本的服务端)
 
 .PHONY:all
 all:tcp_client tcp_server

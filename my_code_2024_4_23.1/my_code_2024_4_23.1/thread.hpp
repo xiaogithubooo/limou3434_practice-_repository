@@ -1,4 +1,4 @@
-//thread.hpp(多进程死循环服务端)
+//thread.hpp(线程池版本的服务端)
 
 /* 使用方法
 void Func(int data) { sleep(3); std::cout << data << std::endl; }
@@ -21,7 +21,7 @@ class Thread
 {
 public:
     //线程方法类型
-    using thread_func_t = std::function<void(T)>;
+    using thread_func_t = std::function<void(T&)>; //由于我图方便, 因此修改了 std::function<void(T)> 为 std::function<void(T&)>
 
 private:
     //线程调用方法

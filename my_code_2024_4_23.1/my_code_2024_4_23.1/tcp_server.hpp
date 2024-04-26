@@ -1,4 +1,4 @@
-//tcp_server.hpp(多线程服务端)
+//tcp_server.hpp(线程池版本的服务端)
 
 /* 使用方法
 std::unique_ptr<TcpServer> svr(new TcpServer(port, ip));
@@ -10,6 +10,7 @@ svr->Start();
 #include <cerrno>
 #include <cstring>
 #include <cassert>
+#include <ctype.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -19,21 +20,24 @@ svr->Start();
 #include <sys/wait.h>
 #include "log.hpp"
 #include "thread.hpp"
+#include "thread_pool.hpp"
+#include "task.hpp"
 
 const int buffSize = 1024;
 const int g_backlog = 20; //这个数值一般不会太大, 也不会太小, 但是我们以后提及 TCP 报文的时候再来详细讲解
 
 //线程数据类
-struct ThreadData
-{
-    int _sock;
-    std::string _ip;
-    uint16_t _port;
-};
+//struct ThreadData
+//{
+//    int _sock;
+//    std::string _ip;
+//    uint16_t _port;
+//};
 
+//服务方法, 下述方法类型符合 Task::task_func_t
 static void Service(const int& serviceSock, const std::string& client_ip, const uint16_t& client_port)
 {
-    Log log;
+    Log log = Log();
 
     while (true)
     {
@@ -57,33 +61,45 @@ static void Service(const int& serviceSock, const std::string& client_ip, const 
             exit(-1);
         }
 
-        //写入数据到服务端
-        write(serviceSock, readBuffer, strlen(readBuffer)); //这里读到什么数据就直接传送回去
+        //写入数据到客户端
+        for (int i = 0; readBuffer[i] != '\0'; i++)
+        {
+            if (islower(readBuffer[i]))
+                readBuffer[i] = toupper(readBuffer[i]);
+        }
+        write(serviceSock, readBuffer, strlen(readBuffer)); //把转化结果传送回去
     }
+
+    //释放服务套接字
+    close(serviceSock);
 }
 
 class TcpServer
 {
-private:
-    static void* ThreadRoutine(void* args) //static 去除 this 参数
-    {
-        pthread_detach(pthread_self()); //线程分离, 让子线程自己释放自己
-
-        ThreadData* td = (ThreadData*)args;
-
-        int serviceSock = td->_sock;
-        std::string client_ip = td->_ip;
-        int client_port = td->_port;
-
-        Service(serviceSock, client_ip, client_port); //读写任务
-
-        delete td; //这一步一定要记住
-    }
+//private:
+//    static void* ThreadRoutine(void* args) //static 去除 this 参数
+//    {
+//        pthread_detach(pthread_self()); //线程分离, 让子线程自己释放自己
+//
+//        ThreadData* td = (ThreadData*)args;
+//
+//        int serviceSock = td->_sock;
+//        std::string client_ip = td->_ip;
+//        int client_port = td->_port;
+//
+//        Service(serviceSock, client_ip, client_port); //读写任务
+//
+//        delete td; //这一步一定要记住
+//    }
 
 public:
     //初始服务器
     TcpServer(uint16_t port, std::string ip)
-        : _ip(ip), _port(port), _ListenSock(-1)
+        : _ip(ip)
+        , _port(port)
+        , _ListenSock(-1)
+        , _threadPoolPtr(ThreadPool<Task>::GetInstance())
+        , _log(Log())
     {
         //1.创建套接字
         if ((_ListenSock = socket(AF_INET, SOCK_STREAM, 0)) < 0) //注意换成流式类型, 而不是数据报类型
@@ -120,6 +136,8 @@ public:
     //运行服务器
     void Start()
     {
+        _threadPoolPtr->Start(); //启动线程池
+
         //signal(SIGCHLD, SIG_IGN); //父进程由程序员主动设置忽略, 因此子进程退出时会自动释放自己的僵尸状态
 
         while (true)
@@ -172,22 +190,29 @@ public:
             //}
             //waitpid(id, nullptr, 0); //父进程阻塞等待回收子进程, 由于子进程立刻退出, 因此父进程可以立刻接收子进程再进行释放不会导致父进程进入阻塞, 而孙进程此时就在执行和服务端交互的任务
             ////(1)主进程部分
-            
-            //version 4 -- 多线程版本
+
+            //version 4 -- 多线程版本(使用原生的接口)
             //pthread_t tid;
             //ThreadData* td = new ThreadData(); //这里最好用指针, 因为有可能在多线程的场景下 td 发生二义性, 而我又懒得加锁... 不过代价就是必须注意在线程方法内释放指针
             //td->_sock = serviceSock;
             //td->_ip = client_ip;
             //td->_port = client_port;
             //pthread_create(&tid, nullptr, ThreadRoutine, td);
-            
+
             //version 5 -- 多线程版本(自己封装的线程对象)
-            ThreadData* td = new ThreadData(); //这里最好用指针, 因为有可能在多线程的场景下 td 发生二义性, 而我又懒得加锁... 不过代价就是必须注意在线程方法内释放指针
-            td->_sock = serviceSock;
-            td->_ip = client_ip;
-            td->_port = client_port;
-            Thread<ThreadData*> t("aThread", ThreadRoutine, td);
-            t.Start();
+            //ThreadData* td = new ThreadData(); //这里最好用指针, 因为有可能在多线程的场景下 td 发生二义性, 而我又懒得加锁... 不过代价就是必须注意在线程方法内释放指针
+            //td->_sock = serviceSock;
+            //td->_ip = client_ip;
+            //td->_port = client_port;
+            //Thread<ThreadData*> t("aThread", ThreadRoutine, td);
+            //t.Start();
+
+            //version 6 -- 线程池版本
+            //构造函数已经获取到了 _threadPoolPtr, 并且在本函数的开头就进行了启动, 下面直接使用即可
+            //制作任务
+            Task t(serviceSock, client_ip, client_port, Service);
+            //插入任务
+            _threadPoolPtr->Push(t);
 
             //3.关闭服务套接字(多线程版本不能关闭, 否则会导致服务端被异常关闭, 这也很好理解, 这里不是多进程, 主线程关闭服务套接字会导致共享的子线程读写套接字时出现错误)
             //close(serviceSock);
@@ -199,6 +224,7 @@ public:
     {
         if (_ListenSock < 0)
             close(_ListenSock);
+        _threadPoolPtr->Wait(); //释放线程池
     }
 
 
@@ -206,5 +232,6 @@ private:
     std::string _ip;
     uint16_t _port;
     int _ListenSock; //int _sock; //我们更愿意叫这个套接字为监听套接字, 因此我们改一下名字
+    std::unique_ptr<ThreadPool<Task>> _threadPoolPtr;
     Log _log;
 };

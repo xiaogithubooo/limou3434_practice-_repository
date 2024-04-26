@@ -1,4 +1,4 @@
-﻿//tcp_server.cpp(多进程死循环服务端)
+﻿//tcp_server.cpp(线程池版本的服务端)
 
 #include <iostream>
 #include <memory>
@@ -13,7 +13,7 @@ static void Usage(std::string proc)
 
 int main(int argc, char* argv[]) //服务器启动指令 ./udp_server ip port
 {
-    //1.检查命令是否合法, 否则打印使用手册
+    //1.检查命令是否合法，否则打印使用手册
     uint16_t port;
     std::string ip;
     if (argc == 2)
