@@ -15,19 +15,6 @@ public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
 
-signals:
-    //1.自定义信号声明
-    void MySignal(const QString& str);
-
-public:
-    //2.自定义槽函数声明
-    void MyHandleSignal(const QString& str); //带上参数
-
-public slots:
-    void on_pushButton_1_clicked();
-
-    void on_pushButton_2_clicked();
-
 private:
     Ui::Widget *ui;
 };
