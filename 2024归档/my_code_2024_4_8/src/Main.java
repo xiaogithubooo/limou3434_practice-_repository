@@ -5,7 +5,7 @@ import java.io.IOException;
 public class Main {
     public static void printSchoolSongFromFile(String filename) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            System.out.println("中山大学南方学院校歌:");
+            System.out.println(":");
             String line;
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
