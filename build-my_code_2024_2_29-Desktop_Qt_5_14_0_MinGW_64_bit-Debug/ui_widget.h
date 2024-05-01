@@ -11,6 +11,8 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -18,6 +20,9 @@ QT_BEGIN_NAMESPACE
 class Ui_Widget
 {
 public:
+    QHBoxLayout *horizontalLayout;
+    QPushButton *light;
+    QPushButton *black;
 
     void setupUi(QWidget *Widget)
     {
@@ -27,6 +32,18 @@ public:
         QFont font;
         font.setFamily(QString::fromUtf8("Consolas"));
         Widget->setFont(font);
+        horizontalLayout = new QHBoxLayout(Widget);
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        light = new QPushButton(Widget);
+        light->setObjectName(QString::fromUtf8("light"));
+
+        horizontalLayout->addWidget(light);
+
+        black = new QPushButton(Widget);
+        black->setObjectName(QString::fromUtf8("black"));
+
+        horizontalLayout->addWidget(black);
+
 
         retranslateUi(Widget);
 
@@ -36,6 +53,8 @@ public:
     void retranslateUi(QWidget *Widget)
     {
         Widget->setWindowTitle(QCoreApplication::translate("Widget", "Widget", nullptr));
+        light->setText(QCoreApplication::translate("Widget", "light", nullptr));
+        black->setText(QCoreApplication::translate("Widget", "black", nullptr));
     } // retranslateUi
 
 };

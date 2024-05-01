@@ -18,6 +18,22 @@
   <property name="windowTitle">
    <string>Widget</string>
   </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QPushButton" name="light">
+     <property name="text">
+      <string>light</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="black">
+     <property name="text">
+      <string>black</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>
