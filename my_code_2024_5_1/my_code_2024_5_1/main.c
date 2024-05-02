@@ -1,58 +1,27 @@
 #define _CRT_SECURE_NO_WARNINGS
 
-//试除法(利用偶素数特性)
+//双循环
 #include <stdio.h>
-#include <stdbool.h>
-#include <math.h>
-
-//判断一个数是否为素数
-int IsPrime(int number)
-{
-    //小于等于 1 的数一定不是素数
-    if (number <= 1)
-    {
-        return 0;
-    }
-
-    //偶数中是 2 的直接判断为素数, 否则直接判断为非素数
-    if (number % 2 == 0)
-    {
-        if (number == 2)
-        {
-            return 1;
-        }
-        else
-        {
-            return 0;
-        }
-    }
-
-    //能被整除则不是素数
-    for (int i = 2; i <= sqrt(number); i++)
-    {
-        if (number % i == 0)
-        {
-            return 0;
-        }
-    }
-
-    //代码走到这里就说明 number 一定是素数
-    return 1;
-}
-
 int main()
 {
-    for (int num = 0; num < 100; num++)
-    {
-        if (IsPrime(num))
-        {
-            printf("%d is a prime number.\n", num);
-        }
-        else
-        {
-            printf("%d is not a prime number.\n", num);
-        }
-    }
+	int ret = 1;
+	int sum = 0;
 
-    return 0;
+	//输入最大的 n
+	int maxN = 0;
+	scanf("%d", &maxN);
+	for (int i = 1; i <= maxN; i++) //计算从 1! 到 n! 中每一项 i!(其中 i∈[1, n])
+	{
+		ret = 1; //每次加入循环先把 ret 都置为 0
+		for (int j = 1; j <= i; j++) //计算 i! 的值
+		{
+			ret *= j;
+		}
+		//i! 的最终值最后都存储在 ret 中
+
+		sum += ret; //sum
+	}
+
+	printf("%d\n", sum);
+	return 0;
 }
