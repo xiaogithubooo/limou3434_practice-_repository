@@ -29,6 +29,8 @@ private:
     // 判断是否为保留字
     static bool isKeyWord(const std::string& word);
 
+    // 判断是否为注释符号
+    static bool isAnnotation(char c);
 
 public:
     // 语法分析接口

@@ -16,7 +16,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void onLexButtonClicked();
+
 private:
     Ui::MainWindow *ui;
     QTextEdit* _leftTextEdit;
