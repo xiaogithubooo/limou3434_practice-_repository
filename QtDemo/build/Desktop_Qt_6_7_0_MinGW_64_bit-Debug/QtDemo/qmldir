@@ -1,0 +1,4 @@
+module QtDemo
+typeinfo appQtDemo.qmltypes
+prefer :/QtDemo/
+

@@ -1,0 +1,14 @@
+-rootPath
+D:/GitWork/limou-c-test-code/QtDemo
+-cmake-output
+-output-file
+D:/GitWork/limou-c-test-code/QtDemo/build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/.qt_plugins/Qt6_QmlPlugins_Imports_appQtDemo.cmake
+-importPath
+D:/GitWork/limou-c-test-code/QtDemo/build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/QtDemo
+-importPath
+D:/GitWork/limou-c-test-code/QtDemo/build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug
+-importPath
+D:/AppData/Qt6/Qt/6.7.0/mingw_64/./qml
+-qrcFiles
+D:/GitWork/limou-c-test-code/QtDemo/build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/.rcc/qmake_QtDemo.qrc
+D:/GitWork/limou-c-test-code/QtDemo/build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/.rcc/appQtDemo_raw_qml_0.qrc

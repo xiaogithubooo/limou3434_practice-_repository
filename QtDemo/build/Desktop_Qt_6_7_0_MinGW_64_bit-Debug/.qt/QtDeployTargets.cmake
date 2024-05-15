@@ -1,0 +1,2 @@
+set(__QT_DEPLOY_TARGET_appQtDemo_FILE D:/GitWork/limou-c-test-code/QtDemo/build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/appQtDemo.exe)
+set(__QT_DEPLOY_TARGET_appQtDemo_RUNTIME_DLLS D:/AppData/Qt6/Qt/6.7.0/mingw_64/bin/Qt6Quick.dll;D:/AppData/Qt6/Qt/6.7.0/mingw_64/bin/Qt6QmlModels.dll;D:/AppData/Qt6/Qt/6.7.0/mingw_64/bin/Qt6Qml.dll;D:/AppData/Qt6/Qt/6.7.0/mingw_64/bin/Qt6Network.dll;D:/AppData/Qt6/Qt/6.7.0/mingw_64/bin/Qt6OpenGL.dll;D:/AppData/Qt6/Qt/6.7.0/mingw_64/bin/Qt6Gui.dll;D:/AppData/Qt6/Qt/6.7.0/mingw_64/bin/Qt6Core.dll)
