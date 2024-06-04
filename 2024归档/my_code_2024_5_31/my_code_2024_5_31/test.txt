@@ -1,0 +1,10 @@
+你好~~~~
+
+class Test {
+public:
+
+private:
+	int _name; // :sg
+	int _body; // :s
+	std::string _str // :g
+};
