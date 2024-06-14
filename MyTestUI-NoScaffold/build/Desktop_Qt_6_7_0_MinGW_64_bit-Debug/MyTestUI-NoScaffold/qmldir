@@ -1,0 +1,4 @@
+module MyTestUI-NoScaffold
+typeinfo appMyTestUI-NoScaffold.qmltypes
+prefer :/MyTestUI-NoScaffold/
+

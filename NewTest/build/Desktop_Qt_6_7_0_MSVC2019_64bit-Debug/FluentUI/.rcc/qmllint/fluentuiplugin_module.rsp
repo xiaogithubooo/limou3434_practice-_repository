@@ -1,0 +1,10 @@
+-I
+D:/AppData/Qt6/Qt/6.7.0/msvc2019_64/qml
+-I
+D:/AppData/Qt6/Qt/6.7.0/msvc2019_64/./qml
+--resource
+D:/GitWork/LimouGitWork/limou-c-test-code/NewTest/build/Desktop_Qt_6_7_0_MSVC2019_64bit-Debug/FluentUI/.rcc/qmake_FluentUI.qrc
+--resource
+D:/GitWork/LimouGitWork/limou-c-test-code/NewTest/build/Desktop_Qt_6_7_0_MSVC2019_64bit-Debug/FluentUI/.rcc/fluentuiplugin_raw_qml_0.qrc
+--module
+FluentUI
