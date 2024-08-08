@@ -1,6 +1,0 @@
-<RCC>
-  <qresource prefix="/MyTestUI-NoScaffold">
-    <file alias="qmldir">D:/GitWork/LimouGitWork/limou-c-test-code/MyTestUI-NoScaffold/build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/MyTestUI-NoScaffold/qmldir</file>
-  </qresource>
-</RCC>
-

@@ -1,9 +1,0 @@
--rootPath
-D:/GitWork/LimouGitWork/limou-c-test-code/MYFluentUITest/src
--cmake-output
--output-file
-D:/GitWork/LimouGitWork/limou-c-test-code/MYFluentUITest/build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/src/.qt_plugins/Qt6_QmlPlugins_Imports_MYFluentUITest.cmake
--importPath
-D:/GitWork/LimouGitWork/limou-c-test-code/MYFluentUITest/build/Desktop_Qt_6_7_0_MinGW_64_bit-Debug/src
--importPath
-D:/AppData/Qt6/Qt/6.7.0/mingw_64/./qml

@@ -1,9 +1,0 @@
--rootPath
-D:/GitWork/LimouGitWork/limou-c-test-code/NewTest/src
--cmake-output
--output-file
-D:/GitWork/LimouGitWork/limou-c-test-code/NewTest/build/Desktop_Qt_6_7_0_MSVC2019_64bit-Debug/src/.qt_plugins/Qt6_QmlPlugins_Imports_NewTest.cmake
--importPath
-D:/GitWork/LimouGitWork/limou-c-test-code/NewTest/build/Desktop_Qt_6_7_0_MSVC2019_64bit-Debug/src
--importPath
-D:/AppData/Qt6/Qt/6.7.0/msvc2019_64/./qml

@@ -1,0 +1,24 @@
+{
+	"BUILD_DIR" : "D:/GitWork/limou-c-test-code/my_code_2024_7_5/build/Desktop_Qt_6_7_0_MSVC2019_64bit-Debug/appmy_code_2024_7_5_autogen",
+	"CMAKE_BINARY_DIR" : "D:/GitWork/limou-c-test-code/my_code_2024_7_5/build/Desktop_Qt_6_7_0_MSVC2019_64bit-Debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "D:/GitWork/limou-c-test-code/my_code_2024_7_5/build/Desktop_Qt_6_7_0_MSVC2019_64bit-Debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "D:/GitWork/limou-c-test-code/my_code_2024_7_5",
+	"CMAKE_SOURCE_DIR" : "D:/GitWork/limou-c-test-code/my_code_2024_7_5",
+	"GENERATOR" : "Ninja",
+	"INCLUDE_DIR" : "D:/GitWork/limou-c-test-code/my_code_2024_7_5/build/Desktop_Qt_6_7_0_MSVC2019_64bit-Debug/appmy_code_2024_7_5_autogen/include",
+	"INPUTS" : 
+	[
+		"D:/GitWork/limou-c-test-code/my_code_2024_7_5/code.jpg",
+		"D:/GitWork/limou-c-test-code/my_code_2024_7_5/main.qml"
+	],
+	"LOCK_FILE" : "D:/GitWork/limou-c-test-code/my_code_2024_7_5/build/Desktop_Qt_6_7_0_MSVC2019_64bit-Debug/CMakeFiles/appmy_code_2024_7_5_autogen.dir/AutoRcc_source_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "--no-zstd", "-name", "source" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_source.cpp",
+	"RCC_EXECUTABLE" : "D:/AppData/Qt6/Qt/6.7.0/msvc2019_64/./bin/rcc.exe",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "D:/GitWork/limou-c-test-code/my_code_2024_7_5/build/Desktop_Qt_6_7_0_MSVC2019_64bit-Debug/CMakeFiles/appmy_code_2024_7_5_autogen.dir/AutoRcc_source_EWIEGA46WW_Used.txt",
+	"SOURCE" : "D:/GitWork/limou-c-test-code/my_code_2024_7_5/source.qrc",
+	"VERBOSITY" : 0
+}

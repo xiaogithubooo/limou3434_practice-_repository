@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例 - 菜鸟教程(runoob.com)</title>
+    <script src="vue2.js"></script>
+    <script src="axios.js"></script>
+</head>
+<body>
+<div id="app">
+    <p>response: {{ response }}</p>
+    <br><br>
+    <p>request: {{ request }}</p>
+    <br><br>
+    <p>headers: {{ headers }}</p>
+    <br><br>
+    <p>data: {{ data }}</p>
+    <br><br>
+    <p>message: {{ message }}</p>
+    <br><br>
+    <p>status: {{ status }}</p>
+    <br><br>
+    <p>statusText: {{ statusText }}</p>
+    <br><br>
+    <p>config: {{ config }}</p>
+</div>
+<script>
+    new Vue({
+        el: '#app',
+        data () {
+            return {
+                request: null,
+                response: null,
+                headers: null,
+                data: null,
+                message: null,
+                status: null,
+                statusText: null,
+                config: null
+            }
+        },
+        mounted () {
+            axios
+                .post('http://47.121.195.60:8082/') // 请求方法以及对应的网络接口
+                // .then(response => (this.response = response)) // 接着处理响应, 这里使用的是 Lambda 表达式, this.response 就是上面定义的模型数据
+                .then(function(response) { // 这种调用方式也很常见
+                    this.response = response
+                    this.request = response.request
+                    this.data = response.data
+                    this.message = response.data.message // 这里的 messgae 是对端 JSON 中的键名
+                    this.status = response.status
+                    this.statusText = response.statusText
+                    this.config = response.config
+                }.bind(this)) // 绑定 this 到 Vue 实例
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+            /* 箭头函数会继承外部函数的 this, 但普通函数 的 this 在函数调用时才确定 */
+        }
+    })
+</script>
+</body>
+</html>

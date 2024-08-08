@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="/my_code_2024_7_2/">
+    <file alias="main.qml">D:/GitWork/limou-c-test-code/my_code_2024_7_2/main.qml</file>
+    <file alias="qml.qrc">D:/GitWork/limou-c-test-code/my_code_2024_7_2/qml.qrc</file>
+  </qresource>
+</RCC>
+

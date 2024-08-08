@@ -1,0 +1,110 @@
+{
+    "classes": [
+        {
+            "className": "MyQObject",
+            "methods": [
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "i",
+                            "type": "int"
+                        },
+                        {
+                            "name": "s",
+                            "type": "QString"
+                        }
+                    ],
+                    "name": "testFunc",
+                    "returnType": "void"
+                }
+            ],
+            "object": true,
+            "properties": [
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": true,
+                    "index": 0,
+                    "name": "myValue",
+                    "notify": "myValueChanged",
+                    "read": "getMyValue",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "int",
+                    "user": false,
+                    "write": "setMyValue"
+                },
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": true,
+                    "index": 1,
+                    "name": "myString",
+                    "notify": "myStringChanged",
+                    "read": "getMyString",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "QString",
+                    "user": false,
+                    "write": "setMyString"
+                }
+            ],
+            "qualifiedClassName": "MyQObject",
+            "signals": [
+                {
+                    "access": "public",
+                    "name": "myValueChanged",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "name": "myStringChanged",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "i",
+                            "type": "int"
+                        },
+                        {
+                            "name": "s",
+                            "type": "QString"
+                        }
+                    ],
+                    "name": "cppSig",
+                    "returnType": "void"
+                }
+            ],
+            "slots": [
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "i",
+                            "type": "int"
+                        },
+                        {
+                            "name": "s",
+                            "type": "QString"
+                        }
+                    ],
+                    "name": "cppSlot",
+                    "returnType": "void"
+                }
+            ],
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QObject"
+                }
+            ]
+        }
+    ],
+    "inputFile": "myqobject.h",
+    "outputRevision": 68
+}

@@ -1,0 +1,5 @@
+module my_code_2024_7_5_test
+typeinfo appmy_code_2024_7_5_test.qmltypes
+prefer :/my_code_2024_7_5_test/
+Main 1.0 Main.qml
+

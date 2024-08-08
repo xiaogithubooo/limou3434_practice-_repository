@@ -1,9 +1,0 @@
--rootPath
-D:/GitWork/LimouGitWork/limou-c-test-code/Nice/src
--cmake-output
--output-file
-D:/GitWork/LimouGitWork/limou-c-test-code/Nice/build/Desktop_Qt_6_7_0_MinGW_64_bit-Release/src/.qt_plugins/Qt6_QmlPlugins_Imports_Nice.cmake
--importPath
-D:/GitWork/LimouGitWork/limou-c-test-code/Nice/build/Desktop_Qt_6_7_0_MinGW_64_bit-Release/src
--importPath
-D:/AppData/Qt6/Qt/6.7.0/mingw_64/./qml

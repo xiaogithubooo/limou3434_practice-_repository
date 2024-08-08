@@ -1,0 +1,4 @@
+D:\AppData\CLion\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=D:/AppData/CLion/bin/ninja/win/x64/ninja.exe -G Ninja -S D:\GitWork\limou-c-test-code\my_code_2024_6_28 -B D:\GitWork\limou-c-test-code\my_code_2024_6_28\cmake-build-debug
+-- Configuring done (0.2s)
+-- Generating done (0.0s)
+-- Build files have been written to: D:/GitWork/limou-c-test-code/my_code_2024_6_28/cmake-build-debug

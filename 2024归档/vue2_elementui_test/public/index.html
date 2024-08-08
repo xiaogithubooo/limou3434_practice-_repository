@@ -1,0 +1,23 @@
+<!-- index.html -->
+<!DOCTYPE html> <!-- 声明文档类型为 HTML5 -->
+<html lang=""> <!-- 设置页面语言 -->
+<head>
+    <!-- 为避免知识缺漏, 这里解释一下下面设置页面的元数据元素, 可以在 https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/meta 详细查看 -->
+    <meta charset="utf-8"> <!-- 设置本文档支持的字符集 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- 指定 IE 浏览器使用最新渲染引擎, 这个 http-equiv 可以模拟类似 http 的响应头 -->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"> <!-- 设置视图确保能在移动设备上正确缩放和显示 -->
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico"> <!-- 设置页面的 favicon 网站图标, 这里的 BASE_URL 占位符后续会被 -->
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <!-- 这里的 htmlWebpackPlugin.options.title 也是占位符, 后续会被替换为真正的标题 -->
+</head>
+<body>
+<noscript>
+    <strong>
+        <!-- 当用户禁用浏览器的 JS 解释器时就会显示下面这段文本 -->
+        We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+        Please enable it to continue.
+    </strong>
+</noscript>
+<div id="app"></div> <!-- 这里就挂载了 vue2 的根组件 -->
+</body>
+</html>

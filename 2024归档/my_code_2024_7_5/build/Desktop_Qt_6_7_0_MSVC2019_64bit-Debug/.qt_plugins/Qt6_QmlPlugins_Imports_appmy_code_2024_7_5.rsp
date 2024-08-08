@@ -1,0 +1,14 @@
+-rootPath
+D:/GitWork/limou-c-test-code/my_code_2024_7_5
+-cmake-output
+-output-file
+D:/GitWork/limou-c-test-code/my_code_2024_7_5/build/Desktop_Qt_6_7_0_MSVC2019_64bit-Debug/.qt_plugins/Qt6_QmlPlugins_Imports_appmy_code_2024_7_5.cmake
+-importPath
+D:/GitWork/limou-c-test-code/my_code_2024_7_5/build/Desktop_Qt_6_7_0_MSVC2019_64bit-Debug/my_code_2024_7_5
+-importPath
+D:/GitWork/limou-c-test-code/my_code_2024_7_5/build/Desktop_Qt_6_7_0_MSVC2019_64bit-Debug
+-importPath
+D:/AppData/Qt6/Qt/6.7.0/msvc2019_64/./qml
+-qrcFiles
+D:/GitWork/limou-c-test-code/my_code_2024_7_5/build/Desktop_Qt_6_7_0_MSVC2019_64bit-Debug/.rcc/qmake_my_code_2024_7_5.qrc
+D:/GitWork/limou-c-test-code/my_code_2024_7_5/build/Desktop_Qt_6_7_0_MSVC2019_64bit-Debug/.rcc/appmy_code_2024_7_5_raw_qml_0.qrc
